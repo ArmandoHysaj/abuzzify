@@ -1,29 +1,26 @@
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
-// import axios from "axios";
-// import searchIcon from "../../../svgs/searchIcon.svg"; // Import SVG as a URL
-// import { useDispatch } from "react-redux";
-// import { setSelectedCoin } from "../../../coinSlice";
 import "../search/search.scss";
 
-const SearchBar: React.FC = () => {
+interface SearchBarProps {
+  setSelectedCoin: (coin: any) => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ setSelectedCoin }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [coinData, setCoinData] = useState<any[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
-//   const dispatch = useDispatch();
 
   const handleSearchClick = () => {
     setIsExpanded(!isExpanded);
   };
 
   const fetchCoinData = async (query: string) => {
-    console.log("check fetch coin data", process.env.REACT_APP_API_URL);
     try {
-    //   const response = await axios.get(
-    //     `${process.env.REACT_APP_API_URL}/api/crypto?start=0&limit=10&symbol=${query}`
-    //   );
-    //   setCoinData(response.data.data);
+      const response = await fetch("https://api.coinlore.net/api/tickers/");
+      const data = await response.json();
+      setCoinData(data.data);
     } catch (error) {
       console.error("Error fetching data from backend:", error);
     }
@@ -31,15 +28,12 @@ const SearchBar: React.FC = () => {
 
   const handleCoinClick = async (coinID: number) => {
     try {
-    //   const response = await axios.get(
-    //     `${process.env.REACT_APP_API_URL}/api/ticker/?id=${coinID}`
-    //   );
-    //   dispatch(setSelectedCoin(response.data[0]));
-    //   console.log(response.data[0]);
+      const response = await fetch(`https://api.coinlore.net/api/ticker/?id=${coinID}`);
+      const data = await response.json();
+      setSelectedCoin(data[0]);
     } catch (error) {
       console.error("Error fetching detailed data from backend", error);
     }
-    console.log("test deploy");
   };
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,9 +69,9 @@ const SearchBar: React.FC = () => {
       ?.querySelector(".reset-results");
 
     resetBtn?.addEventListener("click", () => {
-    //   dispatch(setSelectedCoin(null));
+      setSelectedCoin(null);
     });
-  }, []);
+  }, [setSelectedCoin]);
 
   const filteredCoins = coinData.filter((coin: any) =>
     coin.symbol.toUpperCase().includes(searchQuery.toUpperCase())
@@ -94,7 +88,15 @@ const SearchBar: React.FC = () => {
         />
       ) : (
         <div onClick={handleSearchClick} className="search-box">
-          {/* <img src={searchIcon} alt="Search Icon" /> Use img tag */}
+          <svg className="ltr-search-icon" width="40" height="40" viewBox="0 0 40 40" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15.4549" cy="16.3636" r="11.8182" stroke="#223341"></circle>
+        <path d="M23.6367 24.5454L33.6367 34.5454" stroke="#223341"></path>
+        <path d="M22.6614 16.3635C22.7039 16.6604 22.7259 16.964 22.7259
+         17.2726C22.7259 18.9637 22.0663 20.5006 20.9903
+         21.6403C19.8301 22.8693 18.1857 23.6363 16.3622 23.6363C16.0536 23.6363
+          15.75 23.6143 15.4531 23.5718" stroke="#223341"></path>
+    </svg>
         </div>
       )}
       {isExpanded && (
