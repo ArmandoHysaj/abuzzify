@@ -1,0 +1,41 @@
+.header {
+    align-items: center;
+      display: grid;
+      grid-template-columns: 33.3% 33.3% 33.3%;
+      max-height: 112px;
+      min-height: 112px;
+      padding: 16px 32px;
+      background-color: white;
+      max-width: 1920px;
+    }
+  
+    .header-title{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    .header-logo{
+      text-align: left;
+      img{
+          width: 75px;
+      }
+    }
+  
+    .header-contents{
+      display: flex;
+      justify-content: right;
+      align-items: flex-end;
+      flex-direction: column;
+      .header-content-item{
+          cursor: pointer;
+          padding: 5px;
+      }
+         
+    }
+  
+    @media screen and (max-width: 639px) {
+      .header h1 {
+        display: none;
+      }
+    }

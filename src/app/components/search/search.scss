@@ -1,0 +1,73 @@
+
+ 
+
+  input[type='text']:focus-visible{
+    outline: none;
+
+  }
+
+  @keyframes fadeInAndScale {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+      width: 1px;
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+      width: 170px;
+    }
+  }
+  
+  .search-bar {
+    min-height: 39px;
+    position: relative;
+  }
+  
+  input[type='text'] {
+    border-radius: 5px;
+    padding-left: 15px;
+    font-family: "Montserrat-Light";
+    height: 30px; 
+    transition: width 0.3s ease;
+    border: none;
+    width: 170px;
+    background: rgb(131 233 223 / 10%);
+    animation: fadeInAndScale 0.6s ease;
+  }
+  
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 9;
+  }
+  
+  .coin {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  @media screen and (max-width: 639px) {
+    @keyframes fadeInAndScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.9);
+        width: 1px;
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+        width: 140px;
+      }
+    }
+
+    .search-bar input[type='text'] {
+      width: 140px;
+    }
+  }

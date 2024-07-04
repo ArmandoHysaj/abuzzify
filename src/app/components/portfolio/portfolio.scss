@@ -1,0 +1,52 @@
+.portfolio-section{
+    margin: 50px auto 0;
+
+    .title{
+        font-family: "Montserrat-Medium";
+    }
+
+    .result{
+        font-family: "Montserrat-SemiBoldItalic";
+    }
+}
+
+
+.coin-container{
+    display: flex;
+    gap: 25px;
+    justify-content: space-between;
+}
+
+.coin-details{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    > div {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .coin-container{
+        flex-direction: row;
+        >div {
+            width: 50%;
+        }
+    }
+    .coin-graph{
+        margin-top: 31px;
+        display: flex;
+        justify-content: center;
+    }
+  }
+
+  @media screen and (max-width: 1023px) {
+    .coin-container{
+        flex-direction: column;
+        >div {
+            width: 100%;
+        }
+    }
+  }
