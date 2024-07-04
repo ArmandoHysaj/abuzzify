@@ -8,6 +8,31 @@
     .result{
         font-family: "Montserrat-SemiBoldItalic";
     }
+
+    .cp-link{
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .news-container{
+        li {
+            margin-bottom: 10px;
+        }
+    }
+
+    .similar-coins{
+        li {
+            justify-content: space-between;
+            display: flex;
+            span:last-of-type{
+                padding-left: 40px;
+            }
+        }
+        .coin-name,
+        .coin-price {
+            margin-bottom: 5px;
+        }
+    }
 }
 
 
@@ -29,10 +54,13 @@
 }
 
 @media screen and (min-width: 1024px) {
+    
     .coin-container{
         flex-direction: row;
         >div {
             width: 50%;
+            display: flex;
+            flex-direction: column;
         }
     }
     .coin-graph{

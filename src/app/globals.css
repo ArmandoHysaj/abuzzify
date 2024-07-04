@@ -10,9 +10,62 @@ body {
   margin: 0;
   background-color: #F5F5F5;
 }
+
+ul { 
+  padding: 0;
+  li {
+  list-style-type: none;
+}
+}
+
+.cp-text,
+.cp-link,
+.cp-text-m,
+.cp-link-m,
+.cp-text-s,
+.cp-link-s {
+  color: #4e5c67;
+
+    &--light {
+      font-family: "Montserrat-Light";
+    }
+
+    &--semi-bold {
+      font-family: "Montserrat-SemiBold";
+    }
+
+    &--medium {
+      font-family: "Montserrat-Medium";
+    }
+}
+
+.cp-text,
+.cp-link {
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.cp-text-m,
+.cp-link-m {
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.cp-text-s,
+.cp-link-s {
+    font-size: 12px;
+    line-height: 16px;
+}
+
 p{
   margin: 0;
 }
+
+.cp-link {
+  text-decoration: underline;
+  color: #a70532;
+}
+
 main {
   margin-left: auto;
   margin-right: auto;
