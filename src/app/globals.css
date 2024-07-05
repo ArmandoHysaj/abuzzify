@@ -8,7 +8,6 @@ body {
   font-family: "Montserrat-Regular";
   color: #075054;
   margin: 0;
-  background-color: #F5F5F5;
 }
 
 ul { 
@@ -79,6 +78,50 @@ main {
   margin: 0 auto;
 }
 
+.loading{
+  position: relative;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  > * {
+    opacity: 0;
+  }
+
+  &:before{
+    content:"";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #c8cdcf70;
+    border-radius: 10px;
+    opacity: .5;
+  }
+  &:after {
+    content:"";
+    width: 25px;
+    height: 25px;
+    border: 2px solid rgb(137 137 137 / 10%);
+    border-left-color: #975353;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+}
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
 @media screen and (max-width: 1500px) {
   h1 {
       font-size: 27px;

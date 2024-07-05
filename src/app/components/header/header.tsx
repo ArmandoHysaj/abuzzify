@@ -7,9 +7,10 @@ import CryptoLyticsImage from "../../images/CryptoLytics.png"
 
 interface HeaderProps {
     setSelectedCoin: (coin: any) => void;
+    setSelectedCoinLoaded: (coin: any) => void;
   }
 
-const Header: React.FC<HeaderProps> = ({ setSelectedCoin }) => {
+const Header: React.FC<HeaderProps> = ({ setSelectedCoin, setSelectedCoinLoaded }) => {
     return (
       <div className="header">
         <div className="header-logo">
@@ -20,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ setSelectedCoin }) => {
         </div>
         <div className="header-contents">
           <div className="header-content-item search-btn">
-             <SearchBar setSelectedCoin={setSelectedCoin} />
+             <SearchBar setSelectedCoin={setSelectedCoin} setSelectedCoinLoaded={setSelectedCoinLoaded}/>
           </div>
           <div className="header-content-item reset-results">Reset</div>
         </div>

@@ -6,35 +6,23 @@ import axios from "axios";
 
 interface PortfolioProps {
   selectedCoin: any;
+  selectedCoinLoaded: any;
 }
 
-const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
+const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin, selectedCoinLoaded}) => {
   const [priceData, setPriceData] = useState<any[]>([]);
   const [similarCoins, setSimilarCoins] = useState<any[]>([]);
   const [news, setNews] = useState<any[]>([]);
+  const [loadingNews, setLoadingNews] = useState(true);
+  const [loadingCoins, setLoadingCoins] = useState(true);
+
 
   useEffect(() => {
     if (selectedCoin) {
-      fetchPriceData();
       fetchSimilarCoins();
       fetchNews();
     }
   }, [selectedCoin]);
-
-  const fetchPriceData = async () => {
-    try {
-      const response = await axios.get(`https://api.coinlore.net/api/ticker/?id=${selectedCoin.id}`);
-      const data = response.data[0];
-      setPriceData([
-        { period: 'Current Price', price: data.price_usd },
-        { period: 'Change 1h', price: data.percent_change_1h },
-        { period: 'Change 24h', price: data.percent_change_24h },
-        { period: 'Change 7d', price: data.percent_change_7d }
-      ]);
-    } catch (error) {
-      console.error("Error fetching price data", error);
-    }
-  };
 
   const fetchSimilarCoins = async () => {
     try {
@@ -48,6 +36,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
         },
       });
       setSimilarCoins(response.data.filter((coin: any) => coin.id !== selectedCoin.id));
+      setLoadingNews(false)
     } catch (error) {
       console.error("Error fetching similar coins", error);
     }
@@ -57,6 +46,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     try {
       const response = await axios.get(`https://newsapi.org/v2/everything?q=${selectedCoin.name}&apiKey=3cba2d90a83a4be6a30729e99a294c6d`);
       setNews(response.data.articles);
+      setLoadingCoins(false)
     } catch (error) {
       console.error("Error fetching news", error);
     }
@@ -68,6 +58,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
         <div className="coin-container">
           <div className="coin-details">
             <h2>{selectedCoin.name}</h2>
+            <ul className={`${loadingNews ? "loading" : ""}`}>
             <div>
               <span className="title">Symbol:</span>
               <span className="result"> {selectedCoin.symbol}</span>
@@ -96,11 +87,12 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
               <span className="title">Change 7 days:</span>
               <span className="result"> {selectedCoin.percent_change_7d}%</span>
             </div>
+            </ul>
           </div>
 
           <div className="similar-coins">
             <h3>Similar Coins</h3>
-            <ul>
+            <ul className={`${loadingCoins ? "loading" : ""}`}>
               {similarCoins.map((coin) => (
                 <li key={coin.id}>
                   <span className="coin-name">{coin.name} ({coin.symbol})</span>
@@ -112,6 +104,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
 
           <div className="news-container">
             <h3>Latest News</h3>
+            <ul className={`${loadingNews ? "loading" : ""}`}>
             {news.length > 0 ? (
               <ul>
                 {news.map((article, index) => (
@@ -120,10 +113,11 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                     <p className="cp-text">{article.description}</p>
                   </li>
                 ))}
-              </ul>
-            ) : (
+                </ul>
+                ) : (
               <p className="cp-text">No news available</p>
             )}
+            </ul>
           </div>
         </div>
       ) : (

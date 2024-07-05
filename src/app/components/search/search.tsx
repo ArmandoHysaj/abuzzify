@@ -4,9 +4,10 @@ import "../search/search.scss";
 
 interface SearchBarProps {
   setSelectedCoin: (coin: any) => void;
+  setSelectedCoinLoaded: (coin: any) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ setSelectedCoin }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ setSelectedCoin, setSelectedCoinLoaded }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [coinData, setCoinData] = useState<any[]>([]);
@@ -31,6 +32,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ setSelectedCoin }) => {
       const response = await fetch(`https://api.coinlore.net/api/ticker/?id=${coinID}`);
       const data = await response.json();
       setSelectedCoin(data[0]);
+      setSelectedCoinLoaded(true)
     } catch (error) {
       console.error("Error fetching detailed data from backend", error);
     }
