@@ -60,7 +60,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin, selectedCoinLoaded}
         <div className="coin-container">
           <div className="coin-details">
             <h2>{selectedCoin.name}</h2>
-            <ul className={`${loadingNews ? "loading" : ""}`}>
+            <ul className={`${!selectedCoinLoaded ? "loading" : ""}`}>
             <div>
               <span className="title">Symbol:</span>
               <span className="result"> {selectedCoin.symbol}</span>
