@@ -36,7 +36,8 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin, selectedCoinLoaded}
         },
       });
       setSimilarCoins(response.data.filter((coin: any) => coin.id !== selectedCoin.id));
-      setLoadingNews(false)
+      setLoadingCoins(false)
+
     } catch (error) {
       console.error("Error fetching similar coins", error);
     }
@@ -46,7 +47,8 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin, selectedCoinLoaded}
     try {
       const response = await axios.get(`https://newsapi.org/v2/everything?q=${selectedCoin.name}&apiKey=3cba2d90a83a4be6a30729e99a294c6d`);
       setNews(response.data.articles);
-      setLoadingCoins(false)
+      setLoadingNews(false)
+
     } catch (error) {
       console.error("Error fetching news", error);
     }
