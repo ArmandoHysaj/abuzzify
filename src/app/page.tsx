@@ -11,11 +11,19 @@ export default function Home() {
   const [selectedCoinLoaded, setSelectedCoinLoaded] = useState(false);
 
   return (
+    <>
+    <div className="main-header container">
+      <div>Home</div>
+      <div>Cryptolytics</div>
+      <div>Marketing</div>
+      <div>About</div>
+    </div>
     <div>
       <Header setSelectedCoin={setSelectedCoin}  setSelectedCoinLoaded={setSelectedCoinLoaded} />
       <main>
         <Portfolio selectedCoin={selectedCoin} selectedCoinLoaded={selectedCoinLoaded} />
       </main>
     </div>
+    </>
   );
 }

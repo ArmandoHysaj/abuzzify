@@ -8,6 +8,20 @@ body {
   font-family: "Montserrat-Regular";
   color: #075054;
   margin: 0;
+  background-color: #FBFBFB;
+}
+
+.main-header{
+  display: flex;
+  gap: 15px;
+  
+  &.container {
+    margin-top: 15px;
+  }
+
+  > div {
+    cursor: pointer;
+  }
 }
 
 ul { 
