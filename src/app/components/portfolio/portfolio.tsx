@@ -16,11 +16,12 @@ const Portfolio: React.FC<PortfolioProps> = ({
   const [news, setNews] = useState<any[]>([]);
   const [loadingNews, setLoadingNews] = useState(true);
   const [loadingCoins, setLoadingCoins] = useState(true);
+  const [newsActive, setNewsActive] = useState(false);
 
   useEffect(() => {
     if (selectedCoin) {
       fetchSimilarCoins();
-      fetchNews();
+      // fetchNews();
     }
   }, [selectedCoin]);
 
@@ -32,7 +33,7 @@ const Portfolio: React.FC<PortfolioProps> = ({
           params: {
             vs_currency: "usd",
             order: "market_cap_desc",
-            per_page: 10,
+            per_page: 20,
             page: 1,
             sparkline: false,
           },
@@ -48,6 +49,7 @@ const Portfolio: React.FC<PortfolioProps> = ({
   };
 
   const fetchNews = async () => {
+    setNewsActive(true)
     try {
       const response = await axios.get("/api/fetchNews", {
         params: {
@@ -74,11 +76,11 @@ const Portfolio: React.FC<PortfolioProps> = ({
               </div>
               <div>
                 <span className="title">Price:</span>
-                <span className="result"> {selectedCoin.price_usd}</span>
+                <span className="result"> {selectedCoin.price_usd} $</span>
               </div>
               <div>
                 <span className="title">Market Cap:</span>
-                <span className="result"> {selectedCoin.market_cap_usd}</span>
+                <span className="result"> {selectedCoin.market_cap_usd} $</span>
               </div>
               <div>
                 <span className="title">24h Volume:</span>
@@ -124,7 +126,7 @@ const Portfolio: React.FC<PortfolioProps> = ({
             </ul>
           </div>
 
-          <div className="news-container">
+         { newsActive && (<div className="news-container">
             <h3>Latest News</h3>
             <ul className={`${loadingNews ? "loading" : ""}`}>
               {news.length > 0 ? (
@@ -148,6 +150,7 @@ const Portfolio: React.FC<PortfolioProps> = ({
               )}
             </ul>
           </div>
+ )}
         </div>
       ) : (
         <div className="title">No coin selected</div>
