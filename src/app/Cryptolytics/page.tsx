@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import styles from "./page.module.css";
-import Header from "../components/header/header";
-import Portfolio from "../components/portfolio/portfolio";
+import Header from "./header/header";
+import Portfolio from "./portfolio/portfolio";
 import { useState } from "react";
 
 export default function CryptolyticsPage() {
