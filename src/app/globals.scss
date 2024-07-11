@@ -1,7 +1,47 @@
-h1, h2, h3, h4, h5 {
+h1, h2, h3, h4, h5,
+.hdl-1, .hdl-2, .hdl-3, .hdl-4, .hdl-5{
   font-family: "Montserrat-SemiBold";
   color: #214d44;
   margin: 0;
+}
+
+.main-nav {
+  padding: 25px 0;
+  background-color: #efeff0;
+
+  .main-header{
+    margin-top: 0;
+  }
+
+  a {
+    text-decoration: none;
+    color: #666;
+
+    &:visited{
+      color: #666;
+    }
+
+  }
+
+  .hdl-4.line-separator{
+    padding-right: 15px;
+    position: relative;
+
+    &:after{
+      content: "";
+      position: absolute;
+      height: 100%;
+      right: 0;
+      width: 2px;
+      background-color: grey;
+    }
+  }
+
+  .hdl-4{
+    &.left-space{
+      margin-left: auto;
+    }
+  }
 }
 
 body {
@@ -14,10 +54,6 @@ body {
 .main-header{
   display: flex;
   gap: 15px;
-  
-  &.container {
-    margin-top: 15px;
-  }
 
   > div {
     cursor: pointer;
@@ -137,54 +173,54 @@ main {
     }
 }
 @media screen and (max-width: 1500px) {
-  h1 {
+  h1, .hdl-1 {
       font-size: 27px;
       line-height: 35px;
   }
 
-  h2 {
+  h2, .hdl-2 {
       font-size: 24px;
       line-height: 31px;
   }
 
-  h3 {
+  h3, .hdl-3 {
       font-size: 19px;
       line-height: 25px;
   }
 
-  h4 {
+  h4, .hdl-4 {
       font-size: 18px;
       line-height: 23px;
   }
 
-  h5 {
+  h5, .hdl-5 {
       font-size: 17px;
       line-height: 21px;
   }
 }
 
 @media screen and (min-width: 1500px) {
-  h1 {
+  h1, .hdl-1 {
       font-size: 42px;
       line-height: 52px;
   }
 
-  h2 {
+  h2, .hdl-2 {
       font-size: 34px;
       line-height: 44px;
   }
 
-  h3 {
+  h3, .hdl-3 {
       font-size: 21px;
       line-height: 32px;
   }
 
-  h4 {
+  h4, .hdl-4 {
       font-size: 18px;
       line-height: 23px;
   }
 
-  h5 {
+  h5, .hdl-5 {
       font-size: 17px;
       line-height: 21px;
   }
