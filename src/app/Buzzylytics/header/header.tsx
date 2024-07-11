@@ -16,9 +16,9 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <div className="header">
-      <div className="header-logo">
+      {/* <div className="header-logo">
         <img src={CryptoLyticsImage.src} alt="CryptoLytics Logo" />
-      </div>
+      </div> */}
       <div className="header-title">
         <h1>Buzzylytics</h1>
       </div>
