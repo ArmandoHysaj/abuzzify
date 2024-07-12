@@ -1,7 +1,8 @@
 "use client";
 
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import "./globals.scss";
 import "./main-nav.scss";
 import "./fonts.scss";
@@ -11,19 +12,43 @@ import Abuzzify from "../app/images/Abuzzify.png";
 export default function RootLayout({ children }: { children: ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 960);
     };
 
-    handleResize(); // check initial size
+    handleResize(); // Check initial size
     window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -36,11 +61,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <nav className="main-nav">
             <div className="main-header container">
               <div className="nav-logo">
-                <img src={Abuzzify.src} alt="CryptoLytics Logo" />
+                <img src={Abuzzify.src} alt="Abuzzify Logo" />
               </div>
               {isMobile ? (
                 <>
-                  <div className={`nav-layer ${isMenuOpen ? "open" : ""}`}>
+                  <div
+                    ref={menuRef}
+                    className={`nav-layer ${isMenuOpen ? "open" : ""}`}
+                  >
                     <div className="nav-items">
                       <div className="hdl-4">
                         <Link href="/">Abuzzy Home</Link>
@@ -72,20 +100,20 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                           stroke="#000000"
                           transform="rotate(0)"
                         >
-                          <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                          <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
                           <g
                             id="SVGRepo_tracerCarrier"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                             stroke="#CCCCCC"
-                            stroke-width="2.4"
+                            strokeWidth="2.4"
                           >
                             <path
                               d="M5 8H13.75M5 12H19M10.25 16L19 16"
                               stroke="#464455"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                             />
                           </g>
 
@@ -93,8 +121,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                             <path
                               d="M5 8H13.75M5 12H19M10.25 16L19 16"
                               stroke="#464455"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                             />
                           </g>
                         </svg>
@@ -109,8 +137,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                           <path
                             d="M5 8H13.75M5 12H19M10.25 16L19 16"
                             stroke="#464455"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           />
                         </svg>
                       )}
