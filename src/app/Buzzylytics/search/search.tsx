@@ -89,6 +89,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     <div className="search-bar" ref={searchRef}>
       {isExpanded ? (
         <input
+          className="cp-text"
           type="text"
           value={searchQuery}
           onChange={handleInputChange}
