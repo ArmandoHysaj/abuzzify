@@ -33,7 +33,14 @@
     }
   
     @media screen and (max-width: 639px) {
-      .header h1 {
-        display: none;
+      .header{
+        display: block;
+        .header-title{
+          justify-content: center;
+        }
+      }
+
+      .search-box > p {
+        // display: none;
       }
     }
