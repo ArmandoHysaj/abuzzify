@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({
         <img src={CryptoLyticsImage.src} alt="CryptoLytics Logo" />
       </div> */}
       <div className="header-title">
-        <h1>Buzzylytics</h1>
+        <h1>Cryptolytics</h1>
       </div>
       <div className="header-contents">
         <div className="header-content-item search-btn">
