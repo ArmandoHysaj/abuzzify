@@ -1,9 +1,10 @@
 // app/page.tsx
 export default function HomePage() {
   return (
-    <div className="container">
-      <h1>Home Page</h1>
-      <p>Welcome to the home page!</p>
+    <div className="header">
+      <div className="header-title">
+        <h1>Home Page</h1>
+      </div>
     </div>
   );
 }

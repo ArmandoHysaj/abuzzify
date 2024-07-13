@@ -3,6 +3,14 @@
     background-color: #e4e2dd;
   .nav-logo{
     height: 40px;
+    a {
+      display: block;
+      &:hover{
+        &:after{
+          display: none;
+        }
+      }
+    }
   }
     .main-header{
       margin-top: 0;
@@ -68,6 +76,21 @@
       cursor: pointer;
     }
   }
+
+  .header {
+    align-items: center;
+      display: grid;
+      grid-template-columns: 50% 50%;
+      max-height: 112px;
+      min-height: 112px;
+      padding: 30px 32px;
+      max-width: 1920px;
+    }
+  
+    .header-title{
+      display: flex;
+      align-items: center;
+    }
 
   @media (max-width: 960px) {
     .burger-menu{
