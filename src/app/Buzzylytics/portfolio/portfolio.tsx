@@ -1,6 +1,7 @@
 // src/app/components/portfolio/portfolio.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import EducationalContent from "./EducationalContent"; // Import the new component
 import "./portfolio.scss";
 
 interface PortfolioProps {
@@ -49,7 +50,7 @@ const Portfolio: React.FC<PortfolioProps> = ({
   };
 
   const fetchNews = async () => {
-    setNewsActive(true)
+    setNewsActive(true);
     try {
       const response = await axios.get("/api/fetchNews", {
         params: {
@@ -126,31 +127,34 @@ const Portfolio: React.FC<PortfolioProps> = ({
             </ul>
           </div>
 
-         { newsActive && (<div className="news-container">
-            <h3>Latest News</h3>
-            <ul className={`${loadingNews ? "loading" : ""}`}>
-              {news.length > 0 ? (
-                <ul>
-                  {news.map((article, index) => (
-                    <li key={index}>
-                      <a
-                        className="cp-link"
-                        href={article.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {article.title}
-                      </a>
-                      <p className="cp-text">{article.description}</p>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="cp-text">No news available</p>
-              )}
-            </ul>
-          </div>
- )}
+          <EducationalContent />
+
+          {newsActive && (
+            <div className="news-container">
+              <h3>Latest News</h3>
+              <ul className={`${loadingNews ? "loading" : ""}`}>
+                {news.length > 0 ? (
+                  <ul>
+                    {news.map((article, index) => (
+                      <li key={index}>
+                        <a
+                          className="cp-link"
+                          href={article.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {article.title}
+                        </a>
+                        <p className="cp-text">{article.description}</p>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="cp-text">No news available</p>
+                )}
+              </ul>
+            </div>
+          )}
         </div>
       ) : (
         <div className="title">No coin selected</div>

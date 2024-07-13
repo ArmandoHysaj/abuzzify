@@ -1,8 +1,9 @@
 export default function Marketing() {
   return (
-    <div className="container">
-      <h1>Marketing Page</h1>
-      <p>This is the marketing page.</p>
+    <div className="header">
+      <div className="header-title">
+        <h1>Marketing Page</h1>
+      </div>
     </div>
   );
 }

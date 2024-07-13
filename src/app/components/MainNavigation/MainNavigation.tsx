@@ -17,7 +17,7 @@ const MainNavigation = () => {
       setIsMobile(window.innerWidth <= 960);
     };
 
-    handleResize(); // Check initial size
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     return () => {
