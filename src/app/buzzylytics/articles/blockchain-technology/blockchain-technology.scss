@@ -1,0 +1,28 @@
+.educational-content {
+    > p {
+        margin-bottom: 20px;
+    }
+
+    ul {
+        margin: 20px 0;
+        li{
+            margin-bottom: 10px;
+        }
+    }
+}
+@media (min-width: 960px) {
+    .educational-content .wrapper{
+        display: flex;
+        .media{
+            max-width: 50%;
+        }
+        img{
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+}
+
+@media (max-width: 959px) {
+
+}

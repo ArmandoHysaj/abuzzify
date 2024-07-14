@@ -70,16 +70,16 @@ const MainNavigation = () => {
                   <Link href="/">Abuzzy Home</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/Buzzylytics">Buzzylytics</Link>
+                  <Link href="/buzzylytics">Buzzylytics</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/Buzzyball">Buzzyball</Link>
+                  <Link href="/buzzyball">Buzzyball</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/Buzzeting">Buzzeting</Link>
+                  <Link href="/buzzeting">Buzzeting</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/AbuzzyAbout">About Abuzzy</Link>
+                  <Link href="/abuzzy-about">About Abuzzy</Link>
                 </div>
               </div>
             </div>
@@ -147,16 +147,16 @@ const MainNavigation = () => {
               <Link href="/">Abuzzy Home</Link>
             </div>
             <div className="hdl-4">
-              <Link href="/Buzzylytics">Buzzylytics</Link>
+              <Link href="/buzzylytics">Buzzylytics</Link>
             </div>
             <div className="hdl-4">
-              <Link href="/Buzzyball">Buzzyball</Link>
+              <Link href="/buzzyball">Buzzyball</Link>
             </div>
             <div className="hdl-4">
-              <Link href="/Buzzeting">Buzzeting</Link>
+              <Link href="/buzzeting">Buzzeting</Link>
             </div>
             <div className="hdl-4 left-space">
-              <Link href="/AbuzzyAbout">About Abuzzy</Link>
+              <Link href="/abuzzy-about">About Abuzzy</Link>
             </div>
           </div>
         )}
