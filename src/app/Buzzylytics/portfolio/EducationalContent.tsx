@@ -1,4 +1,4 @@
-// src/app/components/EducationalContent.tsx
+// src/app/Buzzylytics/portfolio/EducationalContent.tsx
 import React from "react";
 import Link from "next/link";
 
@@ -26,7 +26,7 @@ const EducationalContent: React.FC = () => {
         <div className="article">
           <h3>Introduction to Cryptocurrency Trading</h3>
           <p>
-            New to cryptocurrency trading? Explore our beginner's guide to
+            New to cryptocurrency trading? Explore our beginner&apos;s guide to
             trading strategies, market analysis, and essential tips for
             successful trading.
           </p>
