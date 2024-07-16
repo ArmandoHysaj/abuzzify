@@ -18,12 +18,42 @@ const Portfolio: React.FC<PortfolioProps> = ({
   const [loadingCoins, setLoadingCoins] = useState(true);
   const [newsActive, setNewsActive] = useState(false);
 
+  // Load state from local storage when component mounts
+  useEffect(() => {
+    const savedState = JSON.parse(
+      localStorage.getItem("portfolioState") || "{}"
+    );
+    if (savedState && savedState.selectedCoin) {
+      setSimilarCoins(savedState.similarCoins || []);
+      setNews(savedState.news || []);
+      setLoadingNews(savedState.loadingNews || false);
+      setLoadingCoins(savedState.loadingCoins || false);
+      setNewsActive(savedState.newsActive || false);
+    }
+  }, []);
+
+  // Fetch data when selectedCoin changes
   useEffect(() => {
     if (selectedCoin) {
       fetchSimilarCoins();
       // fetchNews();
     }
   }, [selectedCoin]);
+
+  // Save state to local storage when state changes
+  useEffect(() => {
+    if (selectedCoin) {
+      const stateToSave = {
+        similarCoins,
+        news,
+        loadingNews,
+        loadingCoins,
+        newsActive,
+        selectedCoin,
+      };
+      localStorage.setItem("portfolioState", JSON.stringify(stateToSave));
+    }
+  }, [similarCoins, news, loadingNews, loadingCoins, newsActive, selectedCoin]);
 
   const fetchSimilarCoins = async () => {
     try {
