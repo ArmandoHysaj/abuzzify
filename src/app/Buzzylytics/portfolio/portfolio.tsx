@@ -1,7 +1,6 @@
-// src/app/components/portfolio/portfolio.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import EducationalContent from "./EducationalContent"; // Import the new component
+import EducationalContent from "./EducationalContent";
 import "./portfolio.scss";
 
 interface PortfolioProps {
@@ -28,20 +27,9 @@ const Portfolio: React.FC<PortfolioProps> = ({
 
   const fetchSimilarCoins = async () => {
     try {
-      const response = await axios.get(
-        "https://api.coingecko.com/api/v3/coins/markets",
-        {
-          params: {
-            vs_currency: "usd",
-            order: "market_cap_desc",
-            per_page: 20,
-            page: 1,
-            sparkline: false,
-          },
-        }
-      );
+      const response = await axios.get(`https://api.coinlore.net/api/tickers/`);
       setSimilarCoins(
-        response.data.filter((coin: any) => coin.id !== selectedCoin.id)
+        response.data.data.filter((coin: any) => coin.id !== selectedCoin.id)
       );
       setLoadingCoins(false);
     } catch (error) {
@@ -77,33 +65,45 @@ const Portfolio: React.FC<PortfolioProps> = ({
               </div>
               <div>
                 <span className="title">Price:</span>
-                <span className="result"> {selectedCoin.price_usd} $</span>
+                <span className="result">${selectedCoin.price_usd}</span>
               </div>
               <div>
                 <span className="title">Market Cap:</span>
-                <span className="result"> {selectedCoin.market_cap_usd} $</span>
+                <span className="result">${selectedCoin.market_cap_usd}</span>
               </div>
               <div>
                 <span className="title">24h Volume:</span>
-                <span className="result"> {selectedCoin.volume24}</span>
+                <span className="result">${selectedCoin.volume24}</span>
               </div>
               <div>
                 <span className="title">Change 1h:</span>
-                <span className="result">
+                <span
+                  className={`result ${
+                    selectedCoin.percent_change_1h > 0 ? "green" : "red"
+                  }`}
+                >
                   {" "}
                   {selectedCoin.percent_change_1h}%
                 </span>
               </div>
               <div>
                 <span className="title">Change 24h:</span>
-                <span className="result">
+                <span
+                  className={`result ${
+                    selectedCoin.percent_change_24h > 0 ? "green" : "red"
+                  }`}
+                >
                   {" "}
                   {selectedCoin.percent_change_24h}%
                 </span>
               </div>
               <div>
                 <span className="title">Change 7 days:</span>
-                <span className="result">
+                <span
+                  className={`result ${
+                    selectedCoin.percent_change_7d > 0 ? "green" : "red"
+                  }`}
+                >
                   {" "}
                   {selectedCoin.percent_change_7d}%
                 </span>
@@ -119,9 +119,7 @@ const Portfolio: React.FC<PortfolioProps> = ({
                   <span className="coin-name">
                     {coin.name} ({coin.symbol})
                   </span>
-                  <span className="coin-price">
-                    ${coin.current_price.toFixed(2)}
-                  </span>
+                  <span className="coin-price">${coin.price_usd}</span>
                 </li>
               ))}
             </ul>

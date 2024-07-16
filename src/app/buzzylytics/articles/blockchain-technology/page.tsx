@@ -8,7 +8,7 @@ const BlockchainTechnology: React.FC = () => {
     <>
       <div className="header">
         <div className="header-title">
-          <h2>Understanding Blockchain Technology</h2>
+          <h3>Understanding Blockchain Technology</h3>
         </div>
       </div>
       <div className="educational-content container">
@@ -51,7 +51,7 @@ const BlockchainTechnology: React.FC = () => {
             </p> */}
           </div>
           <div className="media">
-            <img src={blockchain.src} alt="Abuzzify Logo" />
+            <img src={blockchain.src} alt="" />
           </div>
         </div>
       </div>
