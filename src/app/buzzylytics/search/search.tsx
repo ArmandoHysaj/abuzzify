@@ -5,13 +5,9 @@ import CustomScrollbar from "../../../utils/customScrollbar";
 
 interface SearchBarProps {
   setSelectedCoin: (coin: any) => void;
-  setSelectedCoinLoaded: (coin: any) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({
-  setSelectedCoin,
-  setSelectedCoinLoaded,
-}) => {
+const SearchBar: React.FC<SearchBarProps> = ({ setSelectedCoin }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [coinData, setCoinData] = useState<any[]>([]);
@@ -37,8 +33,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
         `https://api.coinlore.net/api/ticker/?id=${coinID}`
       );
       const data = await response.json();
+      localStorage.removeItem("portfolioState");
       setSelectedCoin(data[0]);
-      setSelectedCoinLoaded(true);
     } catch (error) {
       console.error("Error fetching detailed data from backend", error);
     }
@@ -77,6 +73,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       ?.querySelector(".reset-results");
 
     resetBtn?.addEventListener("click", () => {
+      localStorage.removeItem("portfolioState");
       setSelectedCoin(null);
     });
   }, [setSelectedCoin]);

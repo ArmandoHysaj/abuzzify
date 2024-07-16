@@ -15,10 +15,7 @@ export default function BuzzylyticsPage() {
         setSelectedCoin={setSelectedCoin}
         setSelectedCoinLoaded={setSelectedCoinLoaded}
       />
-      <Portfolio
-        selectedCoin={selectedCoin}
-        selectedCoinLoaded={selectedCoinLoaded}
-      />
+      <Portfolio selectedCoin={selectedCoin} />
     </>
   );
 }
