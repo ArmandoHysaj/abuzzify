@@ -13,12 +13,6 @@ const Header: React.FC<HeaderProps> = ({
   setSelectedCoin,
   setSelectedCoinLoaded,
 }) => {
-  const handleReset = () => {
-    localStorage.removeItem("portfolioState");
-    setSelectedCoin(null);
-    setSelectedCoinLoaded(false);
-  };
-
   return (
     <div className="header">
       <div className="header-title">
@@ -26,11 +20,9 @@ const Header: React.FC<HeaderProps> = ({
       </div>
       <div className="header-contents">
         <div className="header-content-item search-btn">
-          <SearchBar setSelectedCoin={setSelectedCoin} handleReset={handleReset} />
+          <SearchBar setSelectedCoin={setSelectedCoin} />
         </div>
-        <div className="header-content-item reset-results" onClick={handleReset}>
-          Reset
-        </div>
+        <div className="header-content-item reset-results">Reset</div>
       </div>
     </div>
   );

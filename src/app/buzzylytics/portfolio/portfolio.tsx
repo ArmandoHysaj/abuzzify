@@ -16,22 +16,27 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   const [coin, setCoin] = useState(selectedCoin);
   const [selectedCoinLoaded, setSelectedCoinLoaded] = useState(false);
 
-  // Load state from local storage when component mounts
   useEffect(() => {
-    const savedState = JSON.parse(localStorage.getItem("portfolioState") || "{}");
-    console.log("Loaded state from localStorage:", savedState);
+    const savedState = JSON.parse(
+      localStorage.getItem("portfolioState") || "{}"
+    );
     if (savedState && savedState.selectedCoin) {
       setCoin(savedState.selectedCoin);
       setSimilarCoins(savedState.similarCoins || []);
       setNews(savedState.news || []);
-      setLoadingNews(savedState.loadingNews !== undefined ? savedState.loadingNews : true);
-      setLoadingCoins(savedState.loadingCoins !== undefined ? savedState.loadingCoins : true);
-      setNewsActive(savedState.newsActive !== undefined ? savedState.newsActive : false);
+      setLoadingNews(
+        savedState.loadingNews !== undefined ? savedState.loadingNews : true
+      );
+      setLoadingCoins(
+        savedState.loadingCoins !== undefined ? savedState.loadingCoins : true
+      );
+      setNewsActive(
+        savedState.newsActive !== undefined ? savedState.newsActive : false
+      );
       setSelectedCoinLoaded(true);
     }
   }, []);
 
-  // Handle selectedCoin prop changes
   useEffect(() => {
     if (selectedCoin) {
       setCoin(selectedCoin);
@@ -39,7 +44,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     }
   }, [selectedCoin]);
 
-  // Save state to local storage when state changes, only if coin is not null
   useEffect(() => {
     if (coin) {
       const stateToSave = {
@@ -50,16 +54,20 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
         newsActive,
         selectedCoin: coin,
       };
-      console.log("Saving state to localStorage:", stateToSave);
       localStorage.setItem("portfolioState", JSON.stringify(stateToSave));
     }
   }, [similarCoins, news, loadingNews, loadingCoins, newsActive, coin]);
 
-  // Fetch similar coins when coin changes
   useEffect(() => {
     if (coin) {
       fetchSimilarCoins();
     }
+
+    const resetBtn = document.querySelector(".reset-results");
+    resetBtn?.addEventListener("click", () => {
+      localStorage.removeItem("portfolioState");
+      setCoin(null);
+    });
   }, [coin]);
 
   const fetchSimilarCoins = async () => {
@@ -114,19 +122,31 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
               </div>
               <div>
                 <span className="title">Change 1h:</span>
-                <span className={`result ${coin.percent_change_1h > 0 ? "green" : "red"}`}>
+                <span
+                  className={`result ${
+                    coin.percent_change_1h > 0 ? "green" : "red"
+                  }`}
+                >
                   {coin.percent_change_1h}%
                 </span>
               </div>
               <div>
                 <span className="title">Change 24h:</span>
-                <span className={`result ${coin.percent_change_24h > 0 ? "green" : "red"}`}>
+                <span
+                  className={`result ${
+                    coin.percent_change_24h > 0 ? "green" : "red"
+                  }`}
+                >
                   {coin.percent_change_24h}%
                 </span>
               </div>
               <div>
                 <span className="title">Change 7 days:</span>
-                <span className={`result ${coin.percent_change_7d > 0 ? "green" : "red"}`}>
+                <span
+                  className={`result ${
+                    coin.percent_change_7d > 0 ? "green" : "red"
+                  }`}
+                >
                   {coin.percent_change_7d}%
                 </span>
               </div>

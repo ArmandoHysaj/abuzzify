@@ -5,10 +5,9 @@ import CustomScrollbar from "../../../utils/customScrollbar";
 
 interface SearchBarProps {
   setSelectedCoin: (coin: any) => void;
-  handleReset: () => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ setSelectedCoin, handleReset }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ setSelectedCoin }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [coinData, setCoinData] = useState<any[]>([]);
