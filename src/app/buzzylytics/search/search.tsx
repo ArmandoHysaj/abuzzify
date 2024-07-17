@@ -5,9 +5,10 @@ import CustomScrollbar from "../../../utils/customScrollbar";
 
 interface SearchBarProps {
   setSelectedCoin: (coin: any) => void;
+  handleReset: () => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ setSelectedCoin }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ setSelectedCoin, handleReset }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [coinData, setCoinData] = useState<any[]>([]);
@@ -66,17 +67,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ setSelectedCoin }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  useEffect(() => {
-    const resetBtn = searchRef.current
-      ?.closest(".header-contents")
-      ?.querySelector(".reset-results");
-
-    resetBtn?.addEventListener("click", () => {
-      localStorage.removeItem("portfolioState");
-      setSelectedCoin(null);
-    });
-  }, [setSelectedCoin]);
 
   const filteredCoins = coinData.filter((coin: any) =>
     coin.symbol.toUpperCase().includes(searchQuery.toUpperCase())
