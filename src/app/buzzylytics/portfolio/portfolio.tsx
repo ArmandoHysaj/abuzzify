@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import EducationalContent from "./EducationalContent";
 import "./portfolio.scss";
+import CustomScrollbar from "../../../utils/customScrollbar";
 
 interface PortfolioProps {
   selectedCoin: any;
@@ -156,14 +157,16 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
           <div className="similar-coins">
             <h3>Similar Coins</h3>
             <ul className={`${loadingCoins ? "loading" : ""}`}>
-              {similarCoins.map((c) => (
-                <li key={c.id}>
-                  <span className="coin-name">
-                    {c.name} ({c.symbol})
-                  </span>
-                  <span className="coin-price">${c.price_usd}</span>
-                </li>
-              ))}
+              <CustomScrollbar>
+                {similarCoins.map((c) => (
+                  <li key={c.id}>
+                    <span className="coin-name">
+                      {c.name} ({c.symbol})
+                    </span>
+                    <span className="coin-price">${c.price_usd}</span>
+                  </li>
+                ))}
+              </CustomScrollbar>
             </ul>
           </div>
 
