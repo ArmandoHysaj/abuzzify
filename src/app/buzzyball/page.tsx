@@ -4,7 +4,7 @@ export default function FootballPage() {
     <>
       <div className="header">
         <div className="header-title">
-          <h1>Football Page</h1>
+          <h1>Check out Football Matches</h1>
         </div>
       </div>
       <div className="football-section">
