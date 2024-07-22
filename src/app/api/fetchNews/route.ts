@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-export async function GET(request) {
+export async function GET(request: any) {
   const { searchParams } = new URL(request.url);
   const coinName = searchParams.get('coinName');
   const apiKey = process.env.NEWS_API_KEY;

@@ -90,12 +90,16 @@ const FootballNewsPage: React.FC = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return <div className="container">Loading...</div>;
+  if (error)
+    return (
+      <div style={{ color: "#a70532" }} className="container">
+        {error}
+      </div>
+    );
 
   return (
-    <div>
-      <h1>Football Data</h1>
+    <div className="container">
       <div>
         <h2>Competitions</h2>
         <ul>

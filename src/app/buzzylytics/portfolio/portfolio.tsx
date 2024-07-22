@@ -62,6 +62,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   useEffect(() => {
     if (coin) {
       fetchSimilarCoins();
+      fetchNews();
     }
 
     const resetBtn = document.querySelector(".reset-results");
@@ -83,6 +84,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   };
 
   const fetchNews = async () => {
+    console.log(coin);
     if (!coin) return;
     setNewsActive(true);
     try {
@@ -101,102 +103,105 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   return (
     <div className="portfolio-section container">
       {coin ? (
-        <div className="coin-container">
-          <div className="coin-details">
-            <h2>{coin.name}</h2>
-            <ul className={`${!selectedCoinLoaded ? "loading" : ""}`}>
-              <div>
-                <span className="title">Symbol:</span>
-                <span className="result"> {coin.symbol}</span>
-              </div>
-              <div>
-                <span className="title">Price:</span>
-                <span className="result">${coin.price_usd}</span>
-              </div>
-              <div>
-                <span className="title">Market Cap:</span>
-                <span className="result">${coin.market_cap_usd}</span>
-              </div>
-              <div>
-                <span className="title">24h Volume:</span>
-                <span className="result">${coin.volume24}</span>
-              </div>
-              <div>
-                <span className="title">Change 1h:</span>
-                <span
-                  className={`result ${
-                    coin.percent_change_1h > 0 ? "green" : "red"
-                  }`}
-                >
-                  {coin.percent_change_1h}%
-                </span>
-              </div>
-              <div>
-                <span className="title">Change 24h:</span>
-                <span
-                  className={`result ${
-                    coin.percent_change_24h > 0 ? "green" : "red"
-                  }`}
-                >
-                  {coin.percent_change_24h}%
-                </span>
-              </div>
-              <div>
-                <span className="title">Change 7 days:</span>
-                <span
-                  className={`result ${
-                    coin.percent_change_7d > 0 ? "green" : "red"
-                  }`}
-                >
-                  {coin.percent_change_7d}%
-                </span>
-              </div>
-            </ul>
-          </div>
-
-          <div className="similar-coins">
-            <h3>Similar Coins</h3>
-            <ul className={`${loadingCoins ? "loading" : ""}`}>
-              <CustomScrollbar>
-                {similarCoins.map((c) => (
-                  <li key={c.id}>
-                    <span className="coin-name">
-                      {c.name} ({c.symbol})
-                    </span>
-                    <span className="coin-price">${c.price_usd}</span>
-                  </li>
-                ))}
-              </CustomScrollbar>
-            </ul>
-          </div>
-
-          <EducationalContent />
-
-          {newsActive && (
-            <div className="news-container">
-              <h3>Latest News</h3>
-              <ul className={`${loadingNews ? "loading" : ""}`}>
-                {news.length > 0 ? (
-                  news.map((article, index) => (
-                    <li key={index}>
-                      <a
-                        className="cp-link"
-                        href={article.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {article.title}
-                      </a>
-                      <p className="cp-text">{article.description}</p>
-                    </li>
-                  ))
-                ) : (
-                  <p className="cp-text">No news available</p>
-                )}
+        <>
+          <div className="coin-container">
+            <div className="coin-details">
+              <h2>{coin.name}</h2>
+              <ul className={`${!selectedCoinLoaded ? "loading" : ""}`}>
+                <div>
+                  <span className="title">Symbol:</span>
+                  <span className="result"> {coin.symbol}</span>
+                </div>
+                <div>
+                  <span className="title">Price:</span>
+                  <span className="result">${coin.price_usd}</span>
+                </div>
+                <div>
+                  <span className="title">Market Cap:</span>
+                  <span className="result">${coin.market_cap_usd}</span>
+                </div>
+                <div>
+                  <span className="title">24h Volume:</span>
+                  <span className="result">${coin.volume24}</span>
+                </div>
+                <div>
+                  <span className="title">Change 1h:</span>
+                  <span
+                    className={`result ${
+                      coin.percent_change_1h > 0 ? "green" : "red"
+                    }`}
+                  >
+                    {coin.percent_change_1h}%
+                  </span>
+                </div>
+                <div>
+                  <span className="title">Change 24h:</span>
+                  <span
+                    className={`result ${
+                      coin.percent_change_24h > 0 ? "green" : "red"
+                    }`}
+                  >
+                    {coin.percent_change_24h}%
+                  </span>
+                </div>
+                <div>
+                  <span className="title">Change 7 days:</span>
+                  <span
+                    className={`result ${
+                      coin.percent_change_7d > 0 ? "green" : "red"
+                    }`}
+                  >
+                    {coin.percent_change_7d}%
+                  </span>
+                </div>
               </ul>
             </div>
-          )}
-        </div>
+
+            <div className="similar-coins">
+              <h3>Similar Coins</h3>
+              <ul className={`${loadingCoins ? "loading" : ""}`}>
+                <CustomScrollbar>
+                  {similarCoins.map((c) => (
+                    <li key={c.id}>
+                      <span className="coin-name">
+                        {c.name} ({c.symbol})
+                      </span>
+                      <span className="coin-price">${c.price_usd}</span>
+                    </li>
+                  ))}
+                </CustomScrollbar>
+              </ul>
+            </div>
+
+            {newsActive && (
+              <div className="news-container">
+                <h3>Latest News</h3>
+                <ul className={`${loadingNews ? "loading" : ""}`}>
+                  <CustomScrollbar>
+                    {news.length > 0 ? (
+                      news.map((article, index) => (
+                        <li key={index}>
+                          <a
+                            className="cp-link"
+                            href={article.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {article.title}
+                          </a>
+                          <p className="cp-text">{article.description}</p>
+                        </li>
+                      ))
+                    ) : (
+                      <p className="cp-text">No news available</p>
+                    )}
+                  </CustomScrollbar>
+                </ul>
+              </div>
+            )}
+          </div>
+          <EducationalContent />
+        </>
       ) : (
         <div className="title">No coin selected</div>
       )}

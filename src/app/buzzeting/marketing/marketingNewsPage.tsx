@@ -1,64 +1,52 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-interface Api {
-  API: string;
-  Description: string;
-  Auth: string;
-  HTTPS: boolean;
-  Cors: string;
-  Link: string;
-  Category: string;
+interface Photo {
+  id: number;
+  title: string;
+  url: string;
+  thumbnailUrl: string;
 }
 
 const MarketingNewsPage: React.FC = () => {
-  const [apis, setApis] = useState<Api[]>([]);
+  const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMarketingData = async () => {
+    const fetchPhotos = async () => {
       try {
-        console.log("Fetching marketing data from API...");
-        const response = await fetch(
-          "https://api.publicapis.org/entries?category=Marketing&https=true"
-        );
-        if (!response.ok) {
-          throw new Error(`Error fetching data: ${response.statusText}`);
-        }
-        const data = await response.json();
-        console.log("Response received:", data);
-        setApis(data.entries);
-        setLoading(false);
+        const response = await fetch("/api/jsonPlaceholder");
+        const data: Photo[] = await response.json();
+        setPhotos(data);
       } catch (err) {
-        setError("Failed to fetch marketing data");
+        setError("Failed to load images");
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchMarketingData();
+    fetchPhotos();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div>
-      <h1>Marketing APIs</h1>
-      <ul>
-        {apis.map((api, index) => (
-          <li key={index}>
-            <h2>{api.API}</h2>
-            <p>{api.Description}</p>
-            <p>Auth: {api.Auth}</p>
-            <p>HTTPS: {api.HTTPS ? "Yes" : "No"}</p>
-            <p>Cors: {api.Cors}</p>
-            <a href={api.Link} target="_blank" rel="noopener noreferrer">
-              Learn More
-            </a>
-          </li>
+      <h1>Photo Gallery</h1>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
+        {photos.slice(0, 10).map((photo) => (
+          <div key={photo.id} style={{ margin: "10px" }}>
+            <img
+              src={photo.thumbnailUrl}
+              alt={photo.title}
+              style={{ width: "150px", height: "150px", objectFit: "cover" }}
+            />
+            <p>{photo.title}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
