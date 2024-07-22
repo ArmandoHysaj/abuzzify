@@ -1,4 +1,4 @@
-import MarketingNewsPage from "../buzzeting/marketing/marketingNewsPage";
+// import MarketingNewsPage from "../buzzeting/marketing/marketingNewsPage";
 
 export default function Marketing() {
   return (
@@ -8,7 +8,7 @@ export default function Marketing() {
           <h1>Marketing Page</h1>
         </div>
       </div>
-      <MarketingNewsPage></MarketingNewsPage>
+      {/* <MarketingNewsPage></MarketingNewsPage> */}
     </>
   );
 }
