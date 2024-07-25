@@ -53,7 +53,25 @@
         background-color: grey;
       }
     }
-  
+  .user-account {
+    position: relative;
+    &:hover{
+      &:after{
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        background: rgba(34, 51, 65, .08);
+        border-radius: 50%;
+        content: "";
+        display: block;
+        height: 100%;
+        padding: 4px;
+        width: 100%;
+      }
+    }
+  }
     .hdl-4{
       &.left-space{
         margin-left: auto;
@@ -64,6 +82,7 @@
       display: flex;
       gap: 15px;
       width: 100%;
+      align-items: center;
     }
   }
   

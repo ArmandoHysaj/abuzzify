@@ -27,7 +27,10 @@
             margin-bottom: 10px;
         }
     }
-
+.coin-name {
+    display: flex;
+    justify-content: space-between;
+}
     .similar-coins{
         li {
             justify-content: space-between;
@@ -43,6 +46,8 @@
         }
     }
     .educational-content{
+        width: 50%;
+        margin: 200px 0;
         ul > p{
             margin-bottom: 15px;
         }

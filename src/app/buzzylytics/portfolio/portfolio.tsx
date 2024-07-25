@@ -17,24 +17,25 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   const [coin, setCoin] = useState(selectedCoin);
   const [selectedCoinLoaded, setSelectedCoinLoaded] = useState(false);
 
+  const [initialInvestment, setInitialInvestment] = useState<number>(0);
+  const [initialPrice, setInitialPrice] = useState<number>(0);
+  const [numberOfCoins, setNumberOfCoins] = useState<number>(0);
+  const [profitLoss, setProfitLoss] = useState<number>(0);
+  const [percentageChange, setPercentageChange] = useState<number>(0);
+
   useEffect(() => {
-    const savedState = JSON.parse(
-      localStorage.getItem("portfolioState") || "{}"
-    );
+    const savedState = JSON.parse(localStorage.getItem("portfolioState") || "{}");
     if (savedState && savedState.selectedCoin) {
       setCoin(savedState.selectedCoin);
       setSimilarCoins(savedState.similarCoins || []);
       setNews(savedState.news || []);
-      setLoadingNews(
-        savedState.loadingNews !== undefined ? savedState.loadingNews : true
-      );
-      setLoadingCoins(
-        savedState.loadingCoins !== undefined ? savedState.loadingCoins : true
-      );
-      setNewsActive(
-        savedState.newsActive !== undefined ? savedState.newsActive : false
-      );
+      setLoadingNews(savedState.loadingNews !== undefined ? savedState.loadingNews : true);
+      setLoadingCoins(savedState.loadingCoins !== undefined ? savedState.loadingCoins : true);
+      setNewsActive(savedState.newsActive !== undefined ? savedState.newsActive : false);
       setSelectedCoinLoaded(true);
+      setInitialInvestment(savedState.initialInvestment || 0);
+      setInitialPrice(savedState.initialPrice || 0);
+      setNumberOfCoins(savedState.numberOfCoins || 0);
     }
   }, []);
 
@@ -54,23 +55,30 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
         loadingCoins,
         newsActive,
         selectedCoin: coin,
+        initialInvestment,
+        initialPrice,
+        numberOfCoins,
       };
       localStorage.setItem("portfolioState", JSON.stringify(stateToSave));
     }
-  }, [similarCoins, news, loadingNews, loadingCoins, newsActive, coin]);
+  }, [similarCoins, news, loadingNews, loadingCoins, newsActive, coin, initialInvestment, initialPrice, numberOfCoins]);
 
   useEffect(() => {
-    if (coin) {
-      fetchSimilarCoins();
-      fetchNews();
-    }
+    if (initialInvestment && initialPrice && coin) {
+      // Calculate the number of coins bought initially
+      const numberOfCoins = initialInvestment / initialPrice;
+      setNumberOfCoins(parseFloat(numberOfCoins.toFixed(6))); // Fixed precision for readability
 
-    const resetBtn = document.querySelector(".reset-results");
-    resetBtn?.addEventListener("click", () => {
-      localStorage.removeItem("portfolioState");
-      setCoin(null);
-    });
-  }, [coin]);
+      // Calculate profit/loss and percentage change
+      const currentPrice = parseFloat(coin.price_usd);
+      const currentValue = numberOfCoins * currentPrice;
+      const profitLoss = currentValue - initialInvestment;
+      const percentageChange = ((currentPrice - initialPrice) / initialPrice) * 100;
+
+      setProfitLoss(parseFloat(profitLoss.toFixed(2)));
+      setPercentageChange(parseFloat(percentageChange.toFixed(2)));
+    }
+  }, [initialInvestment, initialPrice, coin]);
 
   const fetchSimilarCoins = async () => {
     if (!coin) return;
@@ -84,7 +92,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   };
 
   const fetchNews = async () => {
-    console.log(coin);
     if (!coin) return;
     setNewsActive(true);
     try {
@@ -106,7 +113,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
         <>
           <div className="coin-container">
             <div className="coin-details">
-              <h2>{coin.name}</h2>
+              <h3>{coin.name}</h3>
               <ul className={`${!selectedCoinLoaded ? "loading" : ""}`}>
                 <div>
                   <span className="title">Symbol:</span>
@@ -155,6 +162,37 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                   </span>
                 </div>
               </ul>
+            </div>
+
+            <div className="investment-calculator">
+              <h3>Investment Calculator</h3>
+              <div>
+                <label>Initial Amount Invested ($):</label>
+                <input
+                  type="number"
+                  value={initialInvestment}
+                  onChange={(e) => setInitialInvestment(parseFloat(e.target.value))}
+                />
+                <label>Initial Coin Price ($):</label>
+                <input
+                  type="number"
+                  value={initialPrice}
+                  onChange={(e) => setInitialPrice(parseFloat(e.target.value))}
+                />
+                {/* Number of Coins is derived from the initial investment and price */}
+                <div>
+                  <label>Number of Coins Bought:</label>
+                  <input
+                    type="number"
+                    value={numberOfCoins}
+                    readOnly
+                  />
+                </div>
+              </div>
+              <div>
+                <p>Profit/Loss: ${profitLoss}</p>
+                <p>Percentage Change: {percentageChange}%</p>
+              </div>
             </div>
 
             <div className="similar-coins">
