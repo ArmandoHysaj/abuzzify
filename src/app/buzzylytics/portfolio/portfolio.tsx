@@ -1,5 +1,10 @@
+"use client";
+
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Modal from "react-modal";
+import InvestmentCalculator from "../investment/InvestmentCalculator";
 import EducationalContent from "./EducationalContent";
 import "./portfolio.scss";
 import CustomScrollbar from "../../../utils/customScrollbar";
@@ -19,9 +24,8 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
 
   const [initialInvestment, setInitialInvestment] = useState<number>(0);
   const [initialPrice, setInitialPrice] = useState<number>(0);
-  const [numberOfCoins, setNumberOfCoins] = useState<number>(0);
-  const [profitLoss, setProfitLoss] = useState<number>(0);
-  const [percentageChange, setPercentageChange] = useState<number>(0);
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const savedState = JSON.parse(localStorage.getItem("portfolioState") || "{}");
@@ -35,7 +39,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       setSelectedCoinLoaded(true);
       setInitialInvestment(savedState.initialInvestment || 0);
       setInitialPrice(savedState.initialPrice || 0);
-      setNumberOfCoins(savedState.numberOfCoins || 0);
     }
   }, []);
 
@@ -57,28 +60,10 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
         selectedCoin: coin,
         initialInvestment,
         initialPrice,
-        numberOfCoins,
       };
       localStorage.setItem("portfolioState", JSON.stringify(stateToSave));
     }
-  }, [similarCoins, news, loadingNews, loadingCoins, newsActive, coin, initialInvestment, initialPrice, numberOfCoins]);
-
-  useEffect(() => {
-    if (initialInvestment && initialPrice && coin) {
-      // Calculate the number of coins bought initially
-      const numberOfCoins = initialInvestment / initialPrice;
-      setNumberOfCoins(parseFloat(numberOfCoins.toFixed(6))); // Fixed precision for readability
-
-      // Calculate profit/loss and percentage change
-      const currentPrice = parseFloat(coin.price_usd);
-      const currentValue = numberOfCoins * currentPrice;
-      const profitLoss = currentValue - initialInvestment;
-      const percentageChange = ((currentPrice - initialPrice) / initialPrice) * 100;
-
-      setProfitLoss(parseFloat(profitLoss.toFixed(2)));
-      setPercentageChange(parseFloat(percentageChange.toFixed(2)));
-    }
-  }, [initialInvestment, initialPrice, coin]);
+  }, [similarCoins, news, loadingNews, loadingCoins, newsActive, coin, initialInvestment, initialPrice]);
 
   const fetchSimilarCoins = async () => {
     if (!coin) return;
@@ -108,142 +93,132 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   };
 
   return (
-    <div className="portfolio-section container">
-      {coin ? (
-        <>
-          <div className="coin-container">
-            <div className="coin-details">
-              <h3>{coin.name}</h3>
-              <ul className={`${!selectedCoinLoaded ? "loading" : ""}`}>
-                <div>
-                  <span className="title">Symbol:</span>
-                  <span className="result"> {coin.symbol}</span>
+    <>
+      <div className="portfolio-section container">
+        {coin ? (
+          <>
+            <div className="coin-container">
+              <div className="coin-details">
+                <div className="coin-name">
+                  <h3>Coin Name:</h3>
+                  <h3 className="name">{coin.name}</h3>
                 </div>
-                <div>
-                  <span className="title">Price:</span>
-                  <span className="result">${coin.price_usd}</span>
-                </div>
-                <div>
-                  <span className="title">Market Cap:</span>
-                  <span className="result">${coin.market_cap_usd}</span>
-                </div>
-                <div>
-                  <span className="title">24h Volume:</span>
-                  <span className="result">${coin.volume24}</span>
-                </div>
-                <div>
-                  <span className="title">Change 1h:</span>
-                  <span
-                    className={`result ${
-                      coin.percent_change_1h > 0 ? "green" : "red"
-                    }`}
-                  >
-                    {coin.percent_change_1h}%
-                  </span>
-                </div>
-                <div>
-                  <span className="title">Change 24h:</span>
-                  <span
-                    className={`result ${
-                      coin.percent_change_24h > 0 ? "green" : "red"
-                    }`}
-                  >
-                    {coin.percent_change_24h}%
-                  </span>
-                </div>
-                <div>
-                  <span className="title">Change 7 days:</span>
-                  <span
-                    className={`result ${
-                      coin.percent_change_7d > 0 ? "green" : "red"
-                    }`}
-                  >
-                    {coin.percent_change_7d}%
-                  </span>
-                </div>
-              </ul>
-            </div>
-
-            <div className="investment-calculator">
-              <h3>Investment Calculator</h3>
-              <div>
-                <label>Initial Amount Invested ($):</label>
-                <input
-                  type="number"
-                  value={initialInvestment}
-                  onChange={(e) => setInitialInvestment(parseFloat(e.target.value))}
-                />
-                <label>Initial Coin Price ($):</label>
-                <input
-                  type="number"
-                  value={initialPrice}
-                  onChange={(e) => setInitialPrice(parseFloat(e.target.value))}
-                />
-                {/* Number of Coins is derived from the initial investment and price */}
-                <div>
-                  <label>Number of Coins Bought:</label>
-                  <input
-                    type="number"
-                    value={numberOfCoins}
-                    readOnly
-                  />
-                </div>
+                <ul className={`${!selectedCoinLoaded ? "loading" : ""}`}>
+                  <div>
+                    <span className="title">Symbol:</span>
+                    <span className="result"> {coin.symbol}</span>
+                  </div>
+                  <div>
+                    <span className="title">Price:</span>
+                    <span className="result">${coin.price_usd}</span>
+                  </div>
+                  <div>
+                    <span className="title">Market Cap:</span>
+                    <span className="result">${coin.market_cap_usd}</span>
+                  </div>
+                  <div>
+                    <span className="title">24h Volume:</span>
+                    <span className="result">${coin.volume24}</span>
+                  </div>
+                  <div>
+                    <span className="title">Change 1h:</span>
+                    <span
+                      className={`result ${
+                        coin.percent_change_1h > 0 ? "green" : "red"
+                      }`}
+                    >
+                      {coin.percent_change_1h}%
+                    </span>
+                  </div>
+                  <div>
+                    <span className="title">Change 24h:</span>
+                    <span
+                      className={`result ${
+                        coin.percent_change_24h > 0 ? "green" : "red"
+                      }`}
+                    >
+                      {coin.percent_change_24h}%
+                    </span>
+                  </div>
+                  <div>
+                    <span className="title">Change 7 days:</span>
+                    <span
+                      className={`result ${
+                        coin.percent_change_7d > 0 ? "green" : "red"
+                      }`}
+                    >
+                      {coin.percent_change_7d}%
+                    </span>
+                  </div>
+                </ul>
               </div>
-              <div>
-                <p>Profit/Loss: ${profitLoss}</p>
-                <p>Percentage Change: {percentageChange}%</p>
-              </div>
-            </div>
-
-            <div className="similar-coins">
-              <h3>Similar Coins</h3>
-              <ul className={`${loadingCoins ? "loading" : ""}`}>
-                <CustomScrollbar>
-                  {similarCoins.map((c) => (
-                    <li key={c.id}>
-                      <span className="coin-name">
-                        {c.name} ({c.symbol})
-                      </span>
-                      <span className="coin-price">${c.price_usd}</span>
-                    </li>
-                  ))}
-                </CustomScrollbar>
-              </ul>
-            </div>
-
-            {newsActive && (
-              <div className="news-container">
-                <h3>Latest News</h3>
-                <ul className={`${loadingNews ? "loading" : ""}`}>
+              <div className="similar-coins">
+                <h3>Similar Coins</h3>
+                <ul className={`${loadingCoins ? "loading" : ""}`}>
                   <CustomScrollbar>
-                    {news.length > 0 ? (
-                      news.map((article, index) => (
-                        <li key={index}>
-                          <a
-                            className="cp-link"
-                            href={article.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {article.title}
-                          </a>
-                          <p className="cp-text">{article.description}</p>
-                        </li>
-                      ))
-                    ) : (
-                      <p className="cp-text">No news available</p>
-                    )}
+                    {similarCoins.map((c) => (
+                      <li key={c.id}>
+                        <span className="coin-name">
+                          {c.name} ({c.symbol})
+                        </span>
+                        <span className="coin-price">${c.price_usd}</span>
+                      </li>
+                    ))}
                   </CustomScrollbar>
                 </ul>
               </div>
-            )}
-          </div>
-          <EducationalContent />
-        </>
-      ) : (
-        <div className="title">No coin selected</div>
-      )}
-    </div>
+
+              {newsActive && (
+                <div className="news-container">
+                  <h3>Latest News</h3>
+                  <ul className={`${loadingNews ? "loading" : ""}`}>
+                    <CustomScrollbar>
+                      {news.length > 0 ? (
+                        news.map((article, index) => (
+                          <li key={index}>
+                            <a
+                              className="cp-link"
+                              href={article.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {article.title}
+                            </a>
+                            <p className="cp-text">{article.description}</p>
+                          </li>
+                        ))
+                      ) : (
+                        <p className="cp-text">No news available</p>
+                      )}
+                    </CustomScrollbar>
+                  </ul>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="title">No coin selected</div>
+        )}
+      <div className="modal-button default-button" onClick={() => setIsModalOpen(true)}>Open Investment Calculator</div>
+      </div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        contentLabel="Investment Calculator"
+        className="investment-calculator-modal"
+        overlayClassName="investment-calculator-overlay"
+      >
+        <InvestmentCalculator
+          initialInvestment={initialInvestment}
+          setInitialInvestment={setInitialInvestment}
+          initialPrice={initialPrice}
+          setInitialPrice={setInitialPrice}
+          coin={coin}
+        />
+        <div className="modal-button default-button" onClick={() => setIsModalOpen(false)}>Close</div>
+      </Modal>
+      <EducationalContent></EducationalContent>
+    </>
   );
 };
 

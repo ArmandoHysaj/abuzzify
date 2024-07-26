@@ -26,7 +26,16 @@ ul {
   list-style-type: none;
 }
 }
+.default-button {
+  background-color: #e4e2dd;
+&:hover{
+  background-color: #d5d3cd;
 
+}
+&:active {
+  background-color: #bdbbb6;
+}
+}
 .cp-text,
 .cp-link,
 .cp-text-m,

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const EducationalContent: React.FC = () => {
   return (
-    <div className="educational-content">
+    <div className="container educational-content">
       <h3>Educational Content</h3>
       <ul>
         <p>
