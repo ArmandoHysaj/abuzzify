@@ -13,6 +13,10 @@
     outline: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
+
+  .investments-wrapper{
+    padding: 50px 0 10px 0;
+  }
   
   .investment-calculator-overlay {
     position: fixed;
@@ -21,6 +25,15 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.75);
+
+    .modal-button{
+    margin: 30px auto 0;
+    }
+  }
+  .profit-loses{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
   .modal-button {
     border-radius: 5px;
@@ -29,3 +42,44 @@
     display: inline-block;
     margin: 50px auto 0;
   }
+
+  .investment-calculator{
+    width: 50vw;
+  }
+
+  .input-container{
+    position:relative;
+    margin-bottom:25px;
+  }
+  .input-container label{
+    position:absolute;
+    top:0px;
+    left:0px;
+    font-size:16px;
+    color:black;	
+      pointer-event:none;
+    transition: all 0.5s ease-in-out;
+  }
+  .input-container input{ 
+    border:0;
+    border-bottom:1px solid #555;  
+    background:transparent;
+    width:100%;
+    padding:8px 0 5px 0;
+    font-size:16px;
+    color:black;
+  }
+  .input-container input:focus{ 
+   border:none;	
+   outline:none;
+   border-bottom:1px solid #e74c3c;	
+  }
+  
+  .input-container input:focus ~ label,
+  .input-container input:valid ~ label,
+  .input-container input:read-only ~ label{
+    top:-12px;
+    font-size:12px;
+    
+  }
+  

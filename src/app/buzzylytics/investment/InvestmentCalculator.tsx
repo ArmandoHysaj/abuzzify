@@ -41,25 +41,28 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
   return (
     <div className="investment-calculator">
       <h3>Investment Calculator</h3>
-      <div>
-        <label>Initial Amount Invested ($):</label>
+      <div className="investments-wrapper">
+      <div className="input-container">
+
         <input
-          type="number"
           value={initialInvestment}
           onChange={(e) => setInitialInvestment(parseFloat(e.target.value))}
-        />
-        <label>Initial Coin Price ($):</label>
+          />
+          <label>Initial Amount Invested ($):</label>
+      </div>
+      <div className="input-container">
         <input
-          type="number"
           value={initialPrice}
           onChange={(e) => setInitialPrice(parseFloat(e.target.value))}
-        />
-        <div>
+          />
+          <label>Initial Coin Price ($):</label>
+        </div>
+        <div className="input-container">
+          <input value={numberOfCoins} readOnly />
           <label>Number of Coins Bought:</label>
-          <input type="number" value={numberOfCoins} readOnly />
         </div>
       </div>
-      <div>
+      <div className="profit-loses">
         <p>Profit/Loss: ${profitLoss}</p>
         <p>Percentage Change: {percentageChange}%</p>
       </div>
