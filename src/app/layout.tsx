@@ -8,10 +8,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <CustomScrollbar>
+        {/* <CustomScrollbar> */}
           <MainNavigation></MainNavigation>
           <main>{children}</main>
-        </CustomScrollbar>
+        {/* </CustomScrollbar> */}
       </body>
     </html>
   );
