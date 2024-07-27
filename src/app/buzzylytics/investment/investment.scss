@@ -70,6 +70,10 @@
 
   .investment-calculator{
     width: 50vw;
+      .description{
+        font-family: 'Montserrat-SemiBoldItalic';
+        margin-top: 15px;
+      }
   }
 
   .input-container{
@@ -79,7 +83,7 @@
   }
   .input-container label{
     position:absolute;
-    top:0px;
+    top:15px;
     left:0px;
     font-size:16px;
     color:black;	
@@ -87,6 +91,7 @@
     transition: all 0.5s ease-in-out;
   }
   .input-container input{ 
+    width: 50% !important;
     border:0;
     border-bottom:1px solid #555;  
     background:transparent;
@@ -101,9 +106,7 @@
    border-bottom:1px solid #e74c3c;	
   }
   
-  .input-container input:focus ~ label,
-  .input-container input:valid ~ label,
-  .input-container input:read-only ~ label{
+  .input-container input:focus ~ label{
     top:-12px;
     font-size:12px;
     

@@ -146,6 +146,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                 setInitialPrice={setInitialPrice}
                 coin={coin}
                 name={coin.name}
+                price={coin.price_usd}
               />
             ) : (
               <div className="title red">No coin selected</div>

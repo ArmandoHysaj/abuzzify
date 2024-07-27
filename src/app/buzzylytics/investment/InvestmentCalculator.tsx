@@ -10,6 +10,7 @@ interface InvestmentCalculatorProps {
   setInitialPrice: React.Dispatch<React.SetStateAction<number>>;
   coin: any;
   name: string;
+  price: number;
 }
 
 const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
@@ -19,49 +20,95 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
   setInitialPrice,
   coin,
   name,
+  price,
 }) => {
+  const [initialInvestmentInput, setInitialInvestmentInput] = useState<string>(
+    initialInvestment === 0 ? "" : initialInvestment.toString()
+  );
+  const [initialPriceInput, setInitialPriceInput] = useState<string>(
+    initialPrice === 0 ? "" : initialPrice.toString()
+  );
   const [numberOfCoins, setNumberOfCoins] = useState<number>(0);
   const [profitLoss, setProfitLoss] = useState<number>(0);
   const [percentageChange, setPercentageChange] = useState<number>(0);
 
   useEffect(() => {
-    if (initialInvestment && initialPrice && coin) {
-      const numberOfCoins = initialInvestment / initialPrice;
+    const investment = parseFloat(initialInvestmentInput) || 0;
+    const price = parseFloat(initialPriceInput) || 0;
+
+    if (investment > 0 && price > 0 && coin) {
+      const numberOfCoins = investment / price;
       setNumberOfCoins(parseFloat(numberOfCoins.toFixed(6)));
 
       const currentPrice = parseFloat(coin.price_usd);
       const currentValue = numberOfCoins * currentPrice;
-      const profitLoss = currentValue - initialInvestment;
-      const percentageChange =
-        ((currentPrice - initialPrice) / initialPrice) * 100;
+      const profitLoss = currentValue - investment;
+      const percentageChange = ((currentPrice - price) / price) * 100;
 
       setProfitLoss(parseFloat(profitLoss.toFixed(2)));
       setPercentageChange(parseFloat(percentageChange.toFixed(2)));
+    } else {
+      setNumberOfCoins(0);
+      setProfitLoss(0);
+      setPercentageChange(0);
     }
-  }, [initialInvestment, initialPrice, coin]);
+  }, [initialInvestmentInput, initialPriceInput, coin]);
+
+  const handleInitialInvestmentChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setInitialInvestmentInput(value);
+      setInitialInvestment(value === "" ? 0 : parseFloat(value));
+    }
+  };
+
+  const handleInitialPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setInitialPriceInput(value);
+      setInitialPrice(value === "" ? 0 : parseFloat(value));
+    }
+  };
 
   return (
     <div className="investment-calculator">
-      <h3>Investment Calculator</h3>
+      <h3>
+        Crypto Coin Calculator: Calculate Your{" "}
+        <span className="green">Profits</span> and{" "}
+        <span className="red">Losses</span>
+      </h3>
+      <p className="cp-text-m description">
+        Enter your investment amount and the initial coin price at the time of
+        investment. Instantly see your profits or losses based on the current
+        coin price:
+      </p>
       <div className="investments-wrapper">
-        <div className="coin-name">{name}</div>
-        <div className="input-container">
-          <input
-            value={initialInvestment}
-            onChange={(e) => setInitialInvestment(parseFloat(e.target.value))}
-          />
-          <label>Initial Amount Invested ($):</label>
+        <div className="coin-name cp-text cp-text--semi-bold">
+          {name} <span className="cp-text-s">( current price : {price}$ )</span>
         </div>
         <div className="input-container">
           <input
-            value={initialPrice}
-            onChange={(e) => setInitialPrice(parseFloat(e.target.value))}
+            type="text"
+            value={initialInvestmentInput}
+            onChange={handleInitialInvestmentChange}
+            placeholder="Initial Amount Invested ($):"
           />
-          <label>Initial Coin Price ($):</label>
+          {/* <label>Initial Amount Invested ($):</label> */}
+        </div>
+        <div className="input-container">
+          <input
+            type="text"
+            value={initialPriceInput}
+            onChange={handleInitialPriceChange}
+            placeholder="Initial Coin Price ($):"
+          />
+          {/* <label>Initial Coin Price ($):</label> */}
         </div>
         <div className="input-container">
           <input value={numberOfCoins} readOnly />
-          <label>Number of Coins Bought:</label>
+          {/* <label>Number of Coins Bought:</label> */}
         </div>
       </div>
       <div className="profit-loses">
