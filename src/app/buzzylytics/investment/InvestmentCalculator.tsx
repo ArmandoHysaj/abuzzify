@@ -1,6 +1,5 @@
 "use client";
 
-
 import React, { useState, useEffect } from "react";
 import "./investment.scss";
 
@@ -10,6 +9,7 @@ interface InvestmentCalculatorProps {
   initialPrice: number;
   setInitialPrice: React.Dispatch<React.SetStateAction<number>>;
   coin: any;
+  name: string;
 }
 
 const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
@@ -18,6 +18,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
   initialPrice,
   setInitialPrice,
   coin,
+  name,
 }) => {
   const [numberOfCoins, setNumberOfCoins] = useState<number>(0);
   const [profitLoss, setProfitLoss] = useState<number>(0);
@@ -31,7 +32,8 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
       const currentPrice = parseFloat(coin.price_usd);
       const currentValue = numberOfCoins * currentPrice;
       const profitLoss = currentValue - initialInvestment;
-      const percentageChange = ((currentPrice - initialPrice) / initialPrice) * 100;
+      const percentageChange =
+        ((currentPrice - initialPrice) / initialPrice) * 100;
 
       setProfitLoss(parseFloat(profitLoss.toFixed(2)));
       setPercentageChange(parseFloat(percentageChange.toFixed(2)));
@@ -42,18 +44,18 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     <div className="investment-calculator">
       <h3>Investment Calculator</h3>
       <div className="investments-wrapper">
-      <div className="input-container">
-
-        <input
-          value={initialInvestment}
-          onChange={(e) => setInitialInvestment(parseFloat(e.target.value))}
+        <div className="coin-name">{name}</div>
+        <div className="input-container">
+          <input
+            value={initialInvestment}
+            onChange={(e) => setInitialInvestment(parseFloat(e.target.value))}
           />
           <label>Initial Amount Invested ($):</label>
-      </div>
-      <div className="input-container">
-        <input
-          value={initialPrice}
-          onChange={(e) => setInitialPrice(parseFloat(e.target.value))}
+        </div>
+        <div className="input-container">
+          <input
+            value={initialPrice}
+            onChange={(e) => setInitialPrice(parseFloat(e.target.value))}
           />
           <label>Initial Coin Price ($):</label>
         </div>

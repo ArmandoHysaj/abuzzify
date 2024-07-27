@@ -1,6 +1,5 @@
 "use client";
 
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Modal from "react-modal";
@@ -8,6 +7,7 @@ import InvestmentCalculator from "../investment/InvestmentCalculator";
 import EducationalContent from "./EducationalContent";
 import "./portfolio.scss";
 import CustomScrollbar from "../../../utils/customScrollbar";
+import SearchBar from "../search/search";
 
 interface PortfolioProps {
   selectedCoin: any;
@@ -28,14 +28,22 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    const savedState = JSON.parse(localStorage.getItem("portfolioState") || "{}");
+    const savedState = JSON.parse(
+      localStorage.getItem("portfolioState") || "{}"
+    );
     if (savedState && savedState.selectedCoin) {
       setCoin(savedState.selectedCoin);
       setSimilarCoins(savedState.similarCoins || []);
       setNews(savedState.news || []);
-      setLoadingNews(savedState.loadingNews !== undefined ? savedState.loadingNews : true);
-      setLoadingCoins(savedState.loadingCoins !== undefined ? savedState.loadingCoins : true);
-      setNewsActive(savedState.newsActive !== undefined ? savedState.newsActive : false);
+      setLoadingNews(
+        savedState.loadingNews !== undefined ? savedState.loadingNews : true
+      );
+      setLoadingCoins(
+        savedState.loadingCoins !== undefined ? savedState.loadingCoins : true
+      );
+      setNewsActive(
+        savedState.newsActive !== undefined ? savedState.newsActive : false
+      );
       setSelectedCoinLoaded(true);
       setInitialInvestment(savedState.initialInvestment || 0);
       setInitialPrice(savedState.initialPrice || 0);
@@ -63,7 +71,28 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       };
       localStorage.setItem("portfolioState", JSON.stringify(stateToSave));
     }
-  }, [similarCoins, news, loadingNews, loadingCoins, newsActive, coin, initialInvestment, initialPrice]);
+  }, [
+    similarCoins,
+    news,
+    loadingNews,
+    loadingCoins,
+    newsActive,
+    coin,
+    initialInvestment,
+    initialPrice,
+  ]);
+
+  useEffect(() => {
+    if (coin) {
+      fetchSimilarCoins();
+      fetchNews();
+      const resetBtn = document.querySelector(".reset-results");
+      resetBtn?.addEventListener("click", () => {
+        localStorage.removeItem("portfolioState");
+        setCoin(null);
+      });
+    }
+  }, [coin]);
 
   const fetchSimilarCoins = async () => {
     if (!coin) return;
@@ -95,6 +124,41 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   return (
     <>
       <div className="portfolio-section container">
+        <div
+          className="modal-button default-button"
+          onClick={() => setIsModalOpen(true)}
+        >
+          Open Investment Calculator
+        </div>
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={() => setIsModalOpen(false)}
+          contentLabel="Investment Calculator"
+          className="investment-calculator-modal"
+          overlayClassName="investment-calculator-overlay"
+        >
+          <div className="investment-modal">
+            {coin ? (
+              <InvestmentCalculator
+                initialInvestment={initialInvestment}
+                setInitialInvestment={setInitialInvestment}
+                initialPrice={initialPrice}
+                setInitialPrice={setInitialPrice}
+                coin={coin}
+                name={coin.name}
+              />
+            ) : (
+              <div className="title red">No coin selected</div>
+            )}
+            <SearchBar setSelectedCoin={setCoin} />
+          </div>
+          <div
+            className="modal-button default-button"
+            onClick={() => setIsModalOpen(false)}
+          >
+            Close
+          </div>
+        </Modal>
         {coin ? (
           <>
             <div className="coin-container">
@@ -197,26 +261,9 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
             </div>
           </>
         ) : (
-          <div className="title">No coin selected</div>
+          <div className="title red">No coin selected</div>
         )}
-      <div className="modal-button default-button" onClick={() => setIsModalOpen(true)}>Open Investment Calculator</div>
       </div>
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
-        contentLabel="Investment Calculator"
-        className="investment-calculator-modal"
-        overlayClassName="investment-calculator-overlay"
-      >
-        <InvestmentCalculator
-          initialInvestment={initialInvestment}
-          setInitialInvestment={setInitialInvestment}
-          initialPrice={initialPrice}
-          setInitialPrice={setInitialPrice}
-          coin={coin}
-        />
-        <div className="modal-button default-button" onClick={() => setIsModalOpen(false)}>Close</div>
-      </Modal>
       <EducationalContent></EducationalContent>
     </>
   );

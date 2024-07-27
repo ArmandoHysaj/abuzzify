@@ -1,9 +1,27 @@
 /* portfolio.scss */
+.investment-modal{
+  display: flex;
+  justify-content: space-between;
+  .search-bar{
+    min-width: 187px;
+    display: flex;
+    align-items: start;
+    justify-content: right;
+    [data-simplebar]{
+      left: 0;
+      top: 45px;
+    }
+  }
+  .simplebar-content .coin {
+    cursor: pointer;
+  }
+}
 .investment-calculator-modal {
     position: absolute;
     top: 50%;
     left: 50%;
     right: auto;
+    min-width: 500px;
     bottom: auto;
     margin-right: -50%;
     transform: translate(-50%, -50%);
@@ -15,7 +33,14 @@
   }
 
   .investments-wrapper{
-    padding: 50px 0 10px 0;
+    padding: 20px 0 10px 0;
+
+    .coin-name{
+      color: #a70532;
+    }
+    .title.red{
+      margin-top: 7px;
+    }
   }
   
   .investment-calculator-overlay {
@@ -40,7 +65,7 @@
     padding: 20px;
     cursor: pointer;
     display: inline-block;
-    margin: 50px auto 0;
+    margin: 0 auto 50px;
   }
 
   .investment-calculator{
@@ -50,6 +75,7 @@
   .input-container{
     position:relative;
     margin-bottom:25px;
+    margin-top: 20px;
   }
   .input-container label{
     position:absolute;
