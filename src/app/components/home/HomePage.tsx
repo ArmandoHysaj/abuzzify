@@ -77,7 +77,11 @@ const HomePage = () => {
           )}
         </div>
         {!showAllNews && news.length > initialNewsToShow && (
-          <button onClick={() => setShowAllNews(true)}>Load More News</button>
+          <div className="load-more-btn">
+            <div className="load-more" onClick={() => setShowAllNews(true)}>
+              Load More News
+            </div>
+          </div>
         )}
       </div>
 
@@ -104,7 +108,11 @@ const HomePage = () => {
           ))}
         </div>
         {!showAllCoins && trendingCoins.length > initialCoinsToShow && (
-          <button onClick={() => setShowAllCoins(true)}>Load More Coins</button>
+          <div className="load-more-btn">
+            <div className="load-more" onClick={() => setShowAllCoins(true)}>
+              Load More Coins
+            </div>
+          </div>
         )}
       </div>
 

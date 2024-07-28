@@ -36,6 +36,21 @@ ul {
   background-color: #bdbbb6;
 }
 }
+.load-more-btn{
+  text-align: center;
+}
+.load-more{
+margin-top: 20px;
+    display: inline-block;
+    padding: 15px;
+    cursor: pointer;
+    border: 1px solid #bcc3c6;
+    border-radius: 10px;
+    &:hover{
+      background-color: #f9f9f9;
+    }
+}
+
 .cp-text,
 .cp-link,
 .cp-text-m,
