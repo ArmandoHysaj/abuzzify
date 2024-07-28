@@ -66,7 +66,7 @@ const HomePage = () => {
         <h2>Latest News</h2>
         <div className="news-articles">
           {(showAllNews ? news : news.slice(0, initialNewsToShow)).map(
-            (article) => (
+            (article: any) => (
               <div key={article.url} className="news-article">
                 <a href={article.url} target="_blank" rel="noopener noreferrer">
                   <h3>{article.title}</h3>
@@ -88,7 +88,7 @@ const HomePage = () => {
           {(showAllCoins
             ? trendingCoins
             : trendingCoins.slice(0, initialCoinsToShow)
-          ).map((coin) => (
+          ).map((coin: any) => (
             <div key={coin.id} className="coin">
               <h3>{coin.name}</h3>
               <p>{coin.symbol}</p>
