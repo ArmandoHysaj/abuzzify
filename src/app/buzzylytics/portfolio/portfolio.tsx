@@ -10,7 +10,7 @@ import CustomScrollbar from "../../../utils/customScrollbar";
 import SearchBar from "../search/search";
 
 interface PortfolioProps {
-  selectedCoin: any;
+  selectedCoin?: any;
 }
 
 const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
@@ -26,6 +26,21 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   const [initialPrice, setInitialPrice] = useState<number>(0);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [coinId, setCoinId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const coin = params.get("coin");
+      setCoinId(coin);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (coinId) {
+      fetchCoinData(coinId);
+    }
+  }, [coinId]);
 
   useEffect(() => {
     const savedState = JSON.parse(
@@ -90,9 +105,27 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       resetBtn?.addEventListener("click", () => {
         localStorage.removeItem("portfolioState");
         setCoin(null);
+        setCoinId(null);
+        if (typeof window !== "undefined") {
+          const url = new URL(window.location.href);
+          url.searchParams.delete("coin");
+          window.history.replaceState({}, document.title, url.toString());
+        }
       });
     }
   }, [coin]);
+
+  const fetchCoinData = async (coinId: string) => {
+    try {
+      const response = await axios.get(
+        `https://api.coinlore.net/api/ticker/?id=${coinId}`
+      );
+      setCoin(response.data[0]);
+      setSelectedCoinLoaded(true);
+    } catch (error) {
+      console.error("Error fetching coin data", error);
+    }
+  };
 
   const fetchSimilarCoins = async () => {
     if (!coin) return;
@@ -268,7 +301,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
           <div className="title red">No coin selected</div>
         )}
       </div>
-      <EducationalContent></EducationalContent>
+      {/* <EducationalContent></EducationalContent> */}
     </>
   );
 };

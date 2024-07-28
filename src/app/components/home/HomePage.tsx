@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./home-page.scss";
+import Link from "next/link";
 
 const HomePage = () => {
   const [news, setNews] = useState([]);
   const [trendingCoins, setTrendingCoins] = useState([]);
+  const [showAllNews, setShowAllNews] = useState(false);
+  const [showAllCoins, setShowAllCoins] = useState(false);
   const [testimonials, setTestimonials] = useState([
     {
       id: 1,
@@ -20,9 +23,9 @@ const HomePage = () => {
   ]);
 
   useEffect(() => {
-    const fetchNews = async (coinName: any) => {
+    const fetchNews = async () => {
       try {
-        const response = await axios.get(`/api/fetchNews?coinName=${coinName}`);
+        const response = await axios.get(`/api/fetchNews?coinName=bitcoin`);
         setNews(response.data.articles);
       } catch (error) {
         console.error("Error fetching news:", error);
@@ -31,16 +34,21 @@ const HomePage = () => {
 
     const fetchTrendingCoins = async () => {
       try {
-        const response = await axios.get("/api/fetchTrendingCoins");
-        setTrendingCoins(response.data.coins);
+        const response = await axios.get(
+          "https://api.coinlore.net/api/tickers/"
+        );
+        setTrendingCoins(response.data.data); // Assuming the data is in the 'data' key
       } catch (error) {
         console.error("Error fetching trending coins:", error);
       }
     };
 
-    fetchNews("bitcoin"); // Example coinName, you can change it as needed
+    fetchNews();
     fetchTrendingCoins();
   }, []);
+
+  const initialNewsToShow = 5;
+  const initialCoinsToShow = 5;
 
   return (
     <div>
@@ -57,26 +65,34 @@ const HomePage = () => {
       <div className="news-feed">
         <h2>Latest News</h2>
         <div className="news-articles">
-          {news.map((article: any) => (
-            <div key={article.url} className="news-article">
-              <a href={article.url} target="_blank" rel="noopener noreferrer">
-                <h3>{article.title}</h3>
-                <p>{article.description}</p>
-              </a>
-            </div>
-          ))}
+          {(showAllNews ? news : news.slice(0, initialNewsToShow)).map(
+            (article) => (
+              <div key={article.url} className="news-article">
+                <a href={article.url} target="_blank" rel="noopener noreferrer">
+                  <h3>{article.title}</h3>
+                  <p>{article.description}</p>
+                </a>
+              </div>
+            )
+          )}
         </div>
+        {!showAllNews && news.length > initialNewsToShow && (
+          <button onClick={() => setShowAllNews(true)}>Load More News</button>
+        )}
       </div>
 
       {/* Trending Coins */}
       <div className="trending-coins">
         <h2>Trending Coins</h2>
         <div className="coin-list">
-          {trendingCoins.map((coin: any) => (
+          {(showAllCoins
+            ? trendingCoins
+            : trendingCoins.slice(0, initialCoinsToShow)
+          ).map((coin) => (
             <div key={coin.id} className="coin">
               <h3>{coin.name}</h3>
               <p>{coin.symbol}</p>
-              <p>{coin.current_price} USD</p>
+              <p>{coin.price_usd} USD</p>
               <button
                 onClick={() =>
                   (window.location.href = `/buzzylytics?coin=${coin.id}`)
@@ -87,6 +103,9 @@ const HomePage = () => {
             </div>
           ))}
         </div>
+        {!showAllCoins && trendingCoins.length > initialCoinsToShow && (
+          <button onClick={() => setShowAllCoins(true)}>Load More Coins</button>
+        )}
       </div>
 
       {/* Featured Tools */}
@@ -106,12 +125,24 @@ const HomePage = () => {
         <h2>Educational Content</h2>
         <div className="articles">
           <div className="article">
-            <h3>Understanding Cryptocurrencies</h3>
-            <p>Learn the basics of cryptocurrencies and how they work.</p>
+            <h3>Understanding Blockchain Technology</h3>
+            <p>
+              Blockchain is a decentralized technology that underpins
+              cryptocurrencies like Bitcoin. Learn more about its applications
+              and potential impact on various industries.
+            </p>
+            <Link href="buzzylytics/articles/blockchain-technology">
+              Read more
+            </Link>
           </div>
           <div className="article">
-            <h3>Blockchain Technology</h3>
-            <p>Explore the technology behind cryptocurrencies.</p>
+            <h3>Introduction to Cryptocurrency Trading</h3>
+            <p>
+              New to cryptocurrency trading? Explore our beginner&apos;s guide
+              to trading strategies, market analysis, and essential tips for
+              successful trading.
+            </p>
+            <Link href="buzzylytics/articles/crypto-trading">Read more</Link>
           </div>
           <div className="article">
             <h3>Investment Tips</h3>
