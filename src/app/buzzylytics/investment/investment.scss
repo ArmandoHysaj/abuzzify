@@ -15,6 +15,32 @@
   .simplebar-content .coin {
     cursor: pointer;
   }
+  .save-button{
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    cursor: pointer;
+    padding: 20px;
+    font-family:  "Montserrat-SemiBold";
+    color: #fff;
+    background-color: #25c077;
+    border-radius: 5px;
+    &:hover {
+      animation: pulse 1s infinite;
+      transition: .3s;
+    }
+  }
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    70% {
+      transform: scale(.9);
+    }
+      100% {
+      transform: scale(1);
+    }
+  }
 }
 .investment-calculator-modal {
     position: absolute;
@@ -40,6 +66,12 @@
     }
     .title.red{
       margin-top: 7px;
+    }
+    .coin-number-amount{
+      font-family: 'Montserrat-Italic';
+      margin-bottom: 10px;
+      display: block;
+
     }
   }
   

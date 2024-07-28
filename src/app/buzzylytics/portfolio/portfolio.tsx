@@ -139,15 +139,18 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
         >
           <div className="investment-modal">
             {coin ? (
-              <InvestmentCalculator
-                initialInvestment={initialInvestment}
-                setInitialInvestment={setInitialInvestment}
-                initialPrice={initialPrice}
-                setInitialPrice={setInitialPrice}
-                coin={coin}
-                name={coin.name}
-                price={coin.price_usd}
-              />
+              <>
+                <InvestmentCalculator
+                  initialInvestment={initialInvestment}
+                  setInitialInvestment={setInitialInvestment}
+                  initialPrice={initialPrice}
+                  setInitialPrice={setInitialPrice}
+                  coin={coin}
+                  name={coin.name}
+                  price={coin.price_usd}
+                />
+                <div className="save-button">Save Coin</div>
+              </>
             ) : (
               <div className="title red">No coin selected</div>
             )}

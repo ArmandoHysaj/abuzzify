@@ -86,7 +86,10 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
       </p>
       <div className="investments-wrapper">
         <div className="coin-name cp-text cp-text--semi-bold">
-          {name} <span className="cp-text-s">( current price : {price}$ )</span>
+          {name}{" "}
+          <span className="cp-text-s">
+            ( current price : {<span className="cp-text-bold">{price}</span>}$ )
+          </span>
         </div>
         <div className="input-container">
           <input
@@ -106,10 +109,9 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
           />
           {/* <label>Initial Coin Price ($):</label> */}
         </div>
-        <div className="input-container">
-          <input value={numberOfCoins} readOnly />
-          {/* <label>Number of Coins Bought:</label> */}
-        </div>
+        <span className="coin-number-amount cp-text-m">
+          You have {numberOfCoins} {name}
+        </span>
       </div>
       <div className="profit-loses">
         <p>Profit/Loss: ${profitLoss}</p>
