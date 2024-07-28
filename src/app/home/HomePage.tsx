@@ -20,7 +20,7 @@ const HomePage = () => {
   ]);
 
   useEffect(() => {
-    const fetchNews = async (coinName) => {
+    const fetchNews = async (coinName: any) => {
       try {
         const response = await axios.get(`/api/fetchNews?coinName=${coinName}`);
         setNews(response.data.articles);
@@ -47,7 +47,7 @@ const HomePage = () => {
       {/* Hero Section */}
       <div className="hero">
         <h1>Welcome to Abuzzify</h1>
-        <p>Your Ultimate Crypto Analytics Hub</p>
+        <h3>Your Ultimate Crypto Analytics Hub</h3>
         <button onClick={() => (window.location.href = "/buzzylytics")}>
           Get Started
         </button>
@@ -57,7 +57,7 @@ const HomePage = () => {
       <div className="news-feed">
         <h2>Latest News</h2>
         <div className="news-articles">
-          {news.map((article) => (
+          {news.map((article: any) => (
             <div key={article.url} className="news-article">
               <a href={article.url} target="_blank" rel="noopener noreferrer">
                 <h3>{article.title}</h3>
@@ -72,7 +72,7 @@ const HomePage = () => {
       <div className="trending-coins">
         <h2>Trending Coins</h2>
         <div className="coin-list">
-          {trendingCoins.map((coin) => (
+          {trendingCoins.map((coin: any) => (
             <div key={coin.id} className="coin">
               <h3>{coin.name}</h3>
               <p>{coin.symbol}</p>
@@ -125,7 +125,7 @@ const HomePage = () => {
         <h2>User Testimonials</h2>
         {testimonials.map((testimonial) => (
           <div key={testimonial.id} className="testimonial">
-            <p>"{testimonial.feedback}"</p>
+            <p>&quot;{testimonial.feedback}&quot;</p>
             <p>- {testimonial.name}</p>
           </div>
         ))}
