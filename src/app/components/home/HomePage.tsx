@@ -160,8 +160,8 @@ const HomePage = () => {
           <div className="article">
             <h3>Introduction to Cryptocurrency Trading</h3>
             <p>
-              New to cryptocurrency trading? Explore our beginner's guide to
-              trading strategies, market analysis, and essential tips for
+              New to cryptocurrency trading? Explore our beginner&apos;s guide
+              to trading strategies, market analysis, and essential tips for
               successful trading.
             </p>
             <Link href="buzzylytics/articles/crypto-trading">Read more</Link>
@@ -179,7 +179,7 @@ const HomePage = () => {
         <div className="testimonials-container">
           {testimonials.map((testimonial) => (
             <div key={testimonial.id} className="testimonial">
-              <p>"{testimonial.feedback}"</p>
+              <p>&quot;{testimonial.feedback}&quot;</p>
               <p>- {testimonial.name}</p>
             </div>
           ))}
