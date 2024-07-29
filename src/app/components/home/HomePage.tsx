@@ -9,15 +9,17 @@ const HomePage = () => {
   const [trendingCoins, setTrendingCoins] = useState([]);
   const [showAllNews, setShowAllNews] = useState(false);
   const [showAllCoins, setShowAllCoins] = useState(false);
+  const [isNewsLoading, setIsNewsLoading] = useState(true);
+  const [isCoinsLoading, setIsCoinsLoading] = useState(true);
   const [testimonials, setTestimonials] = useState([
     {
       id: 1,
-      name: "John Doe",
+      name: "Alexander Moore",
       feedback: "Abuzzify helped me track my investments efficiently.",
     },
     {
       id: 2,
-      name: "Jane Smith",
+      name: "Ethan Jackson",
       feedback: "The profit/loss calculator is a game changer!",
     },
   ]);
@@ -29,6 +31,8 @@ const HomePage = () => {
         setNews(response.data.articles);
       } catch (error) {
         console.error("Error fetching news:", error);
+      } finally {
+        setIsNewsLoading(false);
       }
     };
 
@@ -40,6 +44,8 @@ const HomePage = () => {
         setTrendingCoins(response.data.data); // Assuming the data is in the 'data' key
       } catch (error) {
         console.error("Error fetching trending coins:", error);
+      } finally {
+        setIsCoinsLoading(false);
       }
     };
 
@@ -49,6 +55,8 @@ const HomePage = () => {
 
   const initialNewsToShow = 5;
   const initialCoinsToShow = 5;
+
+  const setLoadingHeight = () => `200px`;
 
   return (
     <div>
@@ -64,7 +72,10 @@ const HomePage = () => {
       {/* News Feed */}
       <div className="news-feed">
         <h2>Latest News</h2>
-        <div className="news-articles">
+        <div
+          className={`news-articles ${isNewsLoading ? "loading" : ""}`}
+          style={{ minHeight: isNewsLoading ? setLoadingHeight() : "auto" }}
+        >
           {(showAllNews ? news : news.slice(0, initialNewsToShow)).map(
             (article: any) => (
               <div key={article.url} className="news-article">
@@ -79,7 +90,7 @@ const HomePage = () => {
         {!showAllNews && news.length > initialNewsToShow && (
           <div className="load-more-btn">
             <div className="load-more" onClick={() => setShowAllNews(true)}>
-              Load More News
+              Show All
             </div>
           </div>
         )}
@@ -88,7 +99,10 @@ const HomePage = () => {
       {/* Trending Coins */}
       <div className="trending-coins">
         <h2>Trending Coins</h2>
-        <div className="coin-list">
+        <div
+          className={`coin-list ${isCoinsLoading ? "loading" : ""}`}
+          style={{ minHeight: isCoinsLoading ? setLoadingHeight() : "auto" }}
+        >
           {(showAllCoins
             ? trendingCoins
             : trendingCoins.slice(0, initialCoinsToShow)
@@ -110,7 +124,7 @@ const HomePage = () => {
         {!showAllCoins && trendingCoins.length > initialCoinsToShow && (
           <div className="load-more-btn">
             <div className="load-more" onClick={() => setShowAllCoins(true)}>
-              Load More Coins
+              Show All
             </div>
           </div>
         )}
@@ -146,8 +160,8 @@ const HomePage = () => {
           <div className="article">
             <h3>Introduction to Cryptocurrency Trading</h3>
             <p>
-              New to cryptocurrency trading? Explore our beginner&apos;s guide
-              to trading strategies, market analysis, and essential tips for
+              New to cryptocurrency trading? Explore our beginner's guide to
+              trading strategies, market analysis, and essential tips for
               successful trading.
             </p>
             <Link href="buzzylytics/articles/crypto-trading">Read more</Link>
@@ -162,12 +176,14 @@ const HomePage = () => {
       {/* User Testimonials */}
       <div className="testimonials">
         <h2>User Testimonials</h2>
-        {testimonials.map((testimonial) => (
-          <div key={testimonial.id} className="testimonial">
-            <p>&quot;{testimonial.feedback}&quot;</p>
-            <p>- {testimonial.name}</p>
-          </div>
-        ))}
+        <div className="testimonials-container">
+          {testimonials.map((testimonial) => (
+            <div key={testimonial.id} className="testimonial">
+              <p>"{testimonial.feedback}"</p>
+              <p>- {testimonial.name}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Call to Action */}
@@ -185,7 +201,7 @@ const HomePage = () => {
       <footer>
         <div className="footer-content">
           <div className="quick-links">
-            <h3>Quick Links</h3>
+            <h2>Quick Links</h2>
             <ul>
               <li>
                 <a href="/about">About Us</a>
@@ -202,7 +218,7 @@ const HomePage = () => {
             </ul>
           </div>
           <div className="contact-info">
-            <h3>Contact Us</h3>
+            <h2>Contact Us</h2>
             <p>Email: support@abuzzify.com</p>
             <form>
               <label htmlFor="message">Message</label>
