@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSession, signIn } from "next-auth/react";
 import axios from "axios";
 import Modal from "react-modal";
 import InvestmentCalculator from "../investment/InvestmentCalculator";
@@ -11,9 +12,11 @@ import SearchBar from "../search/search";
 
 interface PortfolioProps {
   selectedCoin?: any;
+  session: any;
 }
 
-const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
+const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin, session }) => {
+  const { data: sessionData, status } = useSession();
   const [similarCoins, setSimilarCoins] = useState<any[]>([]);
   const [news, setNews] = useState<any[]>([]);
   const [loadingNews, setLoadingNews] = useState(true);
@@ -27,6 +30,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [coinId, setCoinId] = useState<string | null>(null);
+  const [savedCoins, setSavedCoins] = useState<any[]>([]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -62,6 +66,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       setSelectedCoinLoaded(true);
       setInitialInvestment(savedState.initialInvestment || 0);
       setInitialPrice(savedState.initialPrice || 0);
+      setSavedCoins(savedState.savedCoins || []);
     }
   }, []);
 
@@ -95,6 +100,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     coin,
     initialInvestment,
     initialPrice,
+    savedCoins,
   ]);
 
   useEffect(() => {
@@ -154,6 +160,26 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     }
   };
 
+  const handleSaveCoin = () => {
+    if (!sessionData?.user) {
+      signIn();
+      return;
+    }
+
+    const newCoin = {
+      ...coin,
+      initialInvestment,
+      initialPrice,
+    };
+    setSavedCoins((prevSavedCoins) => [...prevSavedCoins, newCoin]);
+  };
+
+  const handleSelectSavedCoin = (savedCoin: any) => {
+    setCoin(savedCoin);
+    setInitialInvestment(savedCoin.initialInvestment);
+    setInitialPrice(savedCoin.initialPrice);
+  };
+
   return (
     <>
       <div className="portfolio-section container">
@@ -171,23 +197,74 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
           overlayClassName="investment-calculator-overlay"
         >
           <div className="investment-modal">
-            {coin ? (
-              <>
-                <InvestmentCalculator
-                  initialInvestment={initialInvestment}
-                  setInitialInvestment={setInitialInvestment}
-                  initialPrice={initialPrice}
-                  setInitialPrice={setInitialPrice}
-                  coin={coin}
-                  name={coin.name}
-                  price={coin.price_usd}
-                />
-                <div className="save-button">Save Coin</div>
-              </>
-            ) : (
-              <div className="title red">No coin selected</div>
+            <div className="modal-wrapper">
+              {coin ? (
+                <>
+                  <InvestmentCalculator
+                    initialInvestment={initialInvestment}
+                    setInitialInvestment={setInitialInvestment}
+                    initialPrice={initialPrice}
+                    setInitialPrice={setInitialPrice}
+                    coin={coin}
+                    name={coin.name}
+                    price={coin.price_usd}
+                  />
+                  {sessionData?.user ? (
+                    <div className="save-button" onClick={handleSaveCoin}>
+                      Save Coin
+                    </div>
+                  ) : (
+                    <p>
+                      Please log in to save coins.{" "}
+                      <a
+                        onClick={() => signIn()}
+                        style={{
+                          cursor: "pointer",
+                          color: "blue",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        Login
+                      </a>
+                    </p>
+                  )}
+                </>
+              ) : (
+                <div className="title red">No coin selected</div>
+              )}
+              <SearchBar setSelectedCoin={setCoin} />
+            </div>
+            {sessionData?.user && (
+              <div className="saved-coins">
+                <h3>Saved Coins</h3>
+                {savedCoins.length > 0 ? (
+                  <ul>
+                    {savedCoins.map((savedCoin, index) => (
+                      <li
+                        key={index}
+                        onClick={() => handleSelectSavedCoin(savedCoin)}
+                      >
+                        <span className="saved-coin-name">
+                          {savedCoin.name}
+                        </span>{" "}
+                        - Initial Investment:{" "}
+                        <span className="saved-value">
+                          {" "}
+                          ${savedCoin.initialInvestment}{" "}
+                        </span>{" "}
+                        - Initial Price:{" "}
+                        <span className="saved-value">
+                          {" "}
+                          ${savedCoin.initialPrice}{" "}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div>No coins saved.</div>
+                )}
+              </div>
             )}
-            <SearchBar setSelectedCoin={setCoin} />
           </div>
           <div
             className="modal-button default-button"
@@ -301,7 +378,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
           <div className="title red">No coin selected</div>
         )}
       </div>
-      {/* <EducationalContent></EducationalContent> */}
     </>
   );
 };
