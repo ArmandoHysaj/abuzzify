@@ -1,23 +1,34 @@
-import { getSession } from "next-auth/react";
+"use client";
+
+import { useSession, getSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import Portfolio from "../portfolio/portfolio";
 
-export default function PortfolioPage({ session }: { session: any }) {
-  return <Portfolio session={session} />;
-}
+const PortfolioPage = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
-export async function getServerSideProps(context: any) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/auth/signin",
-        permanent: false,
-      },
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await getSession();
+      if (!session) {
+        router.push("/auth/signin");
+      }
     };
+
+    fetchSession();
+  }, [router]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
   }
 
-  return {
-    props: { session },
-  };
-}
+  if (!session) {
+    return null; // Return null while redirecting
+  }
+
+  return <Portfolio session={session} />;
+};
+
+export default PortfolioPage;
