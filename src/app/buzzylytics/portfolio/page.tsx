@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession, getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Portfolio from "../portfolio/portfolio";
@@ -11,20 +11,18 @@ const PortfolioPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSession = async () => {
-      const session = await getSession();
-      if (!session) {
+    if (typeof window !== "undefined") {
+      // Ensure this runs only on the client-side
+      if (!session && status !== "loading") {
         router.push("/auth/signin");
       } else {
         setLoading(false);
       }
-    };
-
-    fetchSession();
-  }, [router]);
+    }
+  }, [session, status, router]);
 
   if (loading || status === "loading") {
-    return <div>Loading....</div>;
+    return <div>Loading...</div>;
   }
 
   if (!session) {
