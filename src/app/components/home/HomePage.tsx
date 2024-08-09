@@ -191,9 +191,9 @@ const HomePage = () => {
       {/* Call to Action */}
       <div className="call-to-action">
         <h2>Join Us</h2>
-        <button onClick={() => (window.location.href = "/signup")}>
+        {/* <button onClick={() => (window.location.href = "/signup")}>
           Sign Up
-        </button>
+        </button> */}
         <button onClick={() => (window.location.href = "/buzzylytics")}>
           Get Started
         </button>
