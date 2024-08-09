@@ -24,7 +24,7 @@ const PortfolioPage = () => {
   }, [router]);
 
   if (loading || status === "loading") {
-    return <div>Loading...</div>;
+    return <div>Loading....</div>;
   }
 
   if (!session) {
