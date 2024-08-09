@@ -3,23 +3,14 @@ import "./globals.scss";
 import "./fonts.scss";
 import CustomScrollbar from "../utils/customScrollbar";
 import MainNavigation from "./components/MainNavigation/MainNavigation";
-import ClientSessionProvider from "../app/components/ClientSessionProvider";
 
-export default function RootLayout({
-  children,
-  session,
-}: {
-  children: ReactNode;
-  session: any;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
         {/* <CustomScrollbar> */}
-        <MainNavigation></MainNavigation>
-        <ClientSessionProvider session={session}>
-          {children}
-        </ClientSessionProvider>
+          <MainNavigation></MainNavigation>
+          <main>{children}</main>
         {/* </CustomScrollbar> */}
       </body>
     </html>

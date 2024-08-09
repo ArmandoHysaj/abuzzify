@@ -22,22 +22,15 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
   name,
   price,
 }) => {
-  const [initialInvestmentInput, setInitialInvestmentInput] =
-    useState<string>("");
-  const [initialPriceInput, setInitialPriceInput] = useState<string>("");
+  const [initialInvestmentInput, setInitialInvestmentInput] = useState<string>(
+    initialInvestment === 0 ? "" : initialInvestment.toString()
+  );
+  const [initialPriceInput, setInitialPriceInput] = useState<string>(
+    initialPrice === 0 ? "" : initialPrice.toString()
+  );
   const [numberOfCoins, setNumberOfCoins] = useState<number>(0);
   const [profitLoss, setProfitLoss] = useState<number>(0);
   const [percentageChange, setPercentageChange] = useState<number>(0);
-
-  useEffect(() => {
-    setInitialInvestmentInput(
-      initialInvestment === 0 ? "" : initialInvestment.toString()
-    );
-  }, [initialInvestment]);
-
-  useEffect(() => {
-    setInitialPriceInput(initialPrice === 0 ? "" : initialPrice.toString());
-  }, [initialPrice]);
 
   useEffect(() => {
     const investment = parseFloat(initialInvestmentInput) || 0;
@@ -95,7 +88,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
         <div className="coin-name cp-text cp-text--semi-bold">
           {name}{" "}
           <span className="cp-text-s">
-            ( current price : {<span className="cp-text-bold">{price}</span>} )
+            ( current price : {<span className="cp-text-bold">{price}</span>}$ )
           </span>
         </div>
         <div className="input-container">
@@ -105,6 +98,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
             onChange={handleInitialInvestmentChange}
             placeholder="Initial Amount Invested ($):"
           />
+          {/* <label>Initial Amount Invested ($):</label> */}
         </div>
         <div className="input-container">
           <input
@@ -113,6 +107,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
             onChange={handleInitialPriceChange}
             placeholder="Initial Coin Price ($):"
           />
+          {/* <label>Initial Coin Price ($):</label> */}
         </div>
         <span className="coin-number-amount cp-text-m">
           You have {numberOfCoins} {name}
