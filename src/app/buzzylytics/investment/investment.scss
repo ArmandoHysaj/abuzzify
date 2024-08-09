@@ -9,6 +9,11 @@
   }
 
   .saved-coins{
+    ul{
+      display: flex;
+    align-items: center;
+    gap: 20px;
+    }
     li{
       cursor: pointer;
      &:hover{ opacity: 0.8;}
@@ -126,7 +131,12 @@
     display: inline-block;
     margin: 0 auto 50px;
   }
-
+.remove-button {
+  margin-left: 10px;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+}
   .investment-calculator{
     width: 50vw;
       .description{

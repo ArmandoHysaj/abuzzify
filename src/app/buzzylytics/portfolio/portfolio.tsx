@@ -44,26 +44,28 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   }, [coinId]);
 
   useEffect(() => {
-    const savedState = JSON.parse(
-      localStorage.getItem("portfolioState") || "{}"
-    );
-    if (savedState && savedState.selectedCoin) {
-      setCoin(savedState.selectedCoin);
-      setSimilarCoins(savedState.similarCoins || []);
-      setNews(savedState.news || []);
-      setLoadingNews(
-        savedState.loadingNews !== undefined ? savedState.loadingNews : true
+    if (typeof window !== "undefined") {
+      const savedState = JSON.parse(
+        localStorage.getItem("portfolioState") || "{}"
       );
-      setLoadingCoins(
-        savedState.loadingCoins !== undefined ? savedState.loadingCoins : true
-      );
-      setNewsActive(
-        savedState.newsActive !== undefined ? savedState.newsActive : false
-      );
-      setSelectedCoinLoaded(true);
-      setInitialInvestment(savedState.initialInvestment || 0);
-      setInitialPrice(savedState.initialPrice || 0);
-      setSavedCoins(savedState.savedCoins || []);
+      if (savedState) {
+        setSavedCoins(savedState.savedCoins || []);
+        setCoin(savedState.selectedCoin);
+        setSimilarCoins(savedState.similarCoins || []);
+        setNews(savedState.news || []);
+        setLoadingNews(
+          savedState.loadingNews !== undefined ? savedState.loadingNews : true
+        );
+        setLoadingCoins(
+          savedState.loadingCoins !== undefined ? savedState.loadingCoins : true
+        );
+        setNewsActive(
+          savedState.newsActive !== undefined ? savedState.newsActive : false
+        );
+        setInitialInvestment(savedState.initialInvestment || 0);
+        setInitialPrice(savedState.initialPrice || 0);
+        setSelectedCoinLoaded(!!savedState.selectedCoin);
+      }
     }
   }, []);
 
@@ -85,6 +87,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
         selectedCoin: coin,
         initialInvestment,
         initialPrice,
+        savedCoins,
       };
       localStorage.setItem("portfolioState", JSON.stringify(stateToSave));
     }
@@ -170,6 +173,27 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     setCoin(savedCoin);
     setInitialInvestment(savedCoin.initialInvestment);
     setInitialPrice(savedCoin.initialPrice);
+    setSelectedCoinLoaded(true);
+  };
+
+  const handleRemoveCoin = (coinToRemove: any) => {
+    const updatedCoins = savedCoins.filter(
+      (savedCoin) => savedCoin.id !== coinToRemove.id
+    );
+    setSavedCoins(updatedCoins);
+
+    const stateToSave = {
+      similarCoins,
+      news,
+      loadingNews,
+      loadingCoins,
+      newsActive,
+      selectedCoin: coin,
+      initialInvestment,
+      initialPrice,
+      savedCoins: updatedCoins,
+    };
+    localStorage.setItem("portfolioState", JSON.stringify(stateToSave));
   };
 
   return (
@@ -216,22 +240,51 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
               {savedCoins.length > 0 ? (
                 <ul>
                   {savedCoins.map((savedCoin, index) => (
-                    <li
-                      key={index}
-                      onClick={() => handleSelectSavedCoin(savedCoin)}
-                    >
-                      <span className="saved-coin-name">{savedCoin.name}</span>{" "}
-                      - Initial Investment:{" "}
-                      <span className="saved-value">
-                        {" "}
-                        ${savedCoin.initialInvestment}{" "}
-                      </span>{" "}
-                      - Initial Price:{" "}
-                      <span className="saved-value">
-                        {" "}
-                        ${savedCoin.initialPrice}{" "}
-                      </span>
-                    </li>
+                    <>
+                      <li
+                        key={index}
+                        onClick={() => handleSelectSavedCoin(savedCoin)}
+                      >
+                        <span className="saved-coin-name">
+                          {savedCoin.name}
+                        </span>{" "}
+                        - Initial Investment:{" "}
+                        <span className="saved-value">
+                          {" "}
+                          ${savedCoin.initialInvestment}{" "}
+                        </span>{" "}
+                        - Initial Price:{" "}
+                        <span className="saved-value">
+                          {" "}
+                          ${savedCoin.initialPrice}{" "}
+                        </span>
+                      </li>
+                      <svg
+                        className="remove-button"
+                        onClick={() => handleRemoveCoin(savedCoin)}
+                        version="1.1"
+                        id="Capa_1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlnsXlink="http://www.w3.org/1999/xlink"
+                        x="0px"
+                        y="0px"
+                        viewBox="0 0 512.001 512.001"
+                        width="16"
+                        fill="#333"
+                      >
+                        <g>
+                          <g>
+                            <path
+                              d="M284.286,256.002L506.143,34.144c7.811-7.811,7.811-20.475,0-28.285c-7.811-7.81-20.475-7.811-28.285,0L256,227.717
+        L34.143,5.859c-7.811-7.811-20.475-7.811-28.285,0c-7.81,7.811-7.811,20.475,0,28.285l221.857,221.857L5.858,477.859
+        c-7.811,7.811-7.811,20.475,0,28.285c3.905,3.905,9.024,5.857,14.143,5.857c5.119,0,10.237-1.952,14.143-5.857L256,284.287
+        l221.857,221.857c3.905,3.905,9.024,5.857,14.143,5.857s10.237-1.952,14.143-5.857c7.811-7.811,7.811-20.475,0-28.285
+        L284.286,256.002z"
+                            ></path>
+                          </g>
+                        </g>
+                      </svg>
+                    </>
                   ))}
                 </ul>
               ) : (

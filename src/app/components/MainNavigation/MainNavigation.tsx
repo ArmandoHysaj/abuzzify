@@ -158,7 +158,7 @@ const MainNavigation = () => {
             <div className="hdl-4 left-space">
               <Link href="/about">About Abuzzy</Link>
             </div>
-            <div className="user-account">
+            {/* <div className="user-account">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="32"
@@ -179,7 +179,7 @@ const MainNavigation = () => {
                 ></path>
                 <path d="M16 23.2727L16 28.3636" stroke="#223341"></path>
               </svg>
-            </div>
+            </div> */}
           </div>
         )}
       </div>
