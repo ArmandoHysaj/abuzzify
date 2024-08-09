@@ -31,6 +31,7 @@ const HomePage = () => {
         setNews(response.data.articles);
       } catch (error) {
         console.error("Error fetching news:", error);
+        setIsNewsLoading(true);
       } finally {
         setIsNewsLoading(false);
       }
@@ -44,6 +45,7 @@ const HomePage = () => {
         setTrendingCoins(response.data.data); // Assuming the data is in the 'data' key
       } catch (error) {
         console.error("Error fetching trending coins:", error);
+        setIsNewsLoading(true);
       } finally {
         setIsCoinsLoading(false);
       }
