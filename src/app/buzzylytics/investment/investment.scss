@@ -11,7 +11,6 @@
   .saved-coins{
     ul{
       display: flex;
-    align-items: center;
     gap: 20px;
     }
     li{
@@ -136,6 +135,7 @@
   cursor: pointer;
   width: 15px;
   height: 15px;
+  margin-top: 3px;
 }
   .investment-calculator{
     width: 50vw;
@@ -191,5 +191,47 @@
   left: 50%;
   transform: translateX(-50%);
 }
-    
+.investment-calculator-modal{
+  min-width: auto;
+  height: 100%;
+    max-height: max-content;
+    .investment-modal{
+      padding: 20px 0;
+      .search-bar{
+        position: absolute;
+        right: 20px;
+      }
+      .saved-coins ul{
+        flex-direction: column;
+        > div {
+          display: flex;
+          gap: 10px;
+        }
+        li{
+              width: max-content;
+        }
+      }
+    }
+    .modal-wrapper {
+      flex-direction: column;
+    }
+    .investment-calculator{
+      width: 100%;
+      h3 {
+        width: calc(100% - 170px);
+      }
+    }
+    .input-container input{
+      width: 100% !important;
+    }
+    .save-button{
+      bottom: 30px;
+    }
+    .modal-button.default-button{
+      bottom: 30px;
+      left: 50px;
+      position: absolute;
+    }
+}
+
     }

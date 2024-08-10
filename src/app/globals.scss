@@ -1,3 +1,13 @@
+/* Variables */
+$primary-color: #4A90E2;
+$secondary-color: #1c1c1e;
+$background-color: #f5f5f7;
+$text-color: #333;
+$accent-color: #ffc640;
+$border-radius: 4px;
+$box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+
 h1, h2, h3, h4, h5,
 .hdl-1, .hdl-2, .hdl-3, .hdl-4, .hdl-5{
   font-family: "Montserrat-SemiBold";
@@ -9,6 +19,8 @@ html{
   height: 100%;
 }
 body {
+  display: flex;
+  flex-direction: column;
   font-family: "Montserrat-Regular";
   color: #075054;
   margin: 0;
@@ -16,6 +28,9 @@ body {
   // background-color: #FBFBFB;
   > [data-simplebar]{
     height: 100%;
+  }
+  main {
+    flex: 1;
   }
 }
 
@@ -100,8 +115,6 @@ p{
 }
 
 main {
-  margin-left: auto;
-  margin-right: auto;
   display: block;
   max-width: 1920px;
   position: relative;
@@ -151,6 +164,91 @@ main {
 }
 
 }
+
+
+/* Footer */
+footer {
+  background-color: #111111;
+  color: white;
+  padding: 2rem 1rem;
+  margin-top: 2rem;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    .quick-links, .contact-info {
+      flex: 1;
+      min-width: 200px;
+      margin: 1rem;
+
+      h2 {
+        margin-bottom: 1rem;
+        color: #fff;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+
+        li {
+          margin-bottom: 0.5rem;
+
+          a {
+            color: white;
+            text-decoration: none;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        max-width: 450px;
+
+        label {
+          margin-bottom: 0.5rem;
+        }
+
+        textarea {
+          resize: vertical;
+          padding: 0.5rem;
+          margin-bottom: 0.5rem;
+          border-radius: $border-radius;
+        }
+
+        button {
+          background-color: $primary-color;
+          color: white;
+          padding: 0.5rem 1rem;
+          border: none;
+          border-radius: $border-radius;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: $accent-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
 @keyframes spin {
     to {
         transform: rotate(360deg);
