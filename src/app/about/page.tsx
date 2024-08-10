@@ -14,7 +14,7 @@ export default function AboutPage() {
         your one-stop platform for cryptocurrency analysis, calculations, and
         news. Our mission is to empower crypto enthusiasts and investors with
         the tools and information they need to make informed decisions. Whether
-        you're a seasoned trader or just starting, our platform provides
+        you&apos;re a seasoned trader or just starting, our platform provides
         comprehensive data on various cryptocurrencies, allows you to track your
         investments, and helps you stay updated with the latest news in the
         crypto world. <span className="cp-text--medium"> Our Vision </span>We
@@ -25,11 +25,11 @@ export default function AboutPage() {
         or loss by entering the amount you invested in a particular
         cryptocurrency. Coin Tracking: Save and monitor your favorite coins, and
         check their performance over time. Similar Coins: Discover
-        cryptocurrencies similar to the ones you're interested in. Crypto News:
-        Stay informed with the latest news and trends in the cryptocurrency
-        market. Our Team Our team is composed of cryptocurrency experts,
-        developers, and enthusiasts who are passionate about providing a
-        reliable and user-friendly platform for all your crypto needs.
+        cryptocurrencies similar to the ones you&apos;re interested in. Crypto
+        News: Stay informed with the latest news and trends in the
+        cryptocurrency market. Our Team Our team is composed of cryptocurrency
+        experts, developers, and enthusiasts who are passionate about providing
+        a reliable and user-friendly platform for all your crypto needs.
       </div>
     </div>
   );
