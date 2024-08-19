@@ -15,7 +15,7 @@ export default function Privacy() {
 Welcome to Abuzzify. We value your privacy and are committed to being transparent about how we handle your information. This Privacy Policy outlines what information we collect, how we use it, and your rights regarding your data.
 
 <h4>1. Information We Collect</h4>
-We do not collect any personal data from our users. All data related to your use of Abuzzify, including your selected cryptocurrencies and investment information, is stored locally on your device. This data is saved in your browser's local storage, ensuring that you can continue to access your saved data when you revisit our site.
+We do not collect any personal data from our users. All data related to your use of Abuzzify, including your selected cryptocurrencies and investment information, is stored locally on your device. This data is saved in your browser&apos;s local storage, ensuring that you can continue to access your saved data when you revisit our site.
 <h4>2. Cookies and Tracking Technologies</h4>
 
 We do not use cookies or any other tracking technologies on our platform. Your data remains on your device and is not transmitted to our servers.
@@ -33,11 +33,11 @@ Since we do not collect or store any personal information, there are no specific
 <h4>6. Children&apos;s Privacy</h4>
 
 
-Our platform is not intended for use by children under the age of 13. We do not knowingly collect any personal data from children. Since no data collection occurs, there is no risk to children's privacy.
+Our platform is not intended for use by children under the age of 13. We do not knowingly collect any personal data from children. Since no data collection occurs, there is no risk to children&apos;s privacy.
 <h4>7. Changes to This Privacy Policy</h4>
 
 
-We may update this Privacy Policy from time to time. Any changes will be reflected on this page, and the "Last Updated" date will be revised accordingly. We encourage you to review this policy periodically to stay informed about how we protect your privacy.
+We may update this Privacy Policy from time to time. Any changes will be reflected on this page, and the &apos;Last Updated&apos; date will be revised accordingly. We encourage you to review this policy periodically to stay informed about how we protect your privacy.
 <h4>8. Contact Information
 </h4>
 

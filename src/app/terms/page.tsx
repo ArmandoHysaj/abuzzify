@@ -11,7 +11,7 @@ export default function Terms() {
       <div className="terms-of-service cp-text container">
 <h4>Last Updated: 19.08.2024</h4>
 
-Welcome to Abuzzify. By accessing or using our website, you agree to comply with and be bound by the following terms and conditions (the "Terms"). Please read these Terms carefully before using our platform.
+Welcome to Abuzzify. By accessing or using our website, you agree to comply with and be bound by the following terms and conditions (the &apos;Terms&apos;). Please read these Terms carefully before using our platform.
 
 <h4>
 1. Use of the Site
@@ -47,7 +47,7 @@ Welcome to Abuzzify. By accessing or using our website, you agree to comply with
  The information provided on Abuzzify is for informational purposes only and does not constitute financial advice. Always conduct your research or consult with a financial advisor before making any investment decisions.
  <h5>Limitation of Liability:</h5>
 
- Abuzzify is provided "as is" without any warranties of any kind. We are not liable for any losses or damages that may occur as a result of using our platform, including inaccuracies in data or interruptions to service.
+ Abuzzify is provided &apos;as is&apos; without any warranties of any kind. We are not liable for any losses or damages that may occur as a result of using our platform, including inaccuracies in data or interruptions to service.
  <h5>No Guarantees:</h5>
 
  We do not guarantee the accuracy, completeness, or reliability of the information on our site.
@@ -68,7 +68,7 @@ We reserve the right to suspend or terminate your access to Abuzzify at any time
 
 </h4>
 
-We may update these Terms from time to time. Any changes will be posted on this page, and the "Last Updated" date will be revised accordingly. Your continued use of Abuzzify after any changes indicates your acceptance of the new terms.
+We may update these Terms from time to time. Any changes will be posted on this page, and the &apos;Last Updated&apos; date will be revised accordingly. Your continued use of Abuzzify after any changes indicates your acceptance of the new terms.
 <h4>
  6. Contact Information
 </h4>
