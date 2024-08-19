@@ -176,7 +176,7 @@ const HomePage = () => {
       </div>
 
       {/* User Testimonials */}
-      <div className="testimonials">
+      {/* <div className="testimonials">
         <h2>User Testimonials</h2>
         <div className="testimonials-container">
           {testimonials.map((testimonial) => (
@@ -186,18 +186,18 @@ const HomePage = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* Call to Action */}
-      <div className="call-to-action">
-        <h2>Join Us</h2>
+      {/* <div className="call-to-action"> */}
+        {/* <h2>Join Us</h2> */}
         {/* <button onClick={() => (window.location.href = "/signup")}>
           Sign Up
         </button> */}
-        <button onClick={() => (window.location.href = "/buzzylytics")}>
+        {/* <button onClick={() => (window.location.href = "/buzzylytics")}>
           Get Started
-        </button>
-      </div>
+        </button> */}
+      {/* </div> */}
     </div>
   );
 };

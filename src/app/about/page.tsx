@@ -6,18 +6,18 @@ export default function AboutPage() {
     <div>
       <div className="header">
         <div className="header-title">
-          <h1>About Page</h1>
+          <h1>About Abuzzify</h1>
         </div>
       </div>
       <div className="about-page cp-text container">
-        <span className="cp-text--medium">About Us</span> Welcome to Abuziffy,
+        <h3>About Us</h3> Welcome to Abuziffy,
         your one-stop platform for cryptocurrency analysis, calculations, and
         news. Our mission is to empower crypto enthusiasts and investors with
         the tools and information they need to make informed decisions. Whether
         you&apos;re a seasoned trader or just starting, our platform provides
         comprehensive data on various cryptocurrencies, allows you to track your
         investments, and helps you stay updated with the latest news in the
-        crypto world. <span className="cp-text--medium"> Our Vision </span>We
+        crypto world. <h3> Our Vision </h3>We
         aim to simplify the complex world of cryptocurrencies and make it
         accessible to everyone. We believe in the power of blockchain technology
         and are dedicated to helping our users navigate this evolving landscape

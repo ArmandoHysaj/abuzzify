@@ -15,6 +15,10 @@ h1, h2, h3, h4, h5,
   margin: 0;
 }
 
+strong{
+  font-family: 'Montserrat-SemiBold';
+}
+
 html{
   height: 100%;
 }
@@ -179,6 +183,16 @@ footer {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    
+    .quick-links{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      ul {
+        display: flex;
+        gap: 50px;
+      }
+    }
 
     .quick-links, .contact-info {
       flex: 1;
@@ -317,9 +331,20 @@ footer {
 }
 
 @media screen and (max-width: 640px) {
-
+footer .footer-content .quick-links{
+  display: block;
+  ul {
+    display: block;
+    li {
+      margin-bottom: 1.5rem;
+    }
+  }
+}
   .container{
     max-width: calc(100% - 16px);
     margin: 0 auto;
+  }
+  main .header {
+    grid-template-columns: 100%;
   }
   }
