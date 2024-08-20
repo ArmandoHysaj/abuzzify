@@ -33,6 +33,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <li>
                   <a href="/contact">Contact Us</a>
                 </li>
+                <li>
+                  <a href="javascript:googlefc.callbackQueue.push(googlefc.showRevocationMessage)">Privacy and cookie settings</a>
+                </li>
               </ul>
             </div>
           </div>

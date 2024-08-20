@@ -18,7 +18,7 @@ Welcome to Abuzzify. We value your privacy and are committed to being transparen
 We do not collect any personal data from our users. All data related to your use of Abuzzify, including your selected cryptocurrencies and investment information, is stored locally on your device. This data is saved in your browser&apos;s local storage, ensuring that you can continue to access your saved data when you revisit our site.
 <h4>2. Cookies and Tracking Technologies</h4>
 
-We do not use cookies or any other tracking technologies on our platform. Your data remains on your device and is not transmitted to our servers.
+We use a consent cookie manager to comply with European regulations. However, as of now, we do not use cookies or any other tracking technologies on our platform. Your data remains on your device and is not transmitted to our servers. If we introduce cookies in the future, we will provide clear information and seek your consent before storing any cookies on your device.
 <h4>3. How We Use Your Information</h4>
 
 
