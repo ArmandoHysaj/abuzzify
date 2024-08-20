@@ -194,12 +194,15 @@
   min-width: auto;
   padding: 0;
   height: 100vh;
-    max-height: max-content;
+    max-height: initial;
     .investment-modal{
       padding: 20px;
+      max-height: calc(100vh - 150px);
+overflow-y: auto;
       .search-bar{
         position: absolute;
         right: 20px;
+        z-index: 99;
       }
       .saved-coins ul{
         flex-direction: column;
@@ -217,8 +220,16 @@
     }
     .investment-calculator{
       width: 100%;
-      h3 {
-        width: calc(100% - 170px);
+      padding-top: 50px;
+      &:before{
+        position: absolute;
+        width: 100vw;
+        background-color: white;
+        left: 0;
+        content: "";
+        top: 0;
+        height: 70px;
+        z-index: 9;
       }
     }
     .input-container input{
@@ -229,7 +240,7 @@
     }
     .modal-button.default-button{
       bottom: 30px;
-      left: 50px;
+      left: 15px;
       position: absolute;
     }
 }

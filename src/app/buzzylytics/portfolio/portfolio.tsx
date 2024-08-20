@@ -42,7 +42,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -183,6 +183,16 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     setSavedCoins((prevSavedCoins) => [...prevSavedCoins, newCoin]);
   };
 
+const openModal = () => {
+  setIsModalOpen(true)
+  document.querySelector("body")?.classList.add("body-lock")
+}
+
+const closeModal = () => {
+  setIsModalOpen(false)
+  document.querySelector("body")?.classList.remove("body-lock")
+}
+
   const handleSelectSavedCoin = (savedCoin: any) => {
     setCoin(savedCoin);
     setInitialInvestment(savedCoin.initialInvestment);
@@ -215,13 +225,13 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       <div className="portfolio-section container">
         <div
           className="modal-button default-button"
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => openModal()}
         >
           Open Investment Calculator
         </div>
         <Modal
           isOpen={isModalOpen}
-          onRequestClose={() => setIsModalOpen(false)}
+          onRequestClose={() => closeModal()}
           contentLabel="Investment Calculator"
           className="investment-calculator-modal"
           overlayClassName="investment-calculator-overlay"
@@ -310,7 +320,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
           </div>
           <div
             className="modal-button default-button"
-            onClick={() => setIsModalOpen(false)}
+            onClick={() => closeModal()}
           >
             Close
           </div>

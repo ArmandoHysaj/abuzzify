@@ -62,7 +62,6 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       border-radius: $border-radius;
       box-shadow: $box-shadow;
       padding: 1rem;
-      max-width: 300px;
 
       h3 {
         font-size: 1.2rem;
@@ -142,7 +141,7 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
 /* Featured Tools */
 .featured-tools {
-  margin: 4rem 0;
+  margin: 4rem auto;
 
   h2 {
     text-align: center;
@@ -156,7 +155,6 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-shadow: $box-shadow;
     padding: 1rem;
     text-align: center;
-    max-width: 300px;
     margin: 0 auto;
 
     h3 {
@@ -213,7 +211,6 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       border-radius: $border-radius;
       box-shadow: $box-shadow;
       padding: 1rem;
-      max-width: 300px;
 
       h3 {
         font-size: 1.2rem;

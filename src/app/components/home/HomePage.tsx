@@ -133,7 +133,7 @@ const HomePage = () => {
       </div>
 
       {/* Featured Tools */}
-      <div className="featured-tools">
+      <div className="featured-tools container">
         <h2>Featured Tools</h2>
         <div className="tool">
           <h3>Profit/Loss Calculator</h3>
@@ -145,7 +145,7 @@ const HomePage = () => {
       </div>
 
       {/* Educational Content */}
-      <div className="educational-content">
+      <div className="educational-content container">
         <h2>Educational Content</h2>
         <div className="articles">
           <div className="article">

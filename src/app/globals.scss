@@ -38,6 +38,9 @@ body {
   }
 }
 
+.body-lock {
+  overflow: hidden;
+}
 
 ul { 
   padding: 0;
@@ -342,7 +345,7 @@ footer .footer-content .quick-links{
   }
 }
   .container{
-    max-width: calc(100% - 16px);
+    // max-width: calc(100% - 16px);
     margin: 0 auto;
   }
   }
