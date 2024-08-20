@@ -192,11 +192,13 @@
   transform: translateX(-50%);
 }
 .investment-calculator-modal{
+  width: 100vw;
   min-width: auto;
+  padding: 0;
   height: 100%;
     max-height: max-content;
     .investment-modal{
-      padding: 20px 0;
+      padding: 20px;
       .search-bar{
         position: absolute;
         right: 20px;

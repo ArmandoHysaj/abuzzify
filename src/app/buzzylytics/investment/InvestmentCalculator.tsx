@@ -45,7 +45,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
 
     if (investment > 0 && price > 0 && coin) {
       const numberOfCoins = investment / price;
-      setNumberOfCoins(parseFloat(numberOfCoins.toFixed(6)));
+      setNumberOfCoins(parseFloat(numberOfCoins.toFixed(2)));
 
       const currentPrice = parseFloat(coin.price_usd);
       const currentValue = numberOfCoins * currentPrice;

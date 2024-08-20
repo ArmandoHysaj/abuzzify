@@ -14,6 +14,7 @@ interface PortfolioProps {
 }
 
 const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
+  const [isMobile, setIsMobile] = useState(false);
   const [similarCoins, setSimilarCoins] = useState<any[]>([]);
   const [news, setNews] = useState<any[]>([]);
   const [loadingNews, setLoadingNews] = useState(true);
@@ -29,6 +30,19 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   const [coinId, setCoinId] = useState<string | null>(null);
   const [savedCoins, setSavedCoins] = useState<any[]>([]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 960);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
