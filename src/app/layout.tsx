@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { ReactNode } from "react";
 import Script from "next/script";
 import "./globals.scss";
@@ -8,10 +8,10 @@ import MainNavigation from "./components/MainNavigation/MainNavigation";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const handlePrivacySettings = () => {
-    if (typeof googlefc !== 'undefined') {
-      googlefc.callbackQueue.push(googlefc.showRevocationMessage);
+    if (window.googlefc?.showRevocationMessage) {
+      window.googlefc.showRevocationMessage();
     } else {
-      console.warn('GoogleFC is not defined.');
+      console.warn('GoogleFC or showRevocationMessage is not available.');
     }
   };
 
@@ -24,7 +24,30 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6603814119164780"
           strategy="afterInteractive"
         />
-        {/* Include other scripts here if necessary */}
+        {/* Google Privacy & Messaging script */}
+        <Script
+          id="googlefc-script"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.googlefc = window.googlefc || {};
+              window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
+              window.googlefc.controlledMessagingFunction = async (message) => {
+                // Example logic for controlled messaging
+                const isSubscriber = await new Promise(resolve => setTimeout(() => resolve(false), 1000));
+                if (isSubscriber) {
+                  message.proceed(false);
+                } else {
+                  message.proceed(true);
+                }
+              };
+              window.googlefc.showRevocationMessage = () => {
+                // Example implementation
+                console.log("Revocation message shown.");
+              };
+            `
+          }}
+          strategy="afterInteractive"
+        />
       </head>
       <body>
         {/* <CustomScrollbar> */}

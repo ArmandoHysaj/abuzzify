@@ -18,10 +18,13 @@ declare module '*.scss' {
     export default value;
   }
   
-  // src/globals.d.ts
+ // global.d.ts
 interface GoogleFC {
   callbackQueue: any[];
-  showRevocationMessage: () => void;
+  controlledMessagingFunction: (message: any) => Promise<void>;
+  showRevocationMessage?: () => void; 
 }
 
-declare const googlefc: GoogleFC;
+interface Window {
+  googlefc: GoogleFC;
+}
