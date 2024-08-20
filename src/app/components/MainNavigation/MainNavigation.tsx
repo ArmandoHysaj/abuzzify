@@ -79,7 +79,7 @@ const MainNavigation = () => {
                   <Link href="/buzzeting">Buzzeting</Link>
                 </div> */}
                 <div className="hdl-4">
-                  <Link href="/abuzzy-about">About Abuzzy</Link>
+                  <Link href="/about">About Abuzzy</Link>
                 </div>
               </div>
             </div>
