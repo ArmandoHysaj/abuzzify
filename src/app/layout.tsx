@@ -14,6 +14,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   //     console.warn("GoogleFC or showRevocationMessage is not available.");
   //   }
   // };
+  const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID;
 
   return (
     <html lang="en">
@@ -21,7 +22,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {/* Google AdSense script */}
         <Script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6603814119164780"
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?${ADSENSE_ID}`}
           strategy="afterInteractive"
         />
         {/* Google Privacy & Messaging script */}
