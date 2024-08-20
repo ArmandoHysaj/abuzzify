@@ -72,7 +72,7 @@ const HomePage = () => {
       </div>
 
       {/* News Feed */}
-      <div className="news-feed">
+      <div className="news-feed container">
         <h2>Latest News</h2>
         <div
           className={`news-articles ${isNewsLoading ? "loading" : ""}`}
