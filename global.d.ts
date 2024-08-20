@@ -18,3 +18,10 @@ declare module '*.scss' {
     export default value;
   }
   
+  // src/globals.d.ts
+interface GoogleFC {
+  callbackQueue: any[];
+  showRevocationMessage: () => void;
+}
+
+declare const googlefc: GoogleFC;
