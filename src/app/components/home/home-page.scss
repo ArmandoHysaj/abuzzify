@@ -288,6 +288,13 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
   }
 }
+@media (min-width: 960px) {
+  .news-feed .news-article,
+  .featured-tools .tool,
+.educational-content .article {
+  max-width: 300px;
+}
+}
 
 @media (max-width: 959px) {
   .testimonials .testimonials-container{

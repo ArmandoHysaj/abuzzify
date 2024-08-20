@@ -24,6 +24,7 @@ html{
 }
 body {
   display: flex;
+  overflow-x: hidden;
   flex-direction: column;
   font-family: "Montserrat-Regular";
   color: #075054;
@@ -347,5 +348,21 @@ footer .footer-content .quick-links{
   .container{
     // max-width: calc(100% - 16px);
     margin: 0 auto;
+  }
+  .header{
+    display: block;
+    .header-contents{
+      margin-top: 20px;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  main .header {
+    grid-template-columns: 100%;
+    padding-left: 16px;
+    padding-bottom: 0;
+    padding-right: 16px;
   }
   }
