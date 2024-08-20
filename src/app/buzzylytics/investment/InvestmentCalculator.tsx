@@ -79,6 +79,21 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     }
   };
 
+  const calcProfitLoss = (value: any) => {
+    console.log(value)
+    let profitLoss;
+    if (value > 0) {
+      profitLoss = "green"
+    } else if (value < 0) {
+      profitLoss = "red"
+    } else {
+      profitLoss = ""
+    }
+    console.log(profitLoss)
+
+    return profitLoss
+  }
+
   return (
     <div className="investment-calculator">
       <h3>
@@ -119,8 +134,12 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
         </span>
       </div>
       <div className="profit-loses">
-        <p>Profit/Loss: ${profitLoss}</p>
-        <p>Percentage Change: {percentageChange}%</p>
+        <p>
+          Profit/Loss: <span className={calcProfitLoss(profitLoss)}>${profitLoss}</span>
+        </p>
+        <p>
+          Percentage Change: <span className={calcProfitLoss(percentageChange)}>{percentageChange}%</span>
+        </p>
       </div>
     </div>
   );
