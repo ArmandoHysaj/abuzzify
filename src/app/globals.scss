@@ -333,6 +333,7 @@ footer {
 @media screen and (max-width: 640px) {
 footer .footer-content .quick-links{
   display: block;
+  margin: 0;
   ul {
     display: block;
     li {
@@ -343,8 +344,5 @@ footer .footer-content .quick-links{
   .container{
     max-width: calc(100% - 16px);
     margin: 0 auto;
-  }
-  main .header {
-    grid-template-columns: 100%;
   }
   }
