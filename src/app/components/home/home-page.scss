@@ -210,8 +210,14 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       background-color: white;
       border-radius: $border-radius;
       box-shadow: $box-shadow;
-      padding: 1rem;
-
+      padding: 20px 20px 50px 20px;
+      position: relative;
+      width: 100%;
+a{
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
       h3 {
         font-size: 1.2rem;
         margin-bottom: 0.5rem;

@@ -171,6 +171,7 @@ const HomePage = () => {
           <div className="article">
             <h3>Investment Tips</h3>
             <p>Get tips on how to invest in cryptocurrencies wisely.</p>
+            <Link href="cryptolytics/articles/investment-tips">Read more</Link>
           </div>
         </div>
       </div>

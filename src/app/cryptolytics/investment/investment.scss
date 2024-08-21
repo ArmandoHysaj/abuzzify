@@ -1,6 +1,8 @@
 /* portfolio.scss */
 .investment-modal{
   display: flex;
+  margin-top: 30px;
+
     flex-direction: column;
     gap: 40px;
   .modal-wrapper{
@@ -9,9 +11,16 @@
   }
 
   .saved-coins{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     ul{
       display: flex;
+      flex-direction: column;
     gap: 20px;
+    > div {
+      display: flex;
+    }
     }
     li{
       cursor: pointer;
@@ -87,6 +96,11 @@
     border-radius: 4px;
     outline: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .description{
+      font-family: 'Montserrat-SemiBoldItalic';
+      margin-top: 15px;
+      max-width: calc(100% - 150px);
+    }
   }
 
   .investments-wrapper{
@@ -139,10 +153,6 @@
 }
   .investment-calculator{
     width: 50vw;
-      .description{
-        font-family: 'Montserrat-SemiBoldItalic';
-        margin-top: 15px;
-      }
   }
 
   .input-container{

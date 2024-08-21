@@ -96,16 +96,6 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
 
   return (
     <div className="investment-calculator">
-      <h3>
-        Crypto Coin Calculator: Calculate Your{" "}
-        <span className="green">Profits</span> and{" "}
-        <span className="red">Losses</span>
-      </h3>
-      <p className="cp-text-m description">
-        Enter your investment amount and the initial coin price at the time of
-        investment. Instantly see your profits or losses based on the current
-        coin price:
-      </p>
       <div className="investments-wrapper">
         <div className="coin-name cp-text cp-text--semi-bold">
           {name}{" "}

@@ -6,7 +6,7 @@ import blockchain from "./blockchain.png";
 const BlockchainTechnology: React.FC = () => {
   return (
     <>
-      <div className="header">
+      <div className="container educational-header">
         <div className="header-title">
           <h3>Understanding Blockchain Technology</h3>
         </div>

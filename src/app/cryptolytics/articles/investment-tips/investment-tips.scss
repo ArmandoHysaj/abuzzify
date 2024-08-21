@@ -13,6 +13,10 @@
             margin-bottom: 10px;
         }
     }
+    .header{
+        min-height: initial;
+        padding-bottom: 0;
+    }
 }
 @media (min-width: 960px) {
     .educational-content .wrapper{

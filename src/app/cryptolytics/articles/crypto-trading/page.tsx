@@ -6,7 +6,7 @@ import "./crypto-trading.scss";
 const CryptoTrading: React.FC = () => {
   return (
     <>
-      <div className="header">
+      <div className="container educational-header">
         <div className="header-title">
           <h2>Introduction to Cryptocurrency Trading</h2>
         </div>
