@@ -6,7 +6,7 @@ import Header from "./header/header";
 import Portfolio from "./portfolio/portfolio";
 import { useState } from "react";
 
-export default function BuzzylyticsPage() {
+export default function CryptolyticsPage() {
   const [selectedCoin, setSelectedCoin] = useState<any>(null);
   const [selectedCoinLoaded, setSelectedCoinLoaded] = useState(false);
   return (

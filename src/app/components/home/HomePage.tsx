@@ -66,7 +66,7 @@ const HomePage = () => {
       <div className="hero">
         <h1>Welcome to Abuzzify</h1>
         <h3>Your Ultimate Crypto Analytics Hub</h3>
-        <button onClick={() => (window.location.href = "/buzzylytics")}>
+        <button onClick={() => (window.location.href = "/cryptolytics")}>
           Get Started
         </button>
       </div>
@@ -115,7 +115,7 @@ const HomePage = () => {
               <p>{coin.price_usd} USD</p>
               <button
                 onClick={() =>
-                  (window.location.href = `/buzzylytics?coin=${coin.id}`)
+                  (window.location.href = `/cryptolytics?coin=${coin.id}`)
                 }
               >
                 View Details
@@ -138,7 +138,7 @@ const HomePage = () => {
         <div className="tool">
           <h3>Profit/Loss Calculator</h3>
           <p>Calculate your profits and losses from your crypto investments.</p>
-          <button onClick={() => (window.location.href = "/buzzylytics")}>
+          <button onClick={() => (window.location.href = "/cryptolytics")}>
             Try Now
           </button>
         </div>
@@ -155,7 +155,7 @@ const HomePage = () => {
               cryptocurrencies like Bitcoin. Learn more about its applications
               and potential impact on various industries.
             </p>
-            <Link href="buzzylytics/articles/blockchain-technology">
+            <Link href="cryptolytics/articles/blockchain-technology">
               Read more
             </Link>
           </div>
@@ -166,7 +166,7 @@ const HomePage = () => {
               to trading strategies, market analysis, and essential tips for
               successful trading.
             </p>
-            <Link href="buzzylytics/articles/crypto-trading">Read more</Link>
+            <Link href="cryptolytics/articles/crypto-trading">Read more</Link>
           </div>
           <div className="article">
             <h3>Investment Tips</h3>
@@ -194,7 +194,7 @@ const HomePage = () => {
         {/* <button onClick={() => (window.location.href = "/signup")}>
           Sign Up
         </button> */}
-        {/* <button onClick={() => (window.location.href = "/buzzylytics")}>
+        {/* <button onClick={() => (window.location.href = "/cryptolytics")}>
           Get Started
         </button> */}
       {/* </div> */}

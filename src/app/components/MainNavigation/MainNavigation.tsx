@@ -74,13 +74,13 @@ const MainNavigation = () => {
             >
               <div className="nav-items">
                 <div className="hdl-4">
-                  <Link href="/">Abuzzy Home</Link>
+                  <Link href="/">Home</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/buzzylytics">Buzzylytics</Link>
+                  <Link href="/cryptolytics">Cryptolytics</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/about">About Abuzzy</Link>
+                  <Link href="/about">About</Link>
                 </div>
               </div>
             </div>
@@ -145,13 +145,13 @@ const MainNavigation = () => {
         ) : (
           <div className="desktop nav-items">
             <div className="hdl-4 line-separator">
-              <Link href="/">Abuzzy Home</Link>
+              <Link href="/">Home</Link>
             </div>
             <div className="hdl-4">
-              <Link href="/buzzylytics">Buzzylytics</Link>
+              <Link href="/cryptolytics">Cryptolytics</Link>
             </div>
             <div className="hdl-4 left-space">
-              <Link href="/about">About Abuzzy</Link>
+              <Link href="/about">About</Link>
             </div>
           </div>
         )}
