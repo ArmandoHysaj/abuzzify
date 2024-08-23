@@ -1,0 +1,14 @@
+.coin-carousel-bar{
+    display: flex;
+    gap: 10px;
+    padding-top: 10px;
+    .coin-bar{
+        display: flex;
+    gap: 1rem;
+    font-family: "Montserrat-SemiBold";
+
+    font-size: .75rem;
+    line-height: 1rem;
+    text-transform: capitalize;
+    }
+}

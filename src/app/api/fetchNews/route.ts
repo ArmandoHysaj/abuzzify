@@ -6,10 +6,6 @@ export async function GET(request: any) {
   const { searchParams } = new URL(request.url);
   const coinName = searchParams.get('coinName');
   const apiKey = process.env.NEWS_API_KEY;
-  console.log('Handler called');  // Add this log
-
-  console.log('API Key:', apiKey);  // Log the API key to verify
-  console.log('Coin Name:', coinName);  // Log the coin name to verify
   if (!coinName) {
     return NextResponse.json({ error: 'coinName query parameter is required' }, { status: 400 });
   }

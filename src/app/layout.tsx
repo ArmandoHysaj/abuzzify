@@ -5,6 +5,7 @@ import "./globals.scss";
 import "./fonts.scss";
 import CustomScrollbar from "../utils/customScrollbar";
 import MainNavigation from "./components/MainNavigation/MainNavigation";
+import CoinCarouselBar from "./components/CoinCarouselBar/CoinCarouselBar"
 
 export default function RootLayout({ children }: { children: ReactNode }) {
 
@@ -19,7 +20,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <MainNavigation />
-        <main>{children}</main>
+        <main>
+          {children}
+          </main>
         <footer>
           <div className="footer-content">
             <div className="quick-links">

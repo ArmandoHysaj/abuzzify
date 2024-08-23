@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./home-page.scss";
 import Link from "next/link";
+import CoinCarouselBar from "../CoinCarouselBar/CoinCarouselBar";
 
 const HomePage = () => {
   const [news, setNews] = useState([]);
@@ -70,6 +71,7 @@ const HomePage = () => {
           Get Started
         </button>
       </div>
+      <CoinCarouselBar/>
 
       {/* News Feed */}
       <div className="news-feed container">

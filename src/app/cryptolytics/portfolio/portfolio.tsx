@@ -8,6 +8,7 @@ import EducationalContent from "./EducationalContent";
 import "./portfolio.scss";
 import CustomScrollbar from "../../../utils/customScrollbar";
 import SearchBar from "../search/search";
+import formatNumber from "@/app/helpers/formatNumbers";
 
 interface PortfolioProps {
   selectedCoin?: any;
@@ -222,12 +223,15 @@ const closeModal = () => {
 
   return (
     <>
+
       <div className="portfolio-section container">
+        <div className="modal-btn-wrapper">
         <div
           className="modal-button default-button"
           onClick={() => openModal()}
         >
           Open Investment Calculator
+        </div>
         </div>
         <Modal
           isOpen={isModalOpen}
@@ -353,14 +357,6 @@ const closeModal = () => {
                     <span className="result">${coin.price_usd}</span>
                   </div>
                   <div>
-                    <span className="title">Market Cap:</span>
-                    <span className="result">${coin.market_cap_usd}</span>
-                  </div>
-                  <div>
-                    <span className="title">24h Volume:</span>
-                    <span className="result">${coin.volume24}</span>
-                  </div>
-                  <div>
                     <span className="title">Change 1h:</span>
                     <span
                       className={`result ${
@@ -368,16 +364,6 @@ const closeModal = () => {
                       }`}
                     >
                       {coin.percent_change_1h}%
-                    </span>
-                  </div>
-                  <div>
-                    <span className="title">Change 24h:</span>
-                    <span
-                      className={`result ${
-                        coin.percent_change_24h > 0 ? "green" : "red"
-                      }`}
-                    >
-                      {coin.percent_change_24h}%
                     </span>
                   </div>
                   <div>
@@ -391,14 +377,37 @@ const closeModal = () => {
                     </span>
                   </div>
                 </ul>
+               
               </div>
+              <div className="coin-details">
+              <h3>Market Statistics</h3>
+              <ul className={`${!selectedCoinLoaded ? "loading" : ""}`}>
+                  <div>
+                    <span className="title">Market Cap:</span>
+                    <span className="result">${formatNumber(coin.market_cap_usd)}</span>
+                  </div>
+                  <div>
+                    <span className="title">Circulating Supply:</span>
+                    <span className="result">${formatNumber(coin.csupply)}</span>
+                  </div>
+                  <div>
+                    <span className="title">24h Volume:</span>
+                    <span className="result">${formatNumber(coin.volume24)}</span>
+                  </div>
+                  <div>
+                    <span className="title">Total Supply:</span>
+                    <span className="result">${formatNumber(coin.msupply)}</span>
+                  </div>
+                </ul>
+                </div>
+
               <div className="similar-coins">
                 <h3>Similar Coins</h3>
                 <ul className={`${loadingCoins ? "loading" : ""}`}>
                   <CustomScrollbar>
                     {similarCoins.map((c) => (
                       <li key={c.id}>
-                        <span className="coin-name">
+                        <span className="coin-name" onClick={() => setCoinId(c.id)}>
                           {c.name} ({c.symbol})
                         </span>
                         <span className="coin-price">${c.price_usd}</span>
@@ -407,10 +416,10 @@ const closeModal = () => {
                   </CustomScrollbar>
                 </ul>
               </div>
-
-              {newsActive && (
+            </div>
+            {newsActive && (
                 <div className="news-container">
-                  <h3>Latest News</h3>
+                  <h3>Latest {coin.name} News</h3>
                   <ul className={`${loadingNews ? "loading" : ""}`}>
                     <CustomScrollbar>
                       {news.length > 0 ? (
@@ -434,7 +443,6 @@ const closeModal = () => {
                   </ul>
                 </div>
               )}
-            </div>
           </>
         ) : (
           <div className="title red">No coin selected</div>

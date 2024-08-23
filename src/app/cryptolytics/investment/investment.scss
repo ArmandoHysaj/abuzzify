@@ -191,13 +191,17 @@
     
   }
   
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 1024px) {
 .modal-button.default-button{
   padding: 15px;
   position: relative;
   margin-top: 15px;
   margin-left: auto;
   margin-right: auto;
+}
+.modal-btn-wrapper{
+  max-width: 600px;
+  margin: 0 auto;
 }
 .investment-calculator-modal{
   width: 100vw;
