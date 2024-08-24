@@ -65,7 +65,11 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       );
       if (savedState) {
         setSavedCoins(savedState.savedCoins || []);
-        setCoin(savedState.selectedCoin);
+        const savedCoinId = savedState.selectedCoin?.id;
+        if (savedCoinId) {
+          fetchCoinData(savedCoinId);
+        }
+        // setCoin(savedState.selectedCoin);
         setSimilarCoins(savedState.similarCoins || []);
         setNews(savedState.news || []);
         setLoadingNews(
@@ -99,7 +103,8 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
         loadingNews,
         loadingCoins,
         newsActive,
-        selectedCoin: coin,
+        // selectedCoin: coin,
+        selectedCoin: { id: coin.id },
         initialInvestment,
         initialPrice,
         savedCoins,
@@ -184,15 +189,15 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     setSavedCoins((prevSavedCoins) => [...prevSavedCoins, newCoin]);
   };
 
-const openModal = () => {
-  setIsModalOpen(true)
-  document.querySelector("body")?.classList.add("body-lock")
-}
+  const openModal = () => {
+    setIsModalOpen(true);
+    document.querySelector("body")?.classList.add("body-lock");
+  };
 
-const closeModal = () => {
-  setIsModalOpen(false)
-  document.querySelector("body")?.classList.remove("body-lock")
-}
+  const closeModal = () => {
+    setIsModalOpen(false);
+    document.querySelector("body")?.classList.remove("body-lock");
+  };
 
   const handleSelectSavedCoin = (savedCoin: any) => {
     setCoin(savedCoin);
@@ -223,15 +228,14 @@ const closeModal = () => {
 
   return (
     <>
-
       <div className="portfolio-section container">
         <div className="modal-btn-wrapper">
-        <div
-          className="modal-button default-button"
-          onClick={() => openModal()}
-        >
-          Open Investment Calculator
-        </div>
+          <div
+            className="modal-button default-button"
+            onClick={() => openModal()}
+          >
+            Open Investment Calculator
+          </div>
         </div>
         <Modal
           isOpen={isModalOpen}
@@ -240,16 +244,16 @@ const closeModal = () => {
           className="investment-calculator-modal"
           overlayClassName="investment-calculator-overlay"
         >
-           <h3>
-        Crypto Coin Calculator: Calculate Your{" "}
-        <span className="green">Profits</span> and{" "}
-        <span className="red">Losses</span>
-      </h3>
-      <p className="cp-text-m description">
-        Enter your investment amount and the initial coin price at the time of
-        investment. Instantly see your profits or losses based on the current
-        coin price:
-      </p>
+          <h3>
+            Crypto Coin Calculator: Calculate Your{" "}
+            <span className="green">Profits</span> and{" "}
+            <span className="red">Losses</span>
+          </h3>
+          <p className="cp-text-m description">
+            Enter your investment amount and the initial coin price at the time
+            of investment. Instantly see your profits or losses based on the
+            current coin price:
+          </p>
           <div className="investment-modal">
             <div className="modal-wrapper">
               {coin ? (
@@ -367,6 +371,16 @@ const closeModal = () => {
                     </span>
                   </div>
                   <div>
+                    <span className="title">Change 24h:</span>
+                    <span
+                      className={`result ${
+                        coin.percent_change_24h > 0 ? "green" : "red"
+                      }`}
+                    >
+                      {coin.percent_change_24h}%
+                    </span>
+                  </div>
+                  <div>
                     <span className="title">Change 7 days:</span>
                     <span
                       className={`result ${
@@ -377,29 +391,36 @@ const closeModal = () => {
                     </span>
                   </div>
                 </ul>
-               
               </div>
               <div className="coin-details">
-              <h3>Market Statistics</h3>
-              <ul className={`${!selectedCoinLoaded ? "loading" : ""}`}>
+                <h3>Market Statistics</h3>
+                <ul className={`${!selectedCoinLoaded ? "loading" : ""}`}>
                   <div>
                     <span className="title">Market Cap:</span>
-                    <span className="result">${formatNumber(coin.market_cap_usd)}</span>
+                    <span className="result">
+                      ${formatNumber(coin.market_cap_usd)}
+                    </span>
                   </div>
                   <div>
                     <span className="title">Circulating Supply:</span>
-                    <span className="result">${formatNumber(coin.csupply)}</span>
+                    <span className="result">
+                      ${formatNumber(coin.csupply)}
+                    </span>
                   </div>
                   <div>
                     <span className="title">24h Volume:</span>
-                    <span className="result">${formatNumber(coin.volume24)}</span>
+                    <span className="result">
+                      ${formatNumber(coin.volume24)}
+                    </span>
                   </div>
                   <div>
                     <span className="title">Total Supply:</span>
-                    <span className="result">${formatNumber(coin.msupply)}</span>
+                    <span className="result">
+                      ${formatNumber(coin.msupply)}
+                    </span>
                   </div>
                 </ul>
-                </div>
+              </div>
 
               <div className="similar-coins">
                 <h3>Similar Coins</h3>
@@ -407,7 +428,10 @@ const closeModal = () => {
                   <CustomScrollbar>
                     {similarCoins.map((c) => (
                       <li key={c.id}>
-                        <span className="coin-name" onClick={() => setCoinId(c.id)}>
+                        <span
+                          className="coin-name"
+                          onClick={() => setCoinId(c.id)}
+                        >
                           {c.name} ({c.symbol})
                         </span>
                         <span className="coin-price">${c.price_usd}</span>
@@ -418,31 +442,31 @@ const closeModal = () => {
               </div>
             </div>
             {newsActive && (
-                <div className="news-container">
-                  <h3>Latest {coin.name} News</h3>
-                  <ul className={`${loadingNews ? "loading" : ""}`}>
-                    <CustomScrollbar>
-                      {news.length > 0 ? (
-                        news.map((article, index) => (
-                          <li key={index}>
-                            <a
-                              className="cp-link"
-                              href={article.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {article.title}
-                            </a>
-                            <p className="cp-text">{article.description}</p>
-                          </li>
-                        ))
-                      ) : (
-                        <p className="cp-text">No news available</p>
-                      )}
-                    </CustomScrollbar>
-                  </ul>
-                </div>
-              )}
+              <div className="news-container">
+                <h3>Latest {coin.name} News</h3>
+                <ul className={`${loadingNews ? "loading" : ""}`}>
+                  <CustomScrollbar>
+                    {news.length > 0 ? (
+                      news.map((article, index) => (
+                        <li key={index}>
+                          <a
+                            className="cp-link"
+                            href={article.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {article.title}
+                          </a>
+                          <p className="cp-text">{article.description}</p>
+                        </li>
+                      ))
+                    ) : (
+                      <p className="cp-text">No news available</p>
+                    )}
+                  </CustomScrollbar>
+                </ul>
+              </div>
+            )}
           </>
         ) : (
           <div className="title red">No coin selected</div>
