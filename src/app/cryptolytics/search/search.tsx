@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import "../search/search.scss";
-import CustomScrollbar from "../../../utils/customScrollbar";
 
 interface SearchBarProps {
   setSelectedCoin: (coin: any) => void;
@@ -111,17 +110,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ setSelectedCoin }) => {
       )}
       {isExpanded && (
         <div className="search-results">
-          <CustomScrollbar>
-            {filteredCoins.map((coin) => (
-              <div
-                key={coin.id}
-                className="coin"
-                onClick={() => handleCoinClick(coin.id)}
-              >
-                {coin.name}: {coin.price_usd} USD
-              </div>
-            ))}
-          </CustomScrollbar>
+          {filteredCoins.map((coin) => (
+            <div
+              key={coin.id}
+              className="coin"
+              onClick={() => handleCoinClick(coin.id)}
+            >
+              {coin.name}: {coin.price_usd} USD
+            </div>
+          ))}
         </div>
       )}
     </div>

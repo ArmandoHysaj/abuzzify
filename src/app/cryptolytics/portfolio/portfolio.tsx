@@ -6,9 +6,9 @@ import Modal from "react-modal";
 import InvestmentCalculator from "../investment/InvestmentCalculator";
 import EducationalContent from "./EducationalContent";
 import "./portfolio.scss";
-import CustomScrollbar from "../../../utils/customScrollbar";
 import SearchBar from "../search/search";
 import formatNumber from "@/app/helpers/formatNumbers";
+import cryptocurrencyImg from "../../images/crypto.png";
 
 interface PortfolioProps {
   selectedCoin?: any;
@@ -336,12 +336,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
               )}
             </div>
           </div>
-          <div
-            className="modal-button default-button"
-            onClick={() => closeModal()}
-          >
-            Close
-          </div>
         </Modal>
         {coin ? (
           <>
@@ -425,27 +419,25 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
               <div className="similar-coins">
                 <h3>Similar Coins</h3>
                 <ul className={`${loadingCoins ? "loading" : ""}`}>
-                  <CustomScrollbar>
-                    {similarCoins.map((c) => (
-                      <li key={c.id}>
-                        <span
-                          className="coin-name"
-                          onClick={() => setCoinId(c.id)}
-                        >
-                          {c.name} ({c.symbol})
-                        </span>
-                        <span className="coin-price">${c.price_usd}</span>
-                      </li>
-                    ))}
-                  </CustomScrollbar>
+                  {similarCoins.map((c) => (
+                    <li key={c.id}>
+                      <span
+                        className="coin-name"
+                        onClick={() => setCoinId(c.id)}
+                      >
+                        {c.name} ({c.symbol})
+                      </span>
+                      <span className="coin-price">${c.price_usd}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
             {newsActive && (
               <div className="news-container">
-                <h3>Latest {coin.name} News</h3>
-                <ul className={`${loadingNews ? "loading" : ""}`}>
-                  <CustomScrollbar>
+                <h3>Latest News</h3>
+                <div className="portfolio-news-wrapper">
+                  <ul className={`${loadingNews ? "loading" : ""}`}>
                     {news.length > 0 ? (
                       news.map((article, index) => (
                         <li key={index}>
@@ -463,8 +455,11 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                     ) : (
                       <p className="cp-text">No news available</p>
                     )}
-                  </CustomScrollbar>
-                </ul>
+                  </ul>
+                  <picture>
+                    <img src={cryptocurrencyImg.src} alt="" />
+                  </picture>
+                </div>
               </div>
             )}
           </>

@@ -53,10 +53,32 @@
   }
   
   .search-results {
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 15px;
     background: white;
     margin-top: 5px;
     z-index: 9;
+    max-height: 250px;
+    position: absolute;
+    overflow: auto;
+    width: 185px;
+    padding-right: 5px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    &::-webkit-scrollbar-thumb {
+      background-color: #cbd2d9
+  }
+
+  &::-webkit-scrollbar {
+      width: 4px
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+      background-color: #9aa5b1
+  }
+
+  &:hover::-webkit-scrollbar-track {
+      background-color: #f5f7fa
+  }
   }
   
   .coin {
