@@ -7,6 +7,17 @@ const CoinCarouselBar = () => {
 
   useEffect(() => {
     fetchSimilarCoins();
+
+    const startAnimation = () => {
+      const track = document.querySelector(
+        ".coin-carousel-track"
+      ) as HTMLElement;
+      if (track) {
+        track.style.animation = "scroll 350s linear infinite";
+      }
+    };
+
+    requestAnimationFrame(startAnimation);
   }, []);
 
   const fetchSimilarCoins = async () => {
