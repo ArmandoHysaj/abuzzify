@@ -9,6 +9,7 @@ import "./portfolio.scss";
 import SearchBar from "../search/search";
 import formatNumber from "@/app/helpers/formatNumbers";
 import cryptocurrencyImg from "../../images/crypto.png";
+import ReactGA from "react-ga4";
 
 interface PortfolioProps {
   selectedCoin?: any;
@@ -192,11 +193,21 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   const openModal = () => {
     setIsModalOpen(true);
     document.querySelector("body")?.classList.add("body-lock");
+    ReactGA.event({
+      category: "User",
+      action: "Open Investment Calculator Modal",
+      label: "Investment Modal",
+    });
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     document.querySelector("body")?.classList.remove("body-lock");
+    ReactGA.event({
+      category: "User",
+      action: "Close Investment Calculator Modal",
+      label: "Investment Modal",
+    });
   };
 
   const handleSelectSavedCoin = (savedCoin: any) => {

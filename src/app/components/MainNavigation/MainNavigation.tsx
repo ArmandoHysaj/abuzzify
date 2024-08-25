@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import Abuzzify from "../../images/Abuzzify.png";
 import "./main-nav.scss";
 import { usePathname } from "next/navigation";
+import ReactGA from "react-ga4";
 
 const MainNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,6 +57,11 @@ const MainNavigation = () => {
   const toggleMenu = (e: any) => {
     e.stopPropagation();
     setIsMenuOpen((prevIsMenuOpen) => !prevIsMenuOpen);
+    ReactGA.event({
+      category: "User",
+      action: "Toggle Navigation",
+      label: "Navigation",
+    });
   };
 
   return (

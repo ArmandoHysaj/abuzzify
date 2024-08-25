@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./home-page.scss";
 import Link from "next/link";
+import ReactGA from "react-ga4";
 import CoinCarouselBar from "../CoinCarouselBar/CoinCarouselBar";
 
 const HomePage = () => {
@@ -51,7 +52,6 @@ const HomePage = () => {
         setIsCoinsLoading(false);
       }
     };
-
     fetchNews();
     fetchTrendingCoins();
   }, []);
@@ -59,6 +59,32 @@ const HomePage = () => {
   const initialNewsToShow = 5;
   const initialCoinsToShow = 5;
 
+  const loadAllCoins = () => {
+    setShowAllCoins(true);
+    ReactGA.event({
+      category: "User",
+      action: "Clicked Show All Trending Coins",
+      label: "Show All",
+    });
+  };
+
+  const loadAllNews = () => {
+    setShowAllNews(true);
+    ReactGA.event({
+      category: "User",
+      action: "Clicked Show All News",
+      label: "Show All",
+    });
+  };
+
+  const getStarted = () => {
+    window.location.href = "/cryptolytics";
+    ReactGA.event({
+      category: "User",
+      action: "Clicked Get Started Button",
+      label: "Get Started",
+    });
+  };
   const setLoadingHeight = () => `200px`;
 
   return (
@@ -67,11 +93,9 @@ const HomePage = () => {
       <div className="hero">
         <h1>Welcome to Abuzzify</h1>
         <h3>Your Ultimate Crypto Analytics Hub</h3>
-        <button onClick={() => (window.location.href = "/cryptolytics")}>
-          Get Started
-        </button>
+        <button onClick={() => getStarted()}>Get Started</button>
       </div>
-      <CoinCarouselBar/>
+      <CoinCarouselBar />
 
       {/* News Feed */}
       <div className="news-feed container">
@@ -93,7 +117,7 @@ const HomePage = () => {
         </div>
         {!showAllNews && news.length > initialNewsToShow && (
           <div className="load-more-btn">
-            <div className="load-more" onClick={() => setShowAllNews(true)}>
+            <div className="load-more" onClick={() => loadAllNews()}>
               Show All
             </div>
           </div>
@@ -127,7 +151,7 @@ const HomePage = () => {
         </div>
         {!showAllCoins && trendingCoins.length > initialCoinsToShow && (
           <div className="load-more-btn">
-            <div className="load-more" onClick={() => setShowAllCoins(true)}>
+            <div className="load-more" onClick={() => loadAllCoins()}>
               Show All
             </div>
           </div>
@@ -193,11 +217,11 @@ const HomePage = () => {
 
       {/* Call to Action */}
       {/* <div className="call-to-action"> */}
-        {/* <h2>Join Us</h2> */}
-        {/* <button onClick={() => (window.location.href = "/signup")}>
+      {/* <h2>Join Us</h2> */}
+      {/* <button onClick={() => (window.location.href = "/signup")}>
           Sign Up
         </button> */}
-        {/* <button onClick={() => (window.location.href = "/cryptolytics")}>
+      {/* <button onClick={() => (window.location.href = "/cryptolytics")}>
           Get Started
         </button> */}
       {/* </div> */}
