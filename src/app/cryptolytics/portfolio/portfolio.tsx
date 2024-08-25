@@ -248,106 +248,210 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
             Open Investment Calculator
           </div>
         </div>
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={() => closeModal()}
-          contentLabel="Investment Calculator"
-          className="investment-calculator-modal"
-          overlayClassName="investment-calculator-overlay"
-        >
-          <h3>
-            Crypto Coin Calculator: Calculate Your{" "}
-            <span className="green">Profits</span> and{" "}
-            <span className="red">Losses</span>
-          </h3>
-          <p className="cp-text-m description">
-            Enter your investment amount and the initial coin price at the time
-            of investment. Instantly see your profits or losses based on the
-            current coin price:
-          </p>
-          <div className="investment-modal">
-            <div className="modal-wrapper">
-              {coin ? (
-                <>
-                  <InvestmentCalculator
-                    initialInvestment={initialInvestment}
-                    setInitialInvestment={setInitialInvestment}
-                    initialPrice={initialPrice}
-                    setInitialPrice={setInitialPrice}
-                    coin={coin}
-                    name={coin.name}
-                    price={coin.price_usd}
-                  />
-                  <div className="save-button" onClick={handleSaveCoin}>
-                    Save Coin
-                  </div>
-                </>
-              ) : (
-                <div className="title red">No coin selected</div>
-              )}
-              <SearchBar setSelectedCoin={setCoin} />
-            </div>
+        {isMobile ? (
+          <Modal
+            isOpen={isModalOpen}
+            onRequestClose={() => closeModal()}
+            contentLabel="Investment Calculator"
+            className="investment-calculator-modal"
+            overlayClassName="investment-calculator-overlay"
+          >
+            <h3>
+              Crypto Coin Calculator: Calculate Your{" "}
+              <span className="green">Profits</span> and{" "}
+              <span className="red">Losses</span>
+            </h3>
+            <p className="cp-text-m description">
+              Enter your investment amount and the initial coin price at the
+              time of investment. Instantly see your profits or losses based on
+              the current coin price:
+            </p>
+            <SearchBar setSelectedCoin={setCoin} />
+            <div className="investment-modal">
+              <div className="modal-wrapper">
+                {coin ? (
+                  <>
+                    <InvestmentCalculator
+                      initialInvestment={initialInvestment}
+                      setInitialInvestment={setInitialInvestment}
+                      initialPrice={initialPrice}
+                      setInitialPrice={setInitialPrice}
+                      coin={coin}
+                      name={coin.name}
+                      price={coin.price_usd}
+                    />
+                    <div className="save-button" onClick={handleSaveCoin}>
+                      Save Coin
+                    </div>
+                  </>
+                ) : (
+                  <div className="title red">No coin selected</div>
+                )}
+              </div>
 
-            <div className="saved-coins">
-              <h3>Saved Coins</h3>
-              {savedCoins.length > 0 ? (
-                <ul>
-                  {savedCoins.map((savedCoin, index) => (
-                    <>
-                      <div>
-                        <li
-                          key={index}
-                          onClick={() => handleSelectSavedCoin(savedCoin)}
-                        >
-                          <span className="saved-coin-name">
-                            {savedCoin.name}
-                          </span>{" "}
-                          - Initial Investment:{" "}
-                          <span className="saved-value">
-                            {" "}
-                            ${savedCoin.initialInvestment}{" "}
-                          </span>{" "}
-                          - Initial Price:{" "}
-                          <span className="saved-value">
-                            {" "}
-                            ${savedCoin.initialPrice}{" "}
-                          </span>
-                        </li>
-                        <svg
-                          className="remove-button"
-                          onClick={() => handleRemoveCoin(savedCoin)}
-                          version="1.1"
-                          id="Capa_1"
-                          xmlns="http://www.w3.org/2000/svg"
-                          xmlnsXlink="http://www.w3.org/1999/xlink"
-                          x="0px"
-                          y="0px"
-                          viewBox="0 0 512.001 512.001"
-                          width="16"
-                          fill="#333"
-                        >
-                          <g>
+              <div className="saved-coins">
+                <h3>Saved Coins</h3>
+                {savedCoins.length > 0 ? (
+                  <ul>
+                    {savedCoins.map((savedCoin, index) => (
+                      <>
+                        <div>
+                          <li
+                            key={index}
+                            onClick={() => handleSelectSavedCoin(savedCoin)}
+                          >
+                            <span className="saved-coin-name">
+                              {savedCoin.name}
+                            </span>{" "}
+                            - Initial Investment:{" "}
+                            <span className="saved-value">
+                              {" "}
+                              ${savedCoin.initialInvestment}{" "}
+                            </span>{" "}
+                            - Initial Price:{" "}
+                            <span className="saved-value">
+                              {" "}
+                              ${savedCoin.initialPrice}{" "}
+                            </span>
+                          </li>
+                          <svg
+                            className="remove-button"
+                            onClick={() => handleRemoveCoin(savedCoin)}
+                            version="1.1"
+                            id="Capa_1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                            x="0px"
+                            y="0px"
+                            viewBox="0 0 512.001 512.001"
+                            width="16"
+                            fill="#333"
+                          >
                             <g>
-                              <path
-                                d="M284.286,256.002L506.143,34.144c7.811-7.811,7.811-20.475,0-28.285c-7.811-7.81-20.475-7.811-28.285,0L256,227.717
+                              <g>
+                                <path
+                                  d="M284.286,256.002L506.143,34.144c7.811-7.811,7.811-20.475,0-28.285c-7.811-7.81-20.475-7.811-28.285,0L256,227.717
         L34.143,5.859c-7.811-7.811-20.475-7.811-28.285,0c-7.81,7.811-7.811,20.475,0,28.285l221.857,221.857L5.858,477.859
         c-7.811,7.811-7.811,20.475,0,28.285c3.905,3.905,9.024,5.857,14.143,5.857c5.119,0,10.237-1.952,14.143-5.857L256,284.287
         l221.857,221.857c3.905,3.905,9.024,5.857,14.143,5.857s10.237-1.952,14.143-5.857c7.811-7.811,7.811-20.475,0-28.285
         L284.286,256.002z"
-                              ></path>
+                                ></path>
+                              </g>
                             </g>
-                          </g>
-                        </svg>
-                      </div>
-                    </>
-                  ))}
-                </ul>
-              ) : (
-                <div>No coins saved.</div>
-              )}
+                          </svg>
+                        </div>
+                      </>
+                    ))}
+                  </ul>
+                ) : (
+                  <div>No coins saved.</div>
+                )}
+              </div>
             </div>
-          </div>
-        </Modal>
+          </Modal>
+        ) : (
+          <Modal
+            isOpen={isModalOpen}
+            onRequestClose={() => closeModal()}
+            contentLabel="Investment Calculator"
+            className="investment-calculator-modal"
+            overlayClassName="investment-calculator-overlay"
+          >
+            <h3>
+              Crypto Coin Calculator: Calculate Your{" "}
+              <span className="green">Profits</span> and{" "}
+              <span className="red">Losses</span>
+            </h3>
+            <p className="cp-text-m description">
+              Enter your investment amount and the initial coin price at the
+              time of investment. Instantly see your profits or losses based on
+              the current coin price:
+            </p>
+            <div className="investment-modal">
+              <div className="modal-wrapper">
+                {coin ? (
+                  <>
+                    <InvestmentCalculator
+                      initialInvestment={initialInvestment}
+                      setInitialInvestment={setInitialInvestment}
+                      initialPrice={initialPrice}
+                      setInitialPrice={setInitialPrice}
+                      coin={coin}
+                      name={coin.name}
+                      price={coin.price_usd}
+                    />
+                    <div className="save-button" onClick={handleSaveCoin}>
+                      Save Coin
+                    </div>
+                  </>
+                ) : (
+                  <div className="title red">No coin selected</div>
+                )}
+                <SearchBar setSelectedCoin={setCoin} />
+              </div>
+
+              <div className="saved-coins">
+                <h3>Saved Coins</h3>
+                {savedCoins.length > 0 ? (
+                  <ul>
+                    {savedCoins.map((savedCoin, index) => (
+                      <>
+                        <div>
+                          <li
+                            key={index}
+                            onClick={() => handleSelectSavedCoin(savedCoin)}
+                          >
+                            <span className="saved-coin-name">
+                              {savedCoin.name}
+                            </span>{" "}
+                            - Initial Investment:{" "}
+                            <span className="saved-value">
+                              {" "}
+                              ${savedCoin.initialInvestment}{" "}
+                            </span>{" "}
+                            - Initial Price:{" "}
+                            <span className="saved-value">
+                              {" "}
+                              ${savedCoin.initialPrice}{" "}
+                            </span>
+                          </li>
+                          <svg
+                            className="remove-button"
+                            onClick={() => handleRemoveCoin(savedCoin)}
+                            version="1.1"
+                            id="Capa_1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                            x="0px"
+                            y="0px"
+                            viewBox="0 0 512.001 512.001"
+                            width="16"
+                            fill="#333"
+                          >
+                            <g>
+                              <g>
+                                <path
+                                  d="M284.286,256.002L506.143,34.144c7.811-7.811,7.811-20.475,0-28.285c-7.811-7.81-20.475-7.811-28.285,0L256,227.717
+        L34.143,5.859c-7.811-7.811-20.475-7.811-28.285,0c-7.81,7.811-7.811,20.475,0,28.285l221.857,221.857L5.858,477.859
+        c-7.811,7.811-7.811,20.475,0,28.285c3.905,3.905,9.024,5.857,14.143,5.857c5.119,0,10.237-1.952,14.143-5.857L256,284.287
+        l221.857,221.857c3.905,3.905,9.024,5.857,14.143,5.857s10.237-1.952,14.143-5.857c7.811-7.811,7.811-20.475,0-28.285
+        L284.286,256.002z"
+                                ></path>
+                              </g>
+                            </g>
+                          </svg>
+                        </div>
+                      </>
+                    ))}
+                  </ul>
+                ) : (
+                  <div>No coins saved.</div>
+                )}
+              </div>
+            </div>
+          </Modal>
+        )}
+
         {coin ? (
           <>
             <div className="coin-container">

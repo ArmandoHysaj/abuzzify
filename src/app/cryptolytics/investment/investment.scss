@@ -81,16 +81,6 @@
   }
 }
 .investment-calculator-modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    max-height: 600px;
-    overflow: auto;
-    right: auto;
-    min-width: 500px;
-    bottom: auto;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
     background: white;
     padding: 20px;
     border-radius: 4px;
@@ -101,6 +91,21 @@
       margin-top: 15px;
       max-width: calc(100% - 150px);
     }
+    &::-webkit-scrollbar-thumb {
+      background-color: #cbd2d9
+  }
+
+  &::-webkit-scrollbar {
+      width: 4px
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+      background-color: #9aa5b1
+  }
+
+  &:hover::-webkit-scrollbar-track {
+      background-color: #f5f7fa
+  }
   }
 
   .investments-wrapper{
@@ -192,7 +197,22 @@
     
   }
   
-  @media screen and (max-width: 1024px) {
+  @media screen and (min-width: 1024px) {
+    .investment-calculator-modal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      max-height: 600px;
+      overflow: auto;
+      right: auto;
+      min-width: 500px;
+      bottom: auto;
+      margin-right: -50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  @media screen and (max-width: 1023px) {
 .modal-button.default-button{
   padding: 15px;
   position: relative;
@@ -205,22 +225,19 @@
   margin: 0 auto;
 }
 .investment-calculator-modal{
-  width: 100vw;
-min-width: auto;
-padding: 0;
-max-height: none;
-min-height: -webkit-fill-available;
-height: -webkit-fill-available;
+  overflow: auto;
+    max-height: 100%;
+  .description{
+    max-width: 100%;
+  }
+  .search-bar{
+    margin-top: 20px;
+  }
     .investment-modal{
-      padding: 20px 20px 100px 20px;
-      max-height: -webkit-fill-available;
-      overflow-y: auto;
-      .search-bar{
-        position: absolute;
-        right: 20px;
-        z-index: 99;
-      }
-      .saved-coins ul{
+      margin-top: 0;
+      .saved-coins{
+        padding-bottom: 50px;
+       ul{
         flex-direction: column;
         > div {
           display: flex;
@@ -231,28 +248,22 @@ height: -webkit-fill-available;
         }
       }
     }
+    }
     .modal-wrapper {
       flex-direction: column;
+      gap: 20px;
     }
     .investment-calculator{
       width: 100%;
-      padding-top: 50px;
-      &:before{
-        position: absolute;
-        width: 100vw;
-        background-color: white;
-        left: 0;
-        content: "";
-        top: 0;
-        height: 70px;
-        z-index: 9;
-      }
     }
     .input-container input{
       width: 100% !important;
     }
     .save-button{
-      bottom: 30px;
+      position: relative;
+      width: max-content;
+      right: auto;
+      bottom: auto;
     }
     .modal-button.default-button{
       bottom: 30px;
