@@ -105,13 +105,20 @@ const HomePage = () => {
           style={{ minHeight: isNewsLoading ? setLoadingHeight() : "auto" }}
         >
           {(showAllNews ? news : news.slice(0, initialNewsToShow)).map(
-            (article: any) => (
-              <div key={article.url} className="news-article">
-                <a href={article.url} target="_blank" rel="noopener noreferrer">
-                  <h3>{article.title}</h3>
-                  <p>{article.description}</p>
-                </a>
-              </div>
+            (article: any, index) => (
+              <a href={article.url} target="_blank" rel="noopener noreferrer">
+                <div key={index} className="news-article">
+                  <img src={article.urlToImage}></img>
+                  <div className="news-description">
+                    <div className="news-author cp-text-s">
+                      <span className="author">{article.author}</span>
+                      <span className="date">{article.publishedAt}</span>
+                    </div>
+                    <span className="title">{article.title}</span>
+                    <p className="cp-text">{article.description}</p>
+                  </div>
+                </div>
+              </a>
             )
           )}
         </div>
