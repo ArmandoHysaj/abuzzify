@@ -1,4 +1,5 @@
 "use client";
+
 import { ReactNode, useEffect } from "react";
 import Script from "next/script";
 import ReactGA from "react-ga4";
@@ -14,11 +15,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (GA_TRACKING_ID) {
+      // Initialize ReactGA
       ReactGA.initialize(GA_TRACKING_ID);
+    }
+  }, []);
 
-      // Track the initial page load
-      // Track route changes
-
+  useEffect(() => {
+    if (GA_TRACKING_ID) {
+      // Track page views on pathname changes
       ReactGA.send({ hitType: "pageview", page: pathname });
     }
   }, [pathname]);
