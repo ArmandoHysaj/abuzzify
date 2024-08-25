@@ -153,6 +153,11 @@
     ul:hover::-webkit-scrollbar-track {
         background-color: #f5f7fa
     }
+    picture,
+    img {
+        max-width: 100%;
+        width: 100%;
+    }
 }
 @media screen and (min-width: 1024px) {
     .coin-container{

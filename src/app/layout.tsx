@@ -1,12 +1,29 @@
 "use client";
 import { ReactNode, useEffect } from "react";
 import Script from "next/script";
+import ReactGA from "react-ga4";
+import { usePathname } from "next/navigation";
 import "./globals.scss";
 import "./fonts.scss";
 import MainNavigation from "./components/MainNavigation/MainNavigation";
-import CoinCarouselBar from "./components/CoinCarouselBar/CoinCarouselBar";
+
+const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (GA_TRACKING_ID) {
+      ReactGA.initialize(GA_TRACKING_ID);
+
+      // Track the initial page load
+      ReactGA.send({ hitType: "pageview", page: pathname });
+
+      // Track route changes
+      ReactGA.send({ hitType: "pageview", page: pathname });
+    }
+  }, [pathname]);
+
   return (
     <html lang="en">
       <head>
