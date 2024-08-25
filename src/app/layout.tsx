@@ -17,9 +17,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       ReactGA.initialize(GA_TRACKING_ID);
 
       // Track the initial page load
-      ReactGA.send({ hitType: "pageview", page: pathname });
-
       // Track route changes
+
       ReactGA.send({ hitType: "pageview", page: pathname });
     }
   }, [pathname]);
