@@ -128,7 +128,7 @@ const HomePage = () => {
       <div className="trending-coins">
         <h2>Trending Coins</h2>
         <div
-          className={`coin-list ${isCoinsLoading ? "loading" : ""}`}
+          className={`coin-list ${isCoinsLoading ? "loading container" : ""}`}
           style={{ minHeight: isCoinsLoading ? setLoadingHeight() : "auto" }}
         >
           {(showAllCoins

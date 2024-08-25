@@ -31,8 +31,8 @@ const CoinCarouselBar = () => {
 
   return (
     <div className="coin-carousel-bar">
-      <div className="coin-carousel-track">
-        {coins.length > 0 ? (
+      {coins.length > 0 ? (
+        <div className="coin-carousel-track">
           <>
             {coins.map((coin) => (
               <div key={coin.id} className="coin-bar">
@@ -61,10 +61,10 @@ const CoinCarouselBar = () => {
               </div>
             ))}
           </>
-        ) : (
-          <div className="loading"></div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="loading container"></div>
+      )}
     </div>
   );
 };

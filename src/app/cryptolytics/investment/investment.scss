@@ -106,6 +106,12 @@
   &:hover::-webkit-scrollbar-track {
       background-color: #f5f7fa
   }
+  .close-button {
+    position: absolute;
+    top: 25px;
+    cursor: pointer;
+    right: 20px;
+  }
   }
 
   .investments-wrapper{

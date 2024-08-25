@@ -15,6 +15,10 @@
         white-space: nowrap;
     }
     }
+    .loading {
+      height: 35px;
+      width: 100%;
+    }
 }
 
 
@@ -27,6 +31,7 @@
   }
   
   .coin-carousel-track {
+    // width: 100%;
     display: flex;
     gap: 17px;
     animation: scroll 350s linear infinite; /* 20s can be adjusted for speed */
