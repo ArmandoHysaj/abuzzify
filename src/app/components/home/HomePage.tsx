@@ -106,7 +106,7 @@ const HomePage = () => {
         >
           {(showAllNews ? news : news.slice(0, initialNewsToShow)).map(
             (article: any, index) => (
-              <a href={article.url} target="_blank" rel="noopener noreferrer">
+              <a key={index} href={article.url} target="_blank" rel="noopener noreferrer">
                 <div key={index} className="news-article">
                   <img src={article.urlToImage}></img>
                   <div className="news-description">
