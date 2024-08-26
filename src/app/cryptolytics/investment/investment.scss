@@ -170,6 +170,8 @@
   position: relative;
   margin-bottom: 25px;
   margin-top: 20px;
+  border-bottom: 2px solid lightgray;
+  max-width: 320px;
 }
 .input-container label {
   position: absolute;
@@ -186,6 +188,7 @@
   border-bottom: 1px solid #555;
   background: transparent;
   width: 100%;
+  border: none;
   padding: 8px 0 5px 0;
   font-size: 16px;
   color: black;
@@ -193,7 +196,6 @@
 .input-container input:focus {
   border: none;
   outline: none;
-  border-bottom: 1px solid #e74c3c;
 }
 
 .input-container input:focus ~ label {
