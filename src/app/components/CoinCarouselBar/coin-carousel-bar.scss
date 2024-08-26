@@ -1,6 +1,11 @@
 .coin-carousel-bar {
   display: flex !important;
   padding-top: 10px;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 9;
+
   cursor: default;
   .coin-bar {
     display: flex !important;
