@@ -2,10 +2,13 @@
 import React from "react";
 // import tips from "./tips.png";
 import "./investment-tips.scss";
-
+import "../articles.scss";
 const InvestmentTips: React.FC = () => {
   return (
     <>
+      <div className="stage">
+        <div className="media">{/* <img src={trading.src} alt="" /> */}</div>
+      </div>
       <div className="container educational-header">
         <div className="header-title">
           <h2>Investing in cryptocurrencies </h2>

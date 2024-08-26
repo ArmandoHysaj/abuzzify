@@ -1,11 +1,17 @@
 // src/app/components/BlockchainTechnology.tsx
 import React from "react";
 import "./blockchain-technology.scss";
+import "../articles.scss";
 import blockchain from "./blockchain.png";
 
 const BlockchainTechnology: React.FC = () => {
   return (
     <>
+      <div className="stage">
+        <div className="media">
+          <img src={blockchain.src} alt="" />
+        </div>
+      </div>
       <div className="container educational-header">
         <div className="header-title">
           <h3>Understanding Blockchain Technology</h3>
@@ -49,9 +55,6 @@ const BlockchainTechnology: React.FC = () => {
                 Read more
               </a>
             </p> */}
-          </div>
-          <div className="media">
-            <img src={blockchain.src} alt="" />
           </div>
         </div>
       </div>

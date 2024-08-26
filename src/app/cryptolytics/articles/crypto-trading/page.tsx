@@ -2,10 +2,15 @@
 import React from "react";
 import trading from "./trading.png";
 import "./crypto-trading.scss";
-
+import "../articles.scss";
 const CryptoTrading: React.FC = () => {
   return (
     <>
+      <div className="stage">
+        <div className="media">
+          <img src={trading.src} alt="" />
+        </div>
+      </div>
       <div className="container educational-header">
         <div className="header-title">
           <h2>Introduction to Cryptocurrency Trading</h2>
@@ -43,9 +48,6 @@ const CryptoTrading: React.FC = () => {
               Learn more about Cryptocurrency Trading{" "}
                <a href="/articles/cryptocurrency-trading">Read more</a>
             </p> */}
-          </div>
-          <div className="media">
-            <img src={trading.src} alt="" />
           </div>
         </div>
       </div>
