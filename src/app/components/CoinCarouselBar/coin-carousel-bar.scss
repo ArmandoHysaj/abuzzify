@@ -1,49 +1,46 @@
-.coin-carousel-bar{
+.coin-carousel-bar {
+  display: flex !important;
+  padding-top: 10px;
+  cursor: default;
+  .coin-bar {
     display: flex !important;
-    padding-top: 10px;
-    cursor: default;
-    .coin-bar{
-        display: flex !important;
-        will-change: transform;
+    will-change: transform;
     gap: 7px;
     font-family: "Montserrat-SemiBold";
 
-    font-size: .75rem;
+    font-size: 0.75rem;
     line-height: 1rem;
     text-transform: capitalize;
-    span{
-        white-space: nowrap;
+    span {
+      white-space: nowrap;
     }
-    }
-    .loading {
-      height: 35px;
-      width: 100%;
-    }
+  }
+  .loading {
+    height: 35px;
+    width: 100%;
+  }
 }
 
-
 .coin-carousel-bar {
-    width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-    box-sizing: border-box;
-    padding: 10px 0;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  padding: 10px 0;
+}
+
+.coin-carousel-track {
+  // width: 100%;
+  display: flex;
+  gap: 17px;
+  animation: scroll 350s linear infinite; /* 20s can be adjusted for speed */
+}
+
+@keyframes scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
   }
-  
-  .coin-carousel-track {
-    // width: 100%;
-    display: flex;
-    gap: 17px;
-    animation: scroll 350s linear infinite; /* 20s can be adjusted for speed */
+  100% {
+    transform: translate3d(-50%, 0, 0);
   }
-  
-  @keyframes scroll {
-    0% {
-      transform: translate3d(0, 0, 0);
-    }
-    100% {
-      transform: translate3d(-50%, 0, 0);
-    }
-  }
-  
-  
+}

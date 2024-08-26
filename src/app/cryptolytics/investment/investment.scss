@@ -1,51 +1,51 @@
 /* portfolio.scss */
-.investment-modal{
+.investment-modal {
   display: flex;
   margin-top: 30px;
 
-    flex-direction: column;
-    gap: 40px;
-  .modal-wrapper{
+  flex-direction: column;
+  gap: 40px;
+  .modal-wrapper {
     display: flex;
     justify-content: space-between;
   }
 
-  .saved-coins{
+  .saved-coins {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    ul{
+    ul {
       display: flex;
       flex-direction: column;
-    gap: 20px;
-    > div {
-      display: flex;
+      gap: 20px;
+      > div {
+        display: flex;
+      }
     }
-    }
-    li{
+    li {
       cursor: pointer;
-     &:hover{ opacity: 0.8;}
+      &:hover {
+        opacity: 0.8;
+      }
     }
     li:not(:first-of-type) {
       margin-top: 10px;
     }
-    .saved-coin-name{
+    .saved-coin-name {
       color: #e74c3c;
-    font-family:  "Montserrat-Medium";
-
+      font-family: "Montserrat-Medium";
     }
-    .saved-value{
-    font-family:  "Montserrat-Medium";
-
+    .saved-value {
+      font-family: "Montserrat-Medium";
     }
   }
 
-  .search-bar{
+  .search-bar {
     min-width: 187px;
     display: flex;
     align-items: start;
     justify-content: right;
-    [data-simplebar]{
+    [data-simplebar] {
       left: 0;
       top: 45px;
     }
@@ -53,19 +53,19 @@
   .simplebar-content .coin {
     cursor: pointer;
   }
-  .save-button{
+  .save-button {
     position: absolute;
     right: 20px;
     bottom: 20px;
     cursor: pointer;
     padding: 15px;
-    font-family:  "Montserrat-SemiBold";
+    font-family: "Montserrat-SemiBold";
     color: #fff;
     background-color: #25c077;
     border-radius: 5px;
     &:hover {
       animation: pulse 1s infinite;
-      transition: .3s;
+      transition: 0.3s;
     }
   }
   @keyframes pulse {
@@ -73,38 +73,38 @@
       transform: scale(1);
     }
     70% {
-      transform: scale(.9);
+      transform: scale(0.9);
     }
-      100% {
+    100% {
       transform: scale(1);
     }
   }
 }
 .investment-calculator-modal {
-    background: white;
-    padding: 20px;
-    border-radius: 4px;
-    outline: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    .description{
-      font-family: 'Montserrat-SemiBoldItalic';
-      margin-top: 15px;
-      max-width: calc(100% - 150px);
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #cbd2d9
+  background: white;
+  padding: 20px;
+  border-radius: 4px;
+  outline: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  .description {
+    font-family: "Montserrat-SemiBoldItalic";
+    margin-top: 15px;
+    max-width: calc(100% - 150px);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #cbd2d9;
   }
 
   &::-webkit-scrollbar {
-      width: 4px
+    width: 4px;
   }
 
   &:hover::-webkit-scrollbar-thumb {
-      background-color: #9aa5b1
+    background-color: #9aa5b1;
   }
 
   &:hover::-webkit-scrollbar-track {
-      background-color: #f5f7fa
+    background-color: #f5f7fa;
   }
   .close-button {
     position: absolute;
@@ -112,50 +112,49 @@
     cursor: pointer;
     right: 20px;
   }
-  }
+}
 
-  .investments-wrapper{
-    padding: 20px 0 10px 0;
+.investments-wrapper {
+  padding: 20px 0 10px 0;
 
-    .coin-name{
-      color: #a70532;
-    }
-    .title.red{
-      margin-top: 7px;
-    }
-    .coin-number-amount{
-      font-family: 'Montserrat-Italic';
-      margin-bottom: 10px;
-      display: block;
+  .coin-name {
+    color: #a70532;
+  }
+  .title.red {
+    margin-top: 7px;
+  }
+  .coin-number-amount {
+    font-family: "Montserrat-Italic";
+    margin-bottom: 10px;
+    display: block;
+  }
+}
 
-    }
-  }
-  
-  .investment-calculator-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.75);
+.investment-calculator-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
 
-    .modal-button{
-    margin: 30px auto 0;
-    }
-  }
-  .profit-loses{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
   .modal-button {
-    border-radius: 5px;
-    padding: 20px;
-      font-family: 'Montserrat-SemiBold';
-    cursor: pointer;
-    display: inline-block;
-    margin: 0 auto 50px;
+    margin: 30px auto 0;
   }
+}
+.profit-loses {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.modal-button {
+  border-radius: 5px;
+  padding: 20px;
+  font-family: "Montserrat-SemiBold";
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 auto 50px;
+}
 .remove-button {
   margin-left: 10px;
   cursor: pointer;
@@ -163,119 +162,117 @@
   height: 15px;
   margin-top: 3px;
 }
-  .investment-calculator{
-    width: 50vw;
-  }
+.investment-calculator {
+  width: 50vw;
+}
 
-  .input-container{
-    position:relative;
-    margin-bottom:25px;
-    margin-top: 20px;
-  }
-  .input-container label{
-    position:absolute;
-    top:15px;
-    left:0px;
-    font-size:16px;
-    color:black;	
-      pointer-event:none;
-    transition: all 0.5s ease-in-out;
-  }
-  .input-container input{ 
-    width: 50% !important;
-    border:0;
-    border-bottom:1px solid #555;  
-    background:transparent;
-    width:100%;
-    padding:8px 0 5px 0;
-    font-size:16px;
-    color:black;
-  }
-  .input-container input:focus{ 
-   border:none;	
-   outline:none;
-   border-bottom:1px solid #e74c3c;	
-  }
-  
-  .input-container input:focus ~ label{
-    top:-12px;
-    font-size:12px;
-    
-  }
-  
-  @media screen and (min-width: 1024px) {
-    .investment-calculator-modal {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      max-height: 600px;
-      overflow: auto;
-      right: auto;
-      min-width: 500px;
-      bottom: auto;
-      margin-right: -50%;
-      transform: translate(-50%, -50%);
-    }
-  }
-
-  @media screen and (max-width: 1023px) {
-.modal-button.default-button{
-  padding: 15px;
+.input-container {
   position: relative;
-  margin-top: 15px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-bottom: 25px;
+  margin-top: 20px;
 }
-.modal-btn-wrapper{
-  max-width: 600px;
-  margin: 0 auto;
+.input-container label {
+  position: absolute;
+  top: 15px;
+  left: 0px;
+  font-size: 16px;
+  color: black;
+  pointer-event: none;
+  transition: all 0.5s ease-in-out;
 }
-.investment-calculator-modal{
-  overflow: auto;
+.input-container input {
+  width: 50% !important;
+  border: 0;
+  border-bottom: 1px solid #555;
+  background: transparent;
+  width: 100%;
+  padding: 8px 0 5px 0;
+  font-size: 16px;
+  color: black;
+}
+.input-container input:focus {
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #e74c3c;
+}
+
+.input-container input:focus ~ label {
+  top: -12px;
+  font-size: 12px;
+}
+
+@media screen and (min-width: 1024px) {
+  .investment-calculator-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    max-height: 600px;
+    overflow: auto;
+    right: auto;
+    min-width: 500px;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .modal-button.default-button {
+    padding: 15px;
+    position: relative;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .modal-btn-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .investment-calculator-modal {
+    overflow: auto;
     max-height: 100%;
-  .description{
-    max-width: 100%;
-  }
-  .search-bar{
-    margin-top: 20px;
-  }
-    .investment-modal{
+    .description {
+      max-width: 100%;
+    }
+    .search-bar {
+      margin-top: 20px;
+    }
+    .investment-modal {
       margin-top: 0;
-      .saved-coins{
+      .saved-coins {
         padding-bottom: 50px;
-       ul{
-        flex-direction: column;
-        > div {
-          display: flex;
-          gap: 10px;
-        }
-        li{
-              width: max-content;
+        ul {
+          flex-direction: column;
+          > div {
+            display: flex;
+            gap: 10px;
+          }
+          li {
+            width: max-content;
+          }
         }
       }
-    }
     }
     .modal-wrapper {
       flex-direction: column;
       gap: 20px;
     }
-    .investment-calculator{
+    .investment-calculator {
       width: 100%;
     }
-    .input-container input{
+    .input-container input {
       width: 100% !important;
     }
-    .save-button{
+    .save-button {
       position: relative;
       width: max-content;
       right: auto;
       bottom: auto;
     }
-    .modal-button.default-button{
+    .modal-button.default-button {
       bottom: 30px;
       left: 15px;
       position: absolute;
     }
+  }
 }
-
-    }

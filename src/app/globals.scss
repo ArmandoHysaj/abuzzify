@@ -1,5 +1,5 @@
 /* Variables */
-$primary-color: #4A90E2;
+$primary-color: #4a90e2;
 $secondary-color: #1c1c1e;
 $background-color: #f5f5f7;
 $text-color: #333;
@@ -7,19 +7,26 @@ $accent-color: #ffc640;
 $border-radius: 4px;
 $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-
-h1, h2, h3, h4, h5,
-.hdl-1, .hdl-2, .hdl-3, .hdl-4, .hdl-5{
+h1,
+h2,
+h3,
+h4,
+h5,
+.hdl-1,
+.hdl-2,
+.hdl-3,
+.hdl-4,
+.hdl-5 {
   font-family: "Montserrat-SemiBold";
   color: #214d44;
   margin: 0;
 }
 
-strong{
-  font-family: 'Montserrat-SemiBold';
+strong {
+  font-family: "Montserrat-SemiBold";
 }
 
-html{
+html {
   height: 100%;
 }
 body {
@@ -31,7 +38,7 @@ body {
   margin: 0;
   height: 100%;
   // background-color: #FBFBFB;
-  > [data-simplebar]{
+  > [data-simplebar] {
     height: 100%;
   }
   main {
@@ -43,37 +50,36 @@ body {
   overflow: hidden;
 }
 
-ul { 
+ul {
   padding: 0;
   li {
-  list-style-type: none;
-}
+    list-style-type: none;
+  }
 }
 .default-button {
   background-color: #a70532;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   color: white;
-&:hover{
-  background-color: #96042d;
-
+  &:hover {
+    background-color: #96042d;
+  }
+  &:active {
+    background-color: #530118;
+  }
 }
-&:active {
-  background-color: #530118;
-}
-}
-.load-more-btn{
+.load-more-btn {
   text-align: center;
 }
-.load-more{
-margin-top: 20px;
-    display: inline-block;
-    padding: 15px;
-    cursor: pointer;
-    border: 1px solid #bcc3c6;
-    border-radius: 10px;
-    &:hover{
-      background-color: #f9f9f9;
-    }
+.load-more {
+  margin-top: 20px;
+  display: inline-block;
+  padding: 15px;
+  cursor: pointer;
+  border: 1px solid #bcc3c6;
+  border-radius: 10px;
+  &:hover {
+    background-color: #f9f9f9;
+  }
 }
 
 .cp-text,
@@ -84,38 +90,38 @@ margin-top: 20px;
 .cp-link-s {
   color: #4e5c67;
 
-    &--light {
-      font-family: "Montserrat-Light";
-    }
+  &--light {
+    font-family: "Montserrat-Light";
+  }
 
-    &--semi-bold {
-      font-family: "Montserrat-SemiBold";
-    }
+  &--semi-bold {
+    font-family: "Montserrat-SemiBold";
+  }
 
-    &--medium {
-      font-family: "Montserrat-Medium";
-    }
+  &--medium {
+    font-family: "Montserrat-Medium";
+  }
 }
 
 .cp-text,
 .cp-link {
-    font-size: 15px;
-    line-height: 20px;
+  font-size: 15px;
+  line-height: 20px;
 }
 
 .cp-text-m,
 .cp-link-m {
-    font-size: 14px;
-    line-height: 19px;
+  font-size: 14px;
+  line-height: 19px;
 }
 
 .cp-text-s,
 .cp-link-s {
-    font-size: 12px;
-    line-height: 16px;
+  font-size: 12px;
+  line-height: 16px;
 }
 
-p{
+p {
   margin: 0;
 }
 
@@ -140,12 +146,12 @@ main {
   position: relative;
 }
 
-.container{
+.container {
   max-width: calc(100% - 64px);
   margin: 0 auto;
 }
 
-.loading{
+.loading {
   position: relative;
   position: relative;
   display: flex;
@@ -158,8 +164,8 @@ main {
     opacity: 0;
   }
 
-  &:before{
-    content:"";
+  &:before {
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -167,10 +173,10 @@ main {
     height: 100%;
     background-color: #c8cdcf70;
     border-radius: 10px;
-    opacity: .5;
+    opacity: 0.5;
   }
   &:after {
-    content:"";
+    content: "";
     width: 25px;
     height: 25px;
     border: 2px solid rgb(137 137 137 / 10%);
@@ -181,10 +187,8 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
 }
-
-}
-
 
 /* Footer */
 footer {
@@ -199,8 +203,8 @@ footer {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    
-    .quick-links{
+
+    .quick-links {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -210,7 +214,8 @@ footer {
       }
     }
 
-    .quick-links, .contact-info {
+    .quick-links,
+    .contact-info {
       flex: 1;
       min-width: 200px;
       margin: 1rem;
@@ -277,93 +282,100 @@ footer {
   }
 }
 
-
-
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
 @media screen and (max-width: 1500px) {
-  h1, .hdl-1 {
-      font-size: 27px;
-      line-height: 35px;
+  h1,
+  .hdl-1 {
+    font-size: 27px;
+    line-height: 35px;
   }
 
-  h2, .hdl-2 {
-      font-size: 24px;
-      line-height: 31px;
+  h2,
+  .hdl-2 {
+    font-size: 24px;
+    line-height: 31px;
   }
 
-  h3, .hdl-3 {
-      font-size: 19px;
-      line-height: 25px;
+  h3,
+  .hdl-3 {
+    font-size: 19px;
+    line-height: 25px;
   }
 
-  h4, .hdl-4 {
-      font-size: 18px;
-      line-height: 23px;
+  h4,
+  .hdl-4 {
+    font-size: 18px;
+    line-height: 23px;
   }
 
-  h5, .hdl-5 {
-      font-size: 17px;
-      line-height: 21px;
+  h5,
+  .hdl-5 {
+    font-size: 17px;
+    line-height: 21px;
   }
 }
 
 @media screen and (min-width: 1500px) {
-  h1, .hdl-1 {
-      font-size: 42px;
-      line-height: 52px;
+  h1,
+  .hdl-1 {
+    font-size: 42px;
+    line-height: 52px;
   }
 
-  h2, .hdl-2 {
-      font-size: 34px;
-      line-height: 44px;
+  h2,
+  .hdl-2 {
+    font-size: 34px;
+    line-height: 44px;
   }
 
-  h3, .hdl-3 {
-      font-size: 21px;
-      line-height: 32px;
+  h3,
+  .hdl-3 {
+    font-size: 21px;
+    line-height: 32px;
   }
 
-  h4, .hdl-4 {
-      font-size: 18px;
-      line-height: 23px;
+  h4,
+  .hdl-4 {
+    font-size: 18px;
+    line-height: 23px;
   }
 
-  h5, .hdl-5 {
-      font-size: 17px;
-      line-height: 21px;
+  h5,
+  .hdl-5 {
+    font-size: 17px;
+    line-height: 21px;
   }
 }
 
 @media screen and (max-width: 960px) {
-
-.container{
-  max-width: calc(100% - 32px);
-  margin: 0 auto;
-}
+  .container {
+    max-width: calc(100% - 32px);
+    margin: 0 auto;
+  }
 }
 
 @media screen and (max-width: 640px) {
-footer .footer-content .quick-links{
-  display: block;
-  margin: 0;
-  ul {
+  footer .footer-content .quick-links {
     display: block;
-    li {
-      margin-bottom: 1.5rem;
+    margin: 0;
+    ul {
+      display: block;
+      li {
+        margin-bottom: 1.5rem;
+      }
     }
   }
-}
-  .container{
+  .container {
     // max-width: calc(100% - 16px);
     margin: 0 auto;
   }
-  .header{
+  .header {
     display: block;
-    .header-contents{
+    .header-contents {
       margin-top: 20px;
       flex-direction: row;
       justify-content: space-between;
@@ -377,4 +389,4 @@ footer .footer-content .quick-links{
     padding-bottom: 0;
     padding-right: 16px;
   }
-  }
+}

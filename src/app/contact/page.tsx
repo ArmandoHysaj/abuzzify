@@ -9,8 +9,7 @@ export default function Contact() {
         </div>
       </div>
       <div className="contact cp-text container">
-
-      Email: <strong>armandohysaj7@gmail.com</strong>
+        Email: <strong>armandohysaj7@gmail.com</strong>
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ export default function CryptolyticsPage() {
   const [selectedCoinLoaded, setSelectedCoinLoaded] = useState(false);
   return (
     <>
-<CoinCarouselBar/>
+      <CoinCarouselBar />
 
       <Header
         setSelectedCoin={setSelectedCoin}
