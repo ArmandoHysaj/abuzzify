@@ -243,8 +243,8 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 /* Educational Content */
 .educational-content {
   margin-top: 20px;
+  position: relative;
   padding-top: 35px;
-  border-top: 1px solid #e4e2dd;
   margin: 4rem 0;
   a {
     display: block;
@@ -290,6 +290,19 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         font-size: 1rem;
       }
     }
+  }
+  &:before {
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    content: "";
+    height: 115%;
+    position: absolute;
+    top: 0;
+    background: #f9f9f9;
+    width: 100vw;
+    z-index: -1;
   }
 }
 
