@@ -51,23 +51,13 @@
       color: #a70532;
     }
   }
-  .similar-coins {
+  .similar-coins ul {
     transform: translate(0);
     max-height: 270px;
     padding-right: 5px;
     overflow: auto;
     position: relative;
-    padding-bottom: 65px;
     box-sizing: border-box;
-    &:after {
-      content: "";
-      position: fixed;
-      bottom: 0;
-      right: 0;
-      width: 100%;
-      height: 65px;
-      background: linear-gradient(to bottom, transparent, #fff);
-    }
     &::-webkit-scrollbar-thumb {
       background-color: #cbd2d9;
     }
