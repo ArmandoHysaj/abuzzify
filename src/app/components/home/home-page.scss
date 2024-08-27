@@ -280,6 +280,10 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         font-size: 15px;
         line-height: 20px;
         color: #616e7c;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
       }
       h3 {
         font-size: 1.2rem;
