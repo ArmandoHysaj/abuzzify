@@ -4,7 +4,7 @@ import axios from "axios";
 import "./home-page.scss";
 import Link from "next/link";
 import ReactGA from "react-ga4";
-import CoinCarouselBar from "../CoinCarouselBar/CoinCarouselBar";
+import CoinCarouselBar from "@/app/components/CoinCarouselBar/CoinCarouselBar";
 
 const HomePage = () => {
   const [news, setNews] = useState([]);
@@ -78,7 +78,7 @@ const HomePage = () => {
   };
 
   const getStarted = () => {
-    window.location.href = "/cryptolytics";
+    window.location.href = "/templates/cryptolytics";
     ReactGA.event({
       category: "User",
       action: "Clicked Get Started Button",
@@ -158,7 +158,7 @@ const HomePage = () => {
               <p>{coin.price_usd} USD</p>
               <button
                 onClick={() =>
-                  (window.location.href = `/cryptolytics?coin=${coin.id}`)
+                  (window.location.href = `/templates/cryptolytics?coin=${coin.id}`)
                 }
               >
                 View Details
@@ -198,7 +198,7 @@ const HomePage = () => {
               cryptocurrencies like Bitcoin. Learn more about its applications
               and potential impact on various industries.
             </p>
-            <Link href="cryptolytics/articles/blockchain-technology">
+            <Link href="/templates/cryptolytics/articles/blockchain-technology">
               Read more
             </Link>
           </div>
@@ -209,14 +209,18 @@ const HomePage = () => {
               to trading strategies, market analysis, and essential tips for
               successful trading.
             </p>
-            <Link href="cryptolytics/articles/crypto-trading">Read more</Link>
+            <Link href="/templates/cryptolytics/articles/crypto-trading">
+              Read more
+            </Link>
           </div>
           <div className="article">
             <h3>Investment Tips</h3>
             <p className="cp-text-m">
               Get tips on how to invest in cryptocurrencies wisely.
             </p>
-            <Link href="cryptolytics/articles/investment-tips">Read more</Link>
+            <Link href="/templates/cryptolytics/articles/investment-tips">
+              Read more
+            </Link>
           </div>
         </div>
       </div>

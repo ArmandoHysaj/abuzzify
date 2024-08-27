@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import "./globals.scss";
 import "./fonts.scss";
 import MainNavigation from "./components/MainNavigation/MainNavigation";
+import GoToTopButton from "./components/GoToTopButton/GoToTopButton";
 
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
@@ -39,21 +40,22 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <MainNavigation />
         <main>{children}</main>
+        <GoToTopButton />
         <footer>
           <div className="footer-content">
             <div className="quick-links">
               <ul>
                 <li>
-                  <a href="/about">About Us</a>
+                  <a href="/templates/about">About Us</a>
                 </li>
                 <li>
-                  <a href="/privacy">Privacy Policy</a>
+                  <a href="/templates/privacy">Privacy Policy</a>
                 </li>
                 <li>
-                  <a href="/terms">Terms of Service</a>
+                  <a href="/templates/terms">Terms of Service</a>
                 </li>
                 <li>
-                  <a href="/contact">Contact Us</a>
+                  <a href="/templates/contact">Contact Us</a>
                 </li>
               </ul>
             </div>

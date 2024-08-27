@@ -83,13 +83,13 @@ const MainNavigation = () => {
                   <Link href="/">Home</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/cryptolytics">Cryptolytics</Link>
+                  <Link href="/templates/cryptolytics">Cryptolytics</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/articles">Articles</Link>
+                  <Link href="/templates/articles">Articles</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/about">About Us</Link>
+                  <Link href="/templates/about">About Us</Link>
                 </div>
               </div>
             </div>
@@ -157,13 +157,13 @@ const MainNavigation = () => {
               <Link href="/">Home</Link>
             </div>
             <div className="hdl-4">
-              <Link href="/cryptolytics">Cryptolytics</Link>
+              <Link href="/templates/cryptolytics">Cryptolytics</Link>
             </div>
             <div className="hdl-4">
-              <Link href="/articles">Articles</Link>
+              <Link href="/templates/articles">Articles</Link>
             </div>
             <div className="hdl-4 left-space">
-              <Link href="/about">About Us</Link>
+              <Link href="/templates/about">About Us</Link>
             </div>
           </div>
         )}
