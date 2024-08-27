@@ -52,9 +52,22 @@
     }
   }
   .similar-coins {
+    transform: translate(0);
     max-height: 270px;
     padding-right: 5px;
     overflow: auto;
+    position: relative;
+    padding-bottom: 65px;
+    box-sizing: border-box;
+    &:after {
+      content: "";
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 65px;
+      background: linear-gradient(to bottom, transparent, #fff);
+    }
     &::-webkit-scrollbar-thumb {
       background-color: #cbd2d9;
     }
@@ -169,6 +182,17 @@
     flex-direction: column;
     gap: 15px;
     overflow: auto;
+    padding-bottom: 65px;
+    box-sizing: border-box;
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: 65px;
+      right: 0;
+      width: 100%;
+      height: 65px;
+      background: linear-gradient(to bottom, transparent, #fff);
+    }
   }
   ul::-webkit-scrollbar-thumb {
     background-color: #cbd2d9;
@@ -238,6 +262,10 @@
     > div {
       width: 100%;
     }
+  }
+  .news-container {
+    max-width: 600px;
+    margin: 0 auto;
   }
   .similar-coins {
     border-top: 1px solid #e4e2dd;
