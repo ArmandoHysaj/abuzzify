@@ -86,6 +86,9 @@ const MainNavigation = () => {
                   <Link href="/cryptolytics">Cryptolytics</Link>
                 </div>
                 <div className="hdl-4">
+                  <Link href="/articles">Articles</Link>
+                </div>
+                <div className="hdl-4">
                   <Link href="/about">About Us</Link>
                 </div>
               </div>
@@ -155,6 +158,9 @@ const MainNavigation = () => {
             </div>
             <div className="hdl-4">
               <Link href="/cryptolytics">Cryptolytics</Link>
+            </div>
+            <div className="hdl-4">
+              <Link href="/articles">Articles</Link>
             </div>
             <div className="hdl-4 left-space">
               <Link href="/about">About Us</Link>

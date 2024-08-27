@@ -48,14 +48,14 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
-      const coin = params.get("coin");
-      setCoinId(coin);
+      const coinParam = params.get("coin");
+      setCoinId(coinParam);
     }
-  }, []);
+  }, [coinId]);
 
   useEffect(() => {
     if (coinId) {
-      fetchCoinData(coinId);
+      console.log(coinId, "coinID");
     }
   }, [coinId]);
 
@@ -187,7 +187,9 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       initialInvestment,
       initialPrice,
     };
-    setSavedCoins((prevSavedCoins) => [...prevSavedCoins, newCoin]);
+    initialInvestment > 0 &&
+      initialPrice > 0 &&
+      setSavedCoins((prevSavedCoins) => [...prevSavedCoins, newCoin]);
   };
 
   const openModal = () => {

@@ -1,13 +1,17 @@
 // src/app/components/CryptoTrading.tsx
 import React from "react";
-// import tips from "./tips.png";
+import tips from "./tips.jpg";
+import lowerTips from "./tips.png";
+
 import "./investment-tips.scss";
 import "../articles.scss";
 const InvestmentTips: React.FC = () => {
   return (
     <>
       <div className="stage">
-        <div className="media">{/* <img src={trading.src} alt="" /> */}</div>
+        <div className="media">
+          <img src={tips.src} alt="" />
+        </div>
       </div>
       <div className="container educational-header">
         <div className="header-title">
@@ -15,11 +19,11 @@ const InvestmentTips: React.FC = () => {
         </div>
       </div>
       <div className="educational-content container">
-        <p className="cp-text">
+        <h4>
           Investing in cryptocurrencies can be lucrative, but it&apos;s also
           risky due to the volatile nature of the market. Here are some tips on
           how to invest in cryptocurrencies wisely:
-        </p>
+        </h4>
         <div className="wrapper">
           <div className="description">
             <h3> Do Your Research (DYOR)</h3>
@@ -164,7 +168,10 @@ const InvestmentTips: React.FC = () => {
                <a href="/articles/cryptocurrency-trading">Read more</a>
             </p> */}
           </div>
-          <div className="media">{/* <img src={tips.src} alt="" /> */}</div>
+
+          <div className="media">
+            <img src={lowerTips.src} alt="" />
+          </div>
         </div>
       </div>
     </>

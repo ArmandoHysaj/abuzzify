@@ -231,7 +231,10 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       transition: background-color 0.3s;
 
       &:hover {
-        background-color: $accent-color;
+        background-color: #1a4139;
+      }
+      &:active {
+        background-color: #0a241e;
       }
     }
   }
@@ -239,6 +242,9 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
 /* Educational Content */
 .educational-content {
+  margin-top: 20px;
+  padding-top: 35px;
+  border-top: 1px solid #e4e2dd;
   margin: 4rem 0;
   a {
     display: block;

@@ -1,6 +1,6 @@
 // src/app/components/CryptoTrading.tsx
 import React from "react";
-import trading from "./trading.png";
+import trading from "./trading.jpg";
 import "./crypto-trading.scss";
 import "../articles.scss";
 const CryptoTrading: React.FC = () => {

@@ -30,12 +30,12 @@ const HomePage = () => {
     const fetchNews = async () => {
       try {
         const response = await axios.get(`/api/fetchNews?coinName=bitcoin`);
+        console.log(response);
         setNews(response.data.articles);
-      } catch (error) {
-        console.error("Error fetching news:", error);
-        setIsNewsLoading(true);
-      } finally {
         setIsNewsLoading(false);
+      } catch (error) {
+        setIsNewsLoading(true);
+        console.error("Error fetching news:", error);
       }
     };
 
@@ -44,7 +44,7 @@ const HomePage = () => {
         const response = await axios.get(
           "https://api.coinlore.net/api/tickers/"
         );
-        setTrendingCoins(response.data.data); // Assuming the data is in the 'data' key
+        setTrendingCoins(response.data.data);
       } catch (error) {
         console.error("Error fetching trending coins:", error);
         setIsNewsLoading(true);
@@ -91,7 +91,7 @@ const HomePage = () => {
     <div>
       {/* Hero Section */}
       <div className="hero">
-        <h1>Welcome to Abuzzify</h1>
+        <h1>Abuzzify</h1>
         <h3>Your Ultimate Crypto Analytics Hub</h3>
         <button onClick={() => getStarted()}>Get Started</button>
       </div>
@@ -190,7 +190,7 @@ const HomePage = () => {
         <div className="articles">
           <div className="article">
             <h3>Understanding Blockchain Technology</h3>
-            <p>
+            <p className="cp-text-m">
               Blockchain is a decentralized technology that underpins
               cryptocurrencies like Bitcoin. Learn more about its applications
               and potential impact on various industries.
@@ -201,7 +201,7 @@ const HomePage = () => {
           </div>
           <div className="article">
             <h3>Introduction to Cryptocurrency Trading</h3>
-            <p>
+            <p className="cp-text-m">
               New to cryptocurrency trading? Explore our beginner&apos;s guide
               to trading strategies, market analysis, and essential tips for
               successful trading.
@@ -210,7 +210,9 @@ const HomePage = () => {
           </div>
           <div className="article">
             <h3>Investment Tips</h3>
-            <p>Get tips on how to invest in cryptocurrencies wisely.</p>
+            <p className="cp-text-m">
+              Get tips on how to invest in cryptocurrencies wisely.
+            </p>
             <Link href="cryptolytics/articles/investment-tips">Read more</Link>
           </div>
         </div>

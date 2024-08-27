@@ -1,7 +1,12 @@
 .educational-header {
   padding: 30px 0 15px;
+  h2 {
+    color: #a70532;
+  }
 }
-
+h4 {
+  margin-bottom: 25px;
+}
 .educational-content {
   > p {
     margin-bottom: 20px;
@@ -11,11 +16,18 @@
     margin: 20px 0;
     li {
       margin-bottom: 10px;
+      list-style-type: circle;
+      margin-left: 30px;
+      line-height: 25px;
     }
   }
   .header {
     min-height: initial;
     padding-bottom: 0;
+  }
+  .wrapper {
+    display: flex;
+    gap: 35px;
   }
 }
 @media (min-width: 960px) {
@@ -26,7 +38,11 @@
     }
     img {
       width: 100%;
-      object-fit: cover;
+      object-fit: contain;
+      display: block;
+      object-position: top;
+      position: sticky;
+      top: 15px;
     }
   }
 }
@@ -34,5 +50,14 @@
 @media (max-width: 959px) {
   .educational-content .media img {
     width: 100%;
+  }
+  .educational-content .wrapper {
+    flex-direction: column;
+    .media {
+      order: 1;
+    }
+    .description {
+      order: 2;
+    }
   }
 }

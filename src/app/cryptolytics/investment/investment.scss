@@ -44,10 +44,15 @@
     min-width: 187px;
     display: flex;
     align-items: start;
+    position: relative;
+    z-index: 99;
     justify-content: right;
     [data-simplebar] {
       left: 0;
       top: 45px;
+    }
+    .search-results {
+      top: 35px;
     }
   }
   .simplebar-content .coin {
@@ -183,7 +188,7 @@
   transition: all 0.5s ease-in-out;
 }
 .input-container input {
-  width: 50% !important;
+  width: 100% !important;
   border: 0;
   border-bottom: 1px solid #555;
   background: transparent;
