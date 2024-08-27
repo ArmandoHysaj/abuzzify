@@ -114,6 +114,9 @@ const HomePage = () => {
               >
                 <div key={index} className="news-article">
                   <picture>
+                    <span className="news-source cp-text-s">
+                      {article.source.name}
+                    </span>
                     <img src={article.urlToImage}></img>
                   </picture>
                   <div className="news-description">
