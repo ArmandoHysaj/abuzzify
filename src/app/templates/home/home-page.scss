@@ -1,9 +1,9 @@
 /* Variables */
-$primary-color: #4a90e2;
+$primary-color: #508b9c;
 $secondary-color: #1c1c1e;
 $background-color: #f5f5f7;
 $text-color: #333;
-$accent-color: #ffc640;
+$accent-color: #79673b;
 $border-radius: 4px;
 $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -118,6 +118,7 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         font-size: 1rem;
         max-height: 62px;
         overflow: hidden;
+        color: #9ca7b3;
         font-family: "Montserrat-Light";
       }
       p,
@@ -288,11 +289,11 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       a {
         position: absolute;
         bottom: 20px;
+        color: #a70532;
         left: 20px;
         font-family: "Montserrat-Light";
         font-size: 15px;
         line-height: 20px;
-        color: #616e7c;
         text-decoration: none;
         &:hover {
           text-decoration: underline;
@@ -305,6 +306,7 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
       p {
         font-size: 1rem;
+        color: #9ca7b3;
       }
     }
   }

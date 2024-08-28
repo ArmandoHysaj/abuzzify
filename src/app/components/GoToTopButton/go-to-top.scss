@@ -1,0 +1,40 @@
+.go-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+.go-to-top-button {
+  transition: opacity 0.3s;
+  border: 2px solid;
+  border-color: #b6b3ab;
+  background-color: #fff;
+  width: 40px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  height: 40px;
+  &:after {
+    content: "";
+    position: absolute;
+    right: 50%;
+    top: calc(50% + 5px);
+    border-left: 1px solid;
+    border-color: #b6b3ab;
+    border-top: 1px solid;
+    border-top-color: #b6b3ab;
+    width: 15px;
+    height: 15px;
+    -webkit-transform: translate(50%, -50%) rotate(45deg);
+    transform: translate(50%, -50%) rotate(45deg);
+  }
+}
+
+.go-to-top-button:hover {
+  background-color: #b6b3ab;
+  cursor: pointer;
+  &:after {
+    border-left: 1px solid #fff;
+    border-top: 1px solid #fff;
+  }
+}
