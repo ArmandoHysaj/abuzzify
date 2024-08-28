@@ -6,7 +6,7 @@ const formatNumber = (num: number) => {
   } else if (num >= 1e6) {
     return (num / 1e6).toFixed(2) + "M";
   } else {
-    return num.toLocaleString();
+    return num && num.toLocaleString();
   }
 };
 

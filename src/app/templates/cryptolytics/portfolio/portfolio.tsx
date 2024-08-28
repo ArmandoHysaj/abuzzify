@@ -50,12 +50,14 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       const params = new URLSearchParams(window.location.search);
       const coinParam = params.get("coin");
       setCoinId(coinParam);
+      localStorage.removeItem("portfolioState");
+      // removeCoinParam();
     }
-  }, [coinId]);
+  }, []);
 
   useEffect(() => {
     if (coinId) {
-      console.log(coinId, "coinID");
+      fetchCoinData(coinId);
     }
   }, [coinId]);
 
@@ -64,6 +66,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       const savedState = JSON.parse(
         localStorage.getItem("portfolioState") || "{}"
       );
+      console.log(savedState.selectedCoin, "saved coin selected coin");
       if (savedState) {
         setSavedCoins(savedState.savedCoins || []);
         const savedCoinId = savedState.selectedCoin?.id;
@@ -98,6 +101,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
 
   useEffect(() => {
     if (coin) {
+      console.log(coin, "coin");
       const stateToSave = {
         similarCoins,
         news,
@@ -110,15 +114,16 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
         initialPrice,
         savedCoins,
       };
+      console.log(coin.id, "coin ID");
       localStorage.setItem("portfolioState", JSON.stringify(stateToSave));
     }
   }, [
+    coin,
     similarCoins,
     news,
     loadingNews,
     loadingCoins,
     newsActive,
-    coin,
     initialInvestment,
     initialPrice,
     savedCoins,
@@ -133,14 +138,22 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
         localStorage.removeItem("portfolioState");
         setCoin(null);
         setCoinId(null);
-        if (typeof window !== "undefined") {
-          const url = new URL(window.location.href);
-          url.searchParams.delete("coin");
-          window.history.replaceState({}, document.title, url.toString());
-        }
+        removeCoinParam();
       });
     }
   }, [coin]);
+  const removeCoinParam = () => {
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      if (url.searchParams.has("coin")) {
+        console.log("Coin parameter exists!");
+        url.searchParams.delete("coin");
+        window.history.replaceState({}, document.title, url.toString());
+      } else {
+        console.log("Coin parameter does not exist.");
+      }
+    }
+  };
 
   const fetchCoinData = async (coinId: string) => {
     try {
@@ -149,6 +162,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       );
       setCoin(response.data[0]);
       setSelectedCoinLoaded(true);
+      // removeCoinParam();
     } catch (error) {
       console.error("Error fetching coin data", error);
     }
