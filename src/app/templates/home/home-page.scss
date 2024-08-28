@@ -184,11 +184,14 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
       p {
-        font-size: 1rem;
+        font-size: 13px;
         margin: 0.3rem 0;
+        font-family: "Montserrat-SemiBold";
+        color: #9ca7b3;
       }
 
       button {
+        font-family: "Montserrat-Medium";
         background-color: $primary-color;
         color: white;
         padding: 0.5rem 1rem;

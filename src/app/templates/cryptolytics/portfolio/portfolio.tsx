@@ -50,8 +50,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       const params = new URLSearchParams(window.location.search);
       const coinParam = params.get("coin");
       setCoinId(coinParam);
-      localStorage.removeItem("portfolioState");
-      // removeCoinParam();
     }
   }, []);
 
@@ -66,14 +64,15 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       const savedState = JSON.parse(
         localStorage.getItem("portfolioState") || "{}"
       );
-      console.log(savedState.selectedCoin, "saved coin selected coin");
-      if (savedState) {
+      if (
+        savedState &&
+        !new URLSearchParams(window.location.search).get("coin")
+      ) {
         setSavedCoins(savedState.savedCoins || []);
         const savedCoinId = savedState.selectedCoin?.id;
         if (savedCoinId) {
           fetchCoinData(savedCoinId);
         }
-        // setCoin(savedState.selectedCoin);
         setSimilarCoins(savedState.similarCoins || []);
         setNews(savedState.news || []);
         setLoadingNews(
@@ -101,7 +100,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
 
   useEffect(() => {
     if (coin) {
-      console.log(coin, "coin");
       const stateToSave = {
         similarCoins,
         news,
@@ -114,7 +112,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
         initialPrice,
         savedCoins,
       };
-      console.log(coin.id, "coin ID");
       localStorage.setItem("portfolioState", JSON.stringify(stateToSave));
     }
   }, [
@@ -146,7 +143,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     if (typeof window !== "undefined") {
       const url = new URL(window.location.href);
       if (url.searchParams.has("coin")) {
-        console.log("Coin parameter exists!");
         url.searchParams.delete("coin");
         window.history.replaceState({}, document.title, url.toString());
       } else {
@@ -162,7 +158,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       );
       setCoin(response.data[0]);
       setSelectedCoinLoaded(true);
-      // removeCoinParam();
     } catch (error) {
       console.error("Error fetching coin data", error);
     }
@@ -253,6 +248,10 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     localStorage.setItem("portfolioState", JSON.stringify(stateToSave));
   };
 
+  const selectSimilarCoin = (c: any) => {
+    removeCoinParam();
+    setCoinId(c.id);
+  };
   return (
     <>
       <div className="portfolio-section container">
@@ -624,7 +623,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                     <li key={c.id}>
                       <span
                         className="coin-name"
-                        onClick={() => setCoinId(c.id)}
+                        onClick={() => selectSimilarCoin(c)}
                       >
                         {c.name} ({c.symbol})
                       </span>

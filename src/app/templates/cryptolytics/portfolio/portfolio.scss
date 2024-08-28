@@ -165,7 +165,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  ul {
+  ul:not(.loading) {
     max-height: 510px;
     padding-right: 10px;
     display: flex;
