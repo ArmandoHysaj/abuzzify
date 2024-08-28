@@ -117,7 +117,7 @@ const HomePage = () => {
                     <span className="news-source cp-text-s">
                       {article.source.name}
                     </span>
-                    <img src={article.urlToImage}></img>
+                    <img loading="lazy" src={article.urlToImage}></img>
                   </picture>
                   <div className="news-description">
                     <div className="news-author cp-text-s">

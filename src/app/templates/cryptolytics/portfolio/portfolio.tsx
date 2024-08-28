@@ -642,7 +642,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                     {news.length > 0 ? (
                       news.map((article, index) => (
                         <li key={index}>
-                          <img src={article.urlToImage}></img>
+                          <img loading="lazy" src={article.urlToImage}></img>
                           <div className="news-description">
                             <div className="news-author cp-text-s">
                               <span className="author">{article.author}</span>
