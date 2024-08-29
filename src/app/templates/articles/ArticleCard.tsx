@@ -20,7 +20,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
 
   return (
     <div className="article-card" onClick={() => setShowContent(!showContent)}>
-      <h2 className="article-title">{article.title}</h2>
+      <h3 className="article-title">{article.title}</h3>
       <p className="article-summary cp-text">{article.summary}</p>
       {showContent && <ArticleContent content={article.content} />}
     </div>

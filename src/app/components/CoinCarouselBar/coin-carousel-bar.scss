@@ -4,7 +4,8 @@
   position: sticky;
   top: 0;
   background-color: white;
-  z-index: 9;
+  z-index: 99;
+  margin-top: -1px;
 
   cursor: default;
   .coin-bar {
