@@ -90,6 +90,9 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         background-color: #e4e7eb;
         border-radius: 2px;
         padding: 1px 4px;
+        max-height: 15px;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
       .news-author {
         margin-bottom: 7px;
@@ -97,16 +100,15 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         gap: 10px;
       }
       picture {
-        min-height: 200px;
+        min-height: 140px;
         display: block;
-        max-height: 200px;
+        max-height: 140px;
+        overflow: hidden;
       }
       img {
-        max-height: 200px;
         display: block;
         width: 100%;
         border-radius: 4px;
-        height: 100%;
         object-fit: contain;
       }
       h3 {
