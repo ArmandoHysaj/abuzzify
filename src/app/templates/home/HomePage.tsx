@@ -181,7 +181,9 @@ const HomePage = () => {
         <div className="tool">
           <h3>Profit/Loss Calculator</h3>
           <p>Calculate your profits and losses from your crypto investments.</p>
-          <button onClick={() => (window.location.href = "/cryptolytics")}>
+          <button
+            onClick={() => (window.location.href = "/templates/cryptolytics")}
+          >
             Try Now
           </button>
         </div>

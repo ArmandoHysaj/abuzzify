@@ -1,6 +1,7 @@
 "use client";
 import CoinCarouselBar from "@/app/components/CoinCarouselBar/CoinCarouselBar";
 import "../../components/CoinCarouselBar/coin-carousel-bar.scss";
+import articleImg from "../../images/articles.webp";
 
 // src/app/articles/page.tsx
 
@@ -39,7 +40,10 @@ export default function ArticlesPage() {
     <>
       <CoinCarouselBar />
       <div className="article-section container">
-        <h1 className="heading">Latest Crypto Articles</h1>
+        <div className="article-img">
+          <img src={articleImg.src} alt="" />
+          <h1 className="heading">Latest Crypto Articles</h1>
+        </div>
         <ArticleList articles={visibleArticles} />
         <div className="progress-container">
           <div
