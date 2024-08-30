@@ -1,16 +1,14 @@
-
-  
-  .heading {
-    margin-bottom: 40px;
-  }
-  .article-section {
-    padding: 64px 0;
-position: relative;
-> * {
+.heading {
+  margin-bottom: 40px;
+}
+.article-section {
+  padding: 64px 0;
+  position: relative;
+  > * {
     z-index: 9;
     position: relative;
-}
-&:after{
+  }
+  &:after {
     content: "";
     background-color: #f5f5f7;
     position: absolute;
@@ -20,86 +18,128 @@ position: relative;
     left: 50%;
     transform: translateX(-50%);
     height: calc(100% + 32px);
-
-}  
+  }
 }
-  .article-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 40px;
-  }
-  
-  .article-card {
-    background-color: #ffffff;
-    padding: 25px;
-    border: none;
-    border-radius: 20px;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .article-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-  }
-  
-  .article-title {
-    margin-bottom: 15px;
-  }
-  
-  .article-summary,
-  .article-content {
-    margin-bottom: 20px;
-    font-family: "Montserrat-Light";
-  }
+.article-list {
+  align-items: start;
+  display: grid;
+  gap: 40px;
+}
 
-.article-content{
-    border-top: 2px solid #f5f5f7;
-    padding-top: 20px;
+.article-card {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  &.active {
+    background-color: #e4e2dd;
+  }
+}
+
+.article-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.article-title {
+  margin-bottom: 15px;
+}
+.article-summary,
+.article-title {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.article-title {
+  padding-top: 25px;
+}
+.article-summary,
+.article-content {
+  padding-bottom: 20px;
+  font-family: "Montserrat-Light";
+}
+
+.article-content {
+  margin-top: 20px;
+  background-color: #e4e2dd;
+  padding-left: 25px;
+  padding-right: 25px;
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 0;
+    background-color: #f5f5f7;
+    height: 2px;
+    width: 100%;
+  }
 }
 
 .progress-container {
-    background-color: white;
-    border-radius: 10px;
-    height: 10px;
-    width: 100%;
-    max-width: 300px;
-    margin: 20px auto 0;
+  background-color: white;
+  border-radius: 10px;
+  height: 10px;
+  width: 100%;
+  max-width: 300px;
+  margin: 20px auto 0;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #111;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+.indicator-bar {
+  margin-top: 15px;
+  font-size: 16px;
+  color: #555;
+  font-family: "Montserrat-SemiBold";
+  text-align: center;
+}
+
+.load-more-button {
+  display: block;
+  margin: 40px auto 0;
+  padding: 14px 28px;
+  background-color: #111111;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.load-more-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 1024px) {
+  .article-list {
+    grid-template-columns: repeat(4, 1fr);
   }
-  
-  .progress-bar {
-    height: 100%;
-    background-color: #111;
-    border-radius: 5px;
-    transition: width 0.3s ease;
+}
+
+@media (max-width: 1023px) {
+  .article-list {
+    grid-template-columns: repeat(3, 1fr);
   }
-  
-  .indicator-bar {
-    margin-top: 15px;
-    font-size: 16px;
-    color: #555;
-    font-family: "Montserrat-SemiBold";
-    text-align: center;
+}
+
+@media (max-width: 960px) {
+  .article-list {
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  
-  .load-more-button {
-    display: block;
-    margin: 40px auto 0;
-    padding: 14px 28px;
-    background-color: #111111;
-    color: #fff;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1)
+}
+
+@media (max-width: 640px) {
+  .article-list {
+    grid-template-columns: repeat(1, 1fr);
   }
-  
-  .load-more-button:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  }
-  
+}

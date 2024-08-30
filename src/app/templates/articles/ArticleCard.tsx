@@ -19,7 +19,10 @@ export default function ArticleCard({ article }: ArticleCardProps) {
   const [showContent, setShowContent] = useState(false);
 
   return (
-    <div className="article-card" onClick={() => setShowContent(!showContent)}>
+    <div
+      className={`article-card ${showContent ? "active" : ""}`}
+      onClick={() => setShowContent(!showContent)}
+    >
       <h3 className="article-title">{article.title}</h3>
       <p className="article-summary cp-text">{article.summary}</p>
       {showContent && <ArticleContent content={article.content} />}
