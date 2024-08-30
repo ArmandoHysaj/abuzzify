@@ -8,6 +8,7 @@ interface Article {
   title: string;
   summary: string;
   content: string;
+  time: string;
 }
 
 interface ArticleListProps {
