@@ -103,6 +103,7 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         min-height: 140px;
         display: block;
         max-height: 140px;
+        background-color: #e4e7eb;
         overflow: hidden;
       }
       img {
@@ -204,7 +205,7 @@ $box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         transition: background-color 0.3s;
 
         &:hover {
-          background-color: $accent-color;
+          background-color: #c5ba9e;
         }
       }
     }
