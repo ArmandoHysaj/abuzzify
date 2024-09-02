@@ -1,0 +1,30 @@
+/* src/app/crypto-exchange-overview/styles.css */
+.exchange-card {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+}
+
+.exchange-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table,
+th,
+td {
+  border: 1px solid #ddd;
+}
+
+th,
+td {
+  padding: 0.5rem;
+  text-align: left;
+}

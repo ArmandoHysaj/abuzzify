@@ -96,7 +96,6 @@ const HomePage = () => {
         <button onClick={() => getStarted()}>Get Started</button>
       </div>
       <CoinCarouselBar />
-
       {/* News Feed */}
       <div className="news-feed container">
         <h2>Latest News</h2>
