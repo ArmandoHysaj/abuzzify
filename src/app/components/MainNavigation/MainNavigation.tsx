@@ -86,9 +86,7 @@ const MainNavigation = () => {
                   <Link href="/templates/cryptolytics">Cryptolytics</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/templates/cryptoExchangeOverview">
-                    Crypto Exchange
-                  </Link>
+                  <Link href="/templates/exchanges">Crypto Exchanges</Link>
                 </div>
                 <div className="hdl-4">
                   <Link href="/templates/articles">Articles</Link>
@@ -165,9 +163,7 @@ const MainNavigation = () => {
               <Link href="/templates/cryptolytics">Cryptolytics</Link>
             </div>
             <div className="hdl-4">
-              <Link href="/templates/cryptoExchangeOverview">
-                Crypto Exchange
-              </Link>
+              <Link href="/templates/exchanges">Crypto Exchanges</Link>
             </div>
             <div className="hdl-4">
               <Link href="/templates/articles">Articles</Link>

@@ -1,4 +1,5 @@
-// src/app/api/fetchExchanges/route.js
+// src/app/api/fetchExchanges/route.ts
+
 import { NextResponse } from "next/server";
 import axios from "axios";
 
@@ -8,7 +9,7 @@ export async function GET() {
     const response = await axios.get(`${API_BASE_URL}/exchanges/`);
     return NextResponse.json(response.data);
   } catch (error) {
-    console.error("Error fetching news", error);
-    return NextResponse.json({ error: "Error fetching news" }, { status: 500 });
+    console.error("Error fetching exchanges", error);
+    return NextResponse.json({ error: "Error fetching exchanges" }, { status: 500 });
   }
 }
