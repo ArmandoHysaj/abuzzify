@@ -1,4 +1,3 @@
-// src/app/templates/exchanges/page.tsx
 "use client";
 import React, { useEffect, useState } from "react";
 import "./crypto-exchange-overview.scss";
@@ -14,26 +13,38 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import MapComponent from "./exchangesMap";
-import { Exchange } from "./types/exchanges";
+
+// Define the Exchange interface
+interface Exchange {
+  id: string;
+  name: string;
+  volume_usd: number;
+  active_pairs: number;
+  country: string;
+  url: string;
+}
 
 // Register required components
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const ExchangesPage: React.FC = () => {
   const [exchanges, setExchanges] = useState<Exchange[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const exchangesPerPage = 10;
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState<string>("");
 
   useEffect(() => {
     const fetchExchanges = async () => {
       try {
-        const response = await axios.get<{ data: Exchange[] }>(
-          "/api/fetchExchanges"
-        );
-        setExchanges(response.data.data);
+        const response = await axios.get("/api/fetchExchanges");
+        // Convert the response data from an object to an array and assert the type
+        const exchangeArray: Exchange[] = Object.values(
+          response.data
+        ) as Exchange[];
+        setExchanges(exchangeArray);
       } catch (error) {
         console.error("Error fetching exchanges", error);
+        setExchanges([]);
       }
     };
 
@@ -42,7 +53,8 @@ const ExchangesPage: React.FC = () => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  const filteredExchanges = exchanges.filter(
+  // Ensure exchanges is an array before filtering
+  const filteredExchanges = (exchanges || []).filter(
     (exchange) => filter === "" || exchange.country === filter
   );
 
@@ -72,7 +84,7 @@ const ExchangesPage: React.FC = () => {
       <h1>Cryptocurrency Exchanges Overview</h1>
 
       <div className="filter-controls">
-        <select onChange={(e) => setFilter(e.target.value)}>
+        <select onChange={(e) => setFilter(e.target.value)} value={filter}>
           <option value="">All Countries</option>
           <option value="Japan">Japan</option>
           <option value="Hong Kong">Hong Kong</option>
