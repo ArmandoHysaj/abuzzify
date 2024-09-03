@@ -12,7 +12,12 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import MapComponent from "./exchangesMap";
+
+import dynamic from "next/dynamic";
+
+const MapComponent = dynamic(() => import("./exchangesMap"), {
+  ssr: false, // This will ensure that the component is only rendered on the client side
+});
 
 // Define the Exchange interface
 interface Exchange {
