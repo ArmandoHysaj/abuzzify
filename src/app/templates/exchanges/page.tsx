@@ -12,9 +12,9 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-
+import "../../components/CustomDropdown/dropdown.scss";
 import dynamic from "next/dynamic";
-
+import Dropdown from "@/app/components/CustomDropdown/dropdown";
 const MapComponent = dynamic(() => import("./exchangesMap"), {
   ssr: false, // This will ensure that the component is only rendered on the client side
 });
@@ -77,29 +77,36 @@ const ExchangesPage: React.FC = () => {
       {
         label: "Trading Volume (USD)",
         data: filteredExchanges.map((exchange) => exchange.volume_usd),
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
-        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: "rgba(220, 220, 73, 0.8)",
+        borderColor: "rgba(220, 220, 73, 0.8)",
         borderWidth: 1,
+        fill: "5",
       },
     ],
   };
+
+  const countries = [
+    "",
+    "Japan",
+    "Hong Kong",
+    "Turkey",
+    "Singapore",
+    "US",
+    "Australia",
+    "Russia",
+    "China",
+  ];
 
   return (
     <div className="exchanges-page container">
       <div className="heading-filter">
         <h1>Cryptocurrency Exchanges Overview</h1>
         <div className="filter-controls">
-          <select onChange={(e) => setFilter(e.target.value)} value={filter}>
-            <option value="">All Countries</option>
-            <option value="Japan">Japan</option>
-            <option value="Hong Kong">Hong Kong</option>
-            <option value="Turkey">Turkey</option>
-            <option value="Singapore">Singapore</option>
-            <option value="US">US</option>
-            <option value="Australia">Australia</option>
-            <option value="Russia">Russia</option>
-            <option value="China">China</option>
-          </select>
+          <Dropdown
+            options={countries}
+            selectedValue={filter}
+            onChange={setFilter}
+          />
         </div>
       </div>
 

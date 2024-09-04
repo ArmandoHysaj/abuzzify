@@ -16,7 +16,7 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <div className="header">
       <div className="header-title">
-        <h1>Cryptolytics</h1>
+        <h1>Crypto Analytics</h1>
       </div>
       <div className="header-contents">
         <div className="header-content-item search-btn">
