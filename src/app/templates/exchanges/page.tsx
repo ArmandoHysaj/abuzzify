@@ -14,7 +14,7 @@ import {
 import { Bar } from "react-chartjs-2";
 import "../../components/CustomDropdown/dropdown.scss";
 import dynamic from "next/dynamic";
-import Dropdown from "@/app/components/CustomDropdown/dropdown";
+import Dropdown from "@/app/components/CustomDropdown/Dropdown";
 const MapComponent = dynamic(() => import("./exchangesMap"), {
   ssr: false, // This will ensure that the component is only rendered on the client side
 });

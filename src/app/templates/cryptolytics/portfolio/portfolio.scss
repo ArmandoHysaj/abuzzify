@@ -58,21 +58,7 @@
     overflow: auto;
     position: relative;
     box-sizing: border-box;
-    &::-webkit-scrollbar-thumb {
-      background-color: #cbd2d9;
-    }
-
-    &::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    &:hover::-webkit-scrollbar-thumb {
-      background-color: #9aa5b1;
-    }
-
-    &:hover::-webkit-scrollbar-track {
-      background-color: #f5f7fa;
-    }
+    
     li {
       justify-content: space-between;
       display: flex;

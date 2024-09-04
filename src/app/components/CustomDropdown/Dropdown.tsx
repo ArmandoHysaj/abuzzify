@@ -19,13 +19,13 @@ const Dropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <div className="custom-dropdown">
+    <div className="custom-dropdown cp-text">
       <div className="dropdown-selected" onClick={() => setIsOpen(!isOpen)}>
         {selectedValue || "All Countries"}
         <span className={`dropdown-arrow ${isOpen ? "open" : ""}`}></span>
       </div>
       {isOpen && (
-        <ul className="dropdown-options">
+        <ul className="dropdown-options custom-scrollbar">
           {options.map((option, index) => (
             <li
               key={index}

@@ -109,7 +109,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ setSelectedCoin }) => {
         </div>
       )}
       {isExpanded && (
-        <div className="search-results">
+        <div className="search-results custom-scrollbar">
           {filteredCoins.map((coin) => (
             <div
               key={coin.id}

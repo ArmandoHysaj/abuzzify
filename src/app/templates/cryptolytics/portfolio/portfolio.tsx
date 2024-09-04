@@ -268,7 +268,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
             isOpen={isModalOpen}
             onRequestClose={() => closeModal()}
             contentLabel="Investment Calculator"
-            className="investment-calculator-modal"
+            className="investment-calculator-modal custom-scrollbar"
             overlayClassName="investment-calculator-overlay"
           >
             <h3>
@@ -394,7 +394,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
             isOpen={isModalOpen}
             onRequestClose={() => closeModal()}
             contentLabel="Investment Calculator"
-            className="investment-calculator-modal"
+            className="investment-calculator-modal custom-scrollbar"
             overlayClassName="investment-calculator-overlay"
           >
             <h3>
@@ -618,7 +618,11 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
 
               <div className="similar-coins">
                 <h3>Similar Coins</h3>
-                <ul className={`${loadingCoins ? "loading" : ""}`}>
+                <ul
+                  className={`custom-scrollbar ${
+                    loadingCoins ? "loading" : ""
+                  }`}
+                >
                   {similarCoins.map((c) => (
                     <li key={c.id}>
                       <span

@@ -14,7 +14,7 @@
     }
   
     .dropdown-arrow {
-      border: solid black;
+      border: solid #8d7d7d;
       border-width: 0 2px 2px 0;
       display: inline-block;
       padding: 3px;
@@ -30,11 +30,12 @@
     .dropdown-options {
       position: absolute;
       top: 100%;
+      margin: 5px 0;
+      z-index: 9999;
       left: 0;
       width: 100%;
       border: 1px solid #ccc;
       background-color: #fff;
-      z-index: 1000;
       max-height: 200px;
       overflow-y: auto;
   

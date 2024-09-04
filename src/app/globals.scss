@@ -154,6 +154,24 @@ main {
   margin: 0 auto;
 }
 
+.custom-scrollbar {
+  &::-webkit-scrollbar-thumb {
+    background-color: #cbd2d9;
+  }
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: #9aa5b1;
+  }
+
+  &:hover::-webkit-scrollbar-track {
+    background-color: #f5f7fa;
+  }
+}
+
 .loading {
   position: relative;
   position: relative;
