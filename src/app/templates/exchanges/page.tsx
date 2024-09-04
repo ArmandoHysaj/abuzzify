@@ -85,21 +85,22 @@ const ExchangesPage: React.FC = () => {
   };
 
   return (
-    <div className="exchanges-page">
-      <h1>Cryptocurrency Exchanges Overview</h1>
-
-      <div className="filter-controls">
-        <select onChange={(e) => setFilter(e.target.value)} value={filter}>
-          <option value="">All Countries</option>
-          <option value="Japan">Japan</option>
-          <option value="Hong Kong">Hong Kong</option>
-          <option value="Turkey">Turkey</option>
-          <option value="Singapore">Singapore</option>
-          <option value="US">US</option>
-          <option value="Australia">Australia</option>
-          <option value="Russia">Russia</option>
-          <option value="China">China</option>
-        </select>
+    <div className="exchanges-page container">
+      <div className="heading-filter">
+        <h1>Cryptocurrency Exchanges Overview</h1>
+        <div className="filter-controls">
+          <select onChange={(e) => setFilter(e.target.value)} value={filter}>
+            <option value="">All Countries</option>
+            <option value="Japan">Japan</option>
+            <option value="Hong Kong">Hong Kong</option>
+            <option value="Turkey">Turkey</option>
+            <option value="Singapore">Singapore</option>
+            <option value="US">US</option>
+            <option value="Australia">Australia</option>
+            <option value="Russia">Russia</option>
+            <option value="China">China</option>
+          </select>
+        </div>
       </div>
 
       <div className="chart-map-container">

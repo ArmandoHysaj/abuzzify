@@ -1,31 +1,20 @@
-/* General Page Layout */
+
 .exchanges-page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
+    padding: 64px 0;
+    position: relative;
   }
   
-  /* Headings */
+
   .exchanges-page h1 {
-    text-align: center;
-    color: #333;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
   
   .exchanges-page h2 {
-    font-size: 1.75rem;
-    color: #555;
     margin-bottom: 15px;
   }
   
   /* Filter Controls */
   .filter-controls {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
   }
   
   .filter-controls select {
@@ -44,7 +33,14 @@
     gap: 20px;
     margin-bottom: 40px;
   }
-  
+  .chart-map-container{
+    display: grid;
+    grid-gap: 20px;
+
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr))
+  }
   .exchange-card {
     background-color: #fff;
     border: 1px solid #e0e0e0;
@@ -85,14 +81,22 @@
     background-color: #0056b3;
   }
   
-  /* Chart Styling */
-  .bar-chart-container {
-    margin-bottom: 40px;
+  .heading-filter{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  img.leaflet-marker-icon.leaflet-zoom-animated.leaflet-interactive{
+    width: 25px !important;
+    height: 25px !important;
+    margin-top: -25px !important;
   }
   
   .bar-chart-container canvas {
     max-width: 100%;
-    height: auto;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
   }
   
   /* Table Styling */
