@@ -91,7 +91,7 @@ const HomePage = () => {
     <div>
       {/* Hero Section */}
       <div className="hero">
-        <h1>Abuzzify</h1>
+        {/* <h1>Abuzzify</h1> */}
         <h3>Your Ultimate Crypto Analytics Hub</h3>
         <button onClick={() => getStarted()}>Get Started</button>
       </div>
