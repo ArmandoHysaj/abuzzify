@@ -1,0 +1,27 @@
+# Project information
+site_name: "mkdocs-dta"
+site_description: |
+  The official documentation DTA Application.
+copyright: 'Copyright &copy; 2019 Spotify AB'
+
+# Repository
+repo_name: 'DTA Repo'
+repo_url: 'https://github.com/HonestSolutions/DTA'
+
+# Theme
+theme:
+  name: 'material'
+  language: 'en'
+  palette:
+    primary: 'blue'
+    accent: 'blue'
+  font:
+    text: 'Circular'
+    code: 'Inconsolata'
+
+extra:
+  repo_icon: 'github'
+# Navigation
+nav:
+  - Getting Started: index.md
+  - GitHub Source Code: https://github.com/backstage/mkdocs-monorepo-plugin
