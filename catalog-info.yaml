@@ -2,9 +2,11 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: DTA
+  description: DTA description
   annotations:
     github.com/project-slug: HonestSolutions/DTA
+    backstage.io/techdocs-ref: dir:.
 spec:
-  type: other
-  lifecycle: unknown
+  type: documentation
+  lifecycle: experimental
   owner: DTA-team
