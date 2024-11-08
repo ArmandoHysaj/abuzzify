@@ -86,7 +86,6 @@ const ExchangesPage: React.FC = () => {
   };
 
   const countries = [
-    "",
     "Japan",
     "Hong Kong",
     "Turkey",
@@ -106,6 +105,7 @@ const ExchangesPage: React.FC = () => {
             options={countries}
             selectedValue={filter}
             onChange={setFilter}
+            defaultLabel="All countries"
           />
         </div>
       </div>
