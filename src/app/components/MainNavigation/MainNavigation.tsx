@@ -69,7 +69,20 @@ const MainNavigation = () => {
       <div className="main-header container">
         <div className="nav-logo">
           <Link href="/">
-            <img src={Abuzzify.src} alt="Abuzzify Logo" />
+            <svg width="200" height="60" xmlns="http://www.w3.org/2000/svg">
+              <text
+                x="100"
+                y="35"
+                font-family="Arial, sans-serif"
+                font-size="24"
+                font-weight="bold"
+                fill="#333333"
+                text-anchor="middle"
+                dominant-baseline="middle"
+              >
+                ABUZZIFY
+              </text>
+            </svg>
           </Link>
         </div>
         {isMobile ? (
