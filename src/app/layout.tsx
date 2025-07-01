@@ -8,6 +8,8 @@ import "./globals.scss";
 import "./fonts.scss";
 import MainNavigation from "./components/MainNavigation/MainNavigation";
 import GoToTopButton from "./components/GoToTopButton/GoToTopButton";
+import { gtmConfig } from "./config";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
@@ -37,6 +39,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           strategy="afterInteractive"
         />
       </head>
+      {gtmConfig.containerId && (
+        <GoogleTagManager gtmId={gtmConfig.containerId} />
+      )}
       <body>
         <MainNavigation />
         <main>{children}</main>

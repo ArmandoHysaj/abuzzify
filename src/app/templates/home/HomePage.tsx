@@ -82,7 +82,7 @@ const HomePage = () => {
     ReactGA.event({
       category: "User",
       action: "Clicked Get Started Button",
-      label: "Get Started",
+      label: "Analyze Your Favorite Coins Nowd",
     });
   };
   const setLoadingHeight = () => `200px`;
@@ -93,7 +93,9 @@ const HomePage = () => {
       <div className="hero">
         {/* <h1>Abuzzify</h1> */}
         <h3>Your Ultimate Crypto Analytics Hub</h3>
-        <button onClick={() => getStarted()}>Get Started</button>
+        <button onClick={() => getStarted()}>
+          Analyze Your Favorite Coins Now
+        </button>
       </div>
       <CoinCarouselBar />
       {/* News Feed */}
