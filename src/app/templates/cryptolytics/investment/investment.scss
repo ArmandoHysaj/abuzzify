@@ -67,10 +67,15 @@
     font-family: "Montserrat-SemiBold";
     color: #fff;
     background-color: #25c077;
+    border: none;
     border-radius: 5px;
-    &:hover {
+    &:hover:not(:disabled) {
       animation: pulse 1s infinite;
       transition: 0.3s;
+    }
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
   @keyframes pulse {
@@ -102,6 +107,10 @@
     top: 25px;
     cursor: pointer;
     right: 20px;
+    &:focus {
+      outline: 2px solid #007bff;
+      outline-offset: 2px;
+    }
   }
 }
 
@@ -138,6 +147,10 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  .neutral {
+    color: #666;
+  }
 }
 .modal-button {
   border-radius: 5px;
@@ -153,6 +166,10 @@
   width: 15px;
   height: 15px;
   margin-top: 3px;
+  &:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+  }
 }
 .investment-calculator {
   width: 50vw;
@@ -171,7 +188,7 @@
   left: 0px;
   font-size: 16px;
   color: black;
-  pointer-event: none;
+  pointer-events: none;
   transition: all 0.5s ease-in-out;
 }
 .input-container input {

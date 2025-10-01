@@ -2,8 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./coin-carousel-bar.scss";
 
+interface Coin {
+  id: string;
+  name: string;
+  price_usd: string;
+  percent_change_24h: string;
+}
+
 const CoinCarouselBar = () => {
-  const [coins, setCoins] = useState<any[]>([]);
+  const [coins, setCoins] = useState<Coin[]>([]);
 
   useEffect(() => {
     fetchSimilarCoins();
@@ -40,7 +47,7 @@ const CoinCarouselBar = () => {
                 <span className="coin-price">${coin.price_usd}</span>
                 <span
                   className={`coin-change ${
-                    coin.percent_change_24h > 0 ? "green" : "red"
+                    Number(coin.percent_change_24h) > 0 ? "green" : "red"
                   }`}
                 >
                   {coin.percent_change_24h}%
@@ -53,7 +60,7 @@ const CoinCarouselBar = () => {
                 <span className="coin-price">${coin.price_usd}</span>
                 <span
                   className={`coin-change ${
-                    coin.percent_change_24h > 0 ? "green" : "red"
+                    Number(coin.percent_change_24h) > 0 ? "green" : "red"
                   }`}
                 >
                   {coin.percent_change_24h}%

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import axios, { CancelTokenSource } from "axios";
 import Modal from "react-modal";
 import InvestmentCalculator from "../investment/InvestmentCalculator";
 import EducationalContent from "./EducationalContent";
@@ -11,18 +11,58 @@ import formatNumber from "@/app/helpers/formatNumbers";
 import cryptocurrencyImg from "../../images/crypto.png";
 import ReactGA from "react-ga4";
 
+interface Coin {
+  id: string;
+  name: string;
+  symbol: string;
+  price_usd: string;
+  percent_change_1h: string;
+  percent_change_24h: string;
+  percent_change_7d: string;
+  market_cap_usd: string;
+  csupply: string;
+  msupply: string;
+  volume24: string;
+}
+
+interface CoinWithInvestment extends Coin {
+  initialInvestment: number;
+  initialPrice: number;
+}
+
+interface NewsArticle {
+  author: string | null;
+  url: string;
+  urlToImage?: string | null;
+  publishedAt?: string | null;
+  title: string;
+  description?: string | null;
+}
+
+interface PortfolioState {
+  similarCoins: Coin[];
+  news: NewsArticle[];
+  loadingNews: boolean;
+  loadingCoins: boolean;
+  newsActive: boolean;
+  selectedCoin?: { id: string } | null;
+  initialInvestment: number;
+  initialPrice: number;
+  savedCoins: CoinWithInvestment[];
+}
+
 interface PortfolioProps {
-  selectedCoin?: any;
+  selectedCoin?: Coin;
 }
 
 const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   const [isMobile, setIsMobile] = useState(false);
-  const [similarCoins, setSimilarCoins] = useState<any[]>([]);
-  const [news, setNews] = useState<any[]>([]);
+  const [similarCoins, setSimilarCoins] = useState<Coin[]>([]);
+  const [news, setNews] = useState<NewsArticle[]>([]);
   const [loadingNews, setLoadingNews] = useState(true);
   const [loadingCoins, setLoadingCoins] = useState(true);
   const [newsActive, setNewsActive] = useState(false);
-  const [coin, setCoin] = useState(selectedCoin);
+  const [coin, setCoin] = useState<Coin | null>(selectedCoin || null);
   const [selectedCoinLoaded, setSelectedCoinLoaded] = useState(false);
 
   const [initialInvestment, setInitialInvestment] = useState<number>(0);
@@ -30,7 +70,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [coinId, setCoinId] = useState<string | null>(null);
-  const [savedCoins, setSavedCoins] = useState<any[]>([]);
+  const [savedCoins, setSavedCoins] = useState<CoinWithInvestment[]>([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -63,7 +103,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     if (typeof window !== "undefined") {
       const savedState = JSON.parse(
         localStorage.getItem("portfolioState") || "{}"
-      );
+      ) as Partial<PortfolioState>;
       if (
         savedState &&
         !new URLSearchParams(window.location.search).get("coin")
@@ -98,21 +138,31 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     }
   }, [selectedCoin]);
 
+  const persistState = useMemo(() => {
+    let handle: number | null = null;
+    return (state: PortfolioState) => {
+      if (handle) cancelAnimationFrame(handle);
+      handle = requestAnimationFrame(() => {
+        localStorage.setItem("portfolioState", JSON.stringify(state));
+        handle = null;
+      });
+    };
+  }, []);
+
   useEffect(() => {
     if (coin) {
-      const stateToSave = {
+      const stateToSave: PortfolioState = {
         similarCoins,
         news,
         loadingNews,
         loadingCoins,
         newsActive,
-        // selectedCoin: coin,
         selectedCoin: { id: coin.id },
         initialInvestment,
         initialPrice,
         savedCoins,
       };
-      localStorage.setItem("portfolioState", JSON.stringify(stateToSave));
+      persistState(stateToSave);
     }
   }, [
     coin,
@@ -124,152 +174,218 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     initialInvestment,
     initialPrice,
     savedCoins,
+    persistState,
   ]);
 
   useEffect(() => {
     if (coin) {
       fetchSimilarCoins();
       fetchNews();
-      const resetBtn = document.querySelector(".reset-results");
-      resetBtn?.addEventListener("click", () => {
-        localStorage.removeItem("portfolioState");
-        setCoin(null);
-        setCoinId(null);
-        removeCoinParam();
-      });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coin]);
-  const removeCoinParam = () => {
+
+  const removeCoinParam = useCallback(() => {
     if (typeof window !== "undefined") {
       const url = new URL(window.location.href);
       if (url.searchParams.has("coin")) {
         url.searchParams.delete("coin");
         window.history.replaceState({}, document.title, url.toString());
-      } else {
-        console.log("Coin parameter does not exist.");
       }
     }
-  };
+  }, []);
+
+  const resetAll = useCallback(() => {
+    localStorage.removeItem("portfolioState");
+    setCoin(null);
+    setCoinId(null);
+    removeCoinParam();
+  }, [removeCoinParam]);
 
   const fetchCoinData = async (coinId: string) => {
     try {
-      const response = await axios.get(
+      const response = await axios.get<Coin[]>(
         `https://api.coinlore.net/api/ticker/?id=${coinId}`
       );
       setCoin(response.data[0]);
       setSelectedCoinLoaded(true);
     } catch (error) {
       console.error("Error fetching coin data", error);
+      setSelectedCoinLoaded(false);
     }
   };
 
   const fetchSimilarCoins = async () => {
     if (!coin) return;
+    const source = axios.CancelToken.source();
     try {
-      const response = await axios.get(`https://api.coinlore.net/api/tickers/`);
-      setSimilarCoins(response.data.data.filter((c: any) => c.id !== coin.id));
+      const response = await axios.get<{ data: Coin[] }>(
+        "https://api.coinlore.net/api/tickers/",
+        { cancelToken: source.token }
+      );
+      setSimilarCoins(response.data.data.filter((c: Coin) => c.id !== coin.id));
       setLoadingCoins(false);
     } catch (error) {
-      console.error("Error fetching similar coins", error);
+      if (!axios.isCancel(error)) {
+        console.error("Error fetching similar coins", error);
+        setLoadingCoins(false);
+      }
     }
+    return () => source.cancel();
   };
 
   const fetchNews = async () => {
     if (!coin) return;
     setNewsActive(true);
+    const source = axios.CancelToken.source();
     try {
-      const response = await axios.get("/api/fetchNews", {
-        params: {
-          coinName: coin.name,
-        },
-      });
+      const response = await axios.get<{ articles: NewsArticle[] }>(
+        "/api/fetchNews",
+        {
+          params: { coinName: coin.name },
+          cancelToken: source.token,
+        }
+      );
       setNews(response.data.articles);
       setLoadingNews(false);
     } catch (error) {
-      console.error("Error fetching news", error);
+      if (!axios.isCancel(error)) {
+        console.error("Error fetching news", error);
+        setLoadingNews(false);
+      }
     }
+    return () => source.cancel();
   };
 
-  const handleSaveCoin = () => {
-    const newCoin = {
+  const handleSaveCoin = useCallback(() => {
+    if (!coin || initialInvestment <= 0 || initialPrice <= 0) return;
+
+    const newCoin: CoinWithInvestment = {
       ...coin,
       initialInvestment,
       initialPrice,
     };
-    initialInvestment > 0 &&
-      initialPrice > 0 &&
-      setSavedCoins((prevSavedCoins) => [...prevSavedCoins, newCoin]);
-  };
 
-  const openModal = () => {
+    setSavedCoins((prev) => {
+      const withoutCurrent = prev.filter((c) => c.id !== coin.id);
+      return [...withoutCurrent, newCoin];
+    });
+  }, [coin, initialInvestment, initialPrice]);
+
+  const openModal = useCallback(() => {
     setIsModalOpen(true);
-    document.querySelector("body")?.classList.add("body-lock");
     ReactGA.event({
       category: "User",
       action: "Open Investment Calculator Modal",
       label: "Investment Modal",
     });
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
-    document.querySelector("body")?.classList.remove("body-lock");
     ReactGA.event({
       category: "User",
       action: "Close Investment Calculator Modal",
       label: "Investment Modal",
     });
-  };
+  }, []);
 
-  const handleSelectSavedCoin = (savedCoin: any) => {
+  const handleSelectSavedCoin = useCallback((savedCoin: CoinWithInvestment) => {
     setCoin(savedCoin);
     setInitialInvestment(savedCoin.initialInvestment);
     setInitialPrice(savedCoin.initialPrice);
     setSelectedCoinLoaded(true);
+  }, []);
+
+  const handleRemoveCoin = useCallback((coinToRemove: CoinWithInvestment) => {
+    setSavedCoins((prev) => prev.filter((c) => c.id !== coinToRemove.id));
+  }, []);
+
+  const selectSimilarCoin = useCallback(
+    (c: Coin) => {
+      removeCoinParam();
+      setCoinId(c.id);
+    },
+    [removeCoinParam]
+  );
+
+  const trendClass = (value: string | number): string => {
+    const n = Number(value);
+    return n > 0 ? "green" : n < 0 ? "red" : "neutral";
   };
 
-  const handleRemoveCoin = (coinToRemove: any) => {
-    const updatedCoins = savedCoins.filter(
-      (savedCoin) => savedCoin.id !== coinToRemove.id
-    );
-    setSavedCoins(updatedCoins);
+  const CloseIcon = () => (
+    <svg
+      className="close-button"
+      onClick={closeModal}
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      x="0px"
+      y="0px"
+      viewBox="0 0 512.001 512.001"
+      width="16"
+      fill="#333"
+      role="button"
+      tabIndex={0}
+      aria-label="Close modal"
+      onKeyDown={(e) => e.key === "Enter" && closeModal()}
+    >
+      <g>
+        <g>
+          <path d="M284.286,256.002L506.143,34.144c7.811-7.811,7.811-20.475,0-28.285c-7.811-7.81-20.475-7.811-28.285,0L256,227.717 L34.143,5.859c-7.811-7.811-20.475-7.811-28.285,0c-7.81,7.811-7.811,20.475,0,28.285l221.857,221.857L5.858,477.859 c-7.811,7.811-7.811,20.475,0,28.285c3.905,3.905,9.024,5.857,14.143,5.857c5.119,0,10.237-1.952,14.143-5.857L256,284.287 l221.857,221.857c3.905,3.905,9.024,5.857,14.143,5.857s10.237-1.952,14.143-5.857c7.811-7.811,7.811-20.475,0-28.285 L284.286,256.002z"></path>
+        </g>
+      </g>
+    </svg>
+  );
 
-    const stateToSave = {
-      similarCoins,
-      news,
-      loadingNews,
-      loadingCoins,
-      newsActive,
-      selectedCoin: coin,
-      initialInvestment,
-      initialPrice,
-      savedCoins: updatedCoins,
-    };
-    localStorage.setItem("portfolioState", JSON.stringify(stateToSave));
-  };
+  const RemoveIcon = ({ onClick }: { onClick: () => void }) => (
+    <svg
+      className="remove-button"
+      onClick={onClick}
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      x="0px"
+      y="0px"
+      viewBox="0 0 512.001 512.001"
+      width="16"
+      fill="#333"
+      role="button"
+      tabIndex={0}
+      aria-label="Remove coin"
+      onKeyDown={(e) => e.key === "Enter" && onClick()}
+    >
+      <g>
+        <g>
+          <path d="M284.286,256.002L506.143,34.144c7.811-7.811,7.811-20.475,0-28.285c-7.811-7.81-20.475-7.811-28.285,0L256,227.717 L34.143,5.859c-7.811-7.811-20.475-7.811-28.285,0c-7.81,7.811-7.811,20.475,0,28.285l221.857,221.857L5.858,477.859 c-7.811,7.811-7.811,20.475,0,28.285c3.905,3.905,9.024,5.857,14.143,5.857c5.119,0,10.237-1.952,14.143-5.857L256,284.287 l221.857,221.857c3.905,3.905,9.024,5.857,14.143,5.857s10.237-1.952,14.143-5.857c7.811-7.811,7.811-20.475,0-28.285 L284.286,256.002z"></path>
+        </g>
+      </g>
+    </svg>
+  );
 
-  const selectSimilarCoin = (c: any) => {
-    removeCoinParam();
-    setCoinId(c.id);
-  };
+  const isSaveDisabled = !coin || initialInvestment <= 0 || initialPrice <= 0;
+
   return (
     <>
       <div className="portfolio-section container">
         <div className="modal-btn-wrapper">
-          <div
+          <button
             className="modal-button default-button"
-            onClick={() => openModal()}
+            onClick={openModal}
+            aria-label="Open investment calculator"
           >
             Open Investment Calculator
-          </div>
+          </button>
         </div>
         {isMobile ? (
           <Modal
             isOpen={isModalOpen}
-            onRequestClose={() => closeModal()}
+            onRequestClose={closeModal}
             contentLabel="Investment Calculator"
             className="investment-calculator-modal custom-scrollbar"
             overlayClassName="investment-calculator-overlay"
+            bodyOpenClassName="body-lock"
           >
             <h3>
               Crypto Coin Calculator: Calculate Your{" "}
@@ -295,9 +411,19 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                       name={coin.name}
                       price={coin.price_usd}
                     />
-                    <div className="save-button" onClick={handleSaveCoin}>
+                    <button
+                      className="save-button"
+                      onClick={handleSaveCoin}
+                      disabled={isSaveDisabled}
+                      aria-label="Save coin with investment data"
+                      title={
+                        isSaveDisabled
+                          ? "Enter valid investment amount and price to save"
+                          : "Save coin"
+                      }
+                    >
                       Save Coin
-                    </div>
+                    </button>
                   </>
                 ) : (
                   <div className="title red">No coin selected</div>
@@ -308,54 +434,23 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                 <h3>Saved Coins</h3>
                 {savedCoins.length > 0 ? (
                   <ul>
-                    {savedCoins.map((savedCoin, index) => (
-                      <>
-                        <div>
-                          <li
-                            key={index}
-                            onClick={() => handleSelectSavedCoin(savedCoin)}
-                          >
-                            <span className="saved-coin-name">
-                              {savedCoin.name}
-                            </span>{" "}
-                            - Initial Investment:{" "}
-                            <span className="saved-value">
-                              {" "}
-                              ${savedCoin.initialInvestment}{" "}
-                            </span>{" "}
-                            - Initial Price:{" "}
-                            <span className="saved-value">
-                              {" "}
-                              ${savedCoin.initialPrice}{" "}
-                            </span>
-                          </li>
-                          <svg
-                            className="remove-button"
-                            onClick={() => handleRemoveCoin(savedCoin)}
-                            version="1.1"
-                            id="Capa_1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            xmlnsXlink="http://www.w3.org/1999/xlink"
-                            x="0px"
-                            y="0px"
-                            viewBox="0 0 512.001 512.001"
-                            width="16"
-                            fill="#333"
-                          >
-                            <g>
-                              <g>
-                                <path
-                                  d="M284.286,256.002L506.143,34.144c7.811-7.811,7.811-20.475,0-28.285c-7.811-7.81-20.475-7.811-28.285,0L256,227.717
-        L34.143,5.859c-7.811-7.811-20.475-7.811-28.285,0c-7.81,7.811-7.811,20.475,0,28.285l221.857,221.857L5.858,477.859
-        c-7.811,7.811-7.811,20.475,0,28.285c3.905,3.905,9.024,5.857,14.143,5.857c5.119,0,10.237-1.952,14.143-5.857L256,284.287
-        l221.857,221.857c3.905,3.905,9.024,5.857,14.143,5.857s10.237-1.952,14.143-5.857c7.811-7.811,7.811-20.475,0-28.285
-        L284.286,256.002z"
-                                ></path>
-                              </g>
-                            </g>
-                          </svg>
-                        </div>
-                      </>
+                    {savedCoins.map((savedCoin) => (
+                      <div key={savedCoin.id}>
+                        <li onClick={() => handleSelectSavedCoin(savedCoin)}>
+                          <span className="saved-coin-name">
+                            {savedCoin.name}
+                          </span>{" "}
+                          - Initial Investment:{" "}
+                          <span className="saved-value">
+                            ${savedCoin.initialInvestment}
+                          </span>{" "}
+                          - Initial Price:{" "}
+                          <span className="saved-value">
+                            ${savedCoin.initialPrice}
+                          </span>
+                        </li>
+                        <RemoveIcon onClick={() => handleRemoveCoin(savedCoin)} />
+                      </div>
                     ))}
                   </ul>
                 ) : (
@@ -363,39 +458,16 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                 )}
               </div>
             </div>
-            <svg
-              className="close-button"
-              onClick={() => closeModal()}
-              version="1.1"
-              id="Capa_1"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlnsXlink="http://www.w3.org/1999/xlink"
-              x="0px"
-              y="0px"
-              viewBox="0 0 512.001 512.001"
-              width="16"
-              fill="#333"
-            >
-              <g>
-                <g>
-                  <path
-                    d="M284.286,256.002L506.143,34.144c7.811-7.811,7.811-20.475,0-28.285c-7.811-7.81-20.475-7.811-28.285,0L256,227.717
-        L34.143,5.859c-7.811-7.811-20.475-7.811-28.285,0c-7.81,7.811-7.811,20.475,0,28.285l221.857,221.857L5.858,477.859
-        c-7.811,7.811-7.811,20.475,0,28.285c3.905,3.905,9.024,5.857,14.143,5.857c5.119,0,10.237-1.952,14.143-5.857L256,284.287
-        l221.857,221.857c3.905,3.905,9.024,5.857,14.143,5.857s10.237-1.952,14.143-5.857c7.811-7.811,7.811-20.475,0-28.285
-        L284.286,256.002z"
-                  ></path>
-                </g>
-              </g>
-            </svg>
+            <CloseIcon />
           </Modal>
         ) : (
           <Modal
             isOpen={isModalOpen}
-            onRequestClose={() => closeModal()}
+            onRequestClose={closeModal}
             contentLabel="Investment Calculator"
             className="investment-calculator-modal custom-scrollbar"
             overlayClassName="investment-calculator-overlay"
+            bodyOpenClassName="body-lock"
           >
             <h3>
               Crypto Coin Calculator: Calculate Your{" "}
@@ -420,9 +492,19 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                       name={coin.name}
                       price={coin.price_usd}
                     />
-                    <div className="save-button" onClick={handleSaveCoin}>
+                    <button
+                      className="save-button"
+                      onClick={handleSaveCoin}
+                      disabled={isSaveDisabled}
+                      aria-label="Save coin with investment data"
+                      title={
+                        isSaveDisabled
+                          ? "Enter valid investment amount and price to save"
+                          : "Save coin"
+                      }
+                    >
                       Save Coin
-                    </div>
+                    </button>
                   </>
                 ) : (
                   <div className="title red">No coin selected</div>
@@ -434,54 +516,23 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                 <h3>Saved Coins</h3>
                 {savedCoins.length > 0 ? (
                   <ul>
-                    {savedCoins.map((savedCoin, index) => (
-                      <>
-                        <div>
-                          <li
-                            key={index}
-                            onClick={() => handleSelectSavedCoin(savedCoin)}
-                          >
-                            <span className="saved-coin-name">
-                              {savedCoin.name}
-                            </span>{" "}
-                            - Initial Investment:{" "}
-                            <span className="saved-value">
-                              {" "}
-                              ${savedCoin.initialInvestment}{" "}
-                            </span>{" "}
-                            - Initial Price:{" "}
-                            <span className="saved-value">
-                              {" "}
-                              ${savedCoin.initialPrice}{" "}
-                            </span>
-                          </li>
-                          <svg
-                            className="remove-button"
-                            onClick={() => handleRemoveCoin(savedCoin)}
-                            version="1.1"
-                            id="Capa_1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            xmlnsXlink="http://www.w3.org/1999/xlink"
-                            x="0px"
-                            y="0px"
-                            viewBox="0 0 512.001 512.001"
-                            width="16"
-                            fill="#333"
-                          >
-                            <g>
-                              <g>
-                                <path
-                                  d="M284.286,256.002L506.143,34.144c7.811-7.811,7.811-20.475,0-28.285c-7.811-7.81-20.475-7.811-28.285,0L256,227.717
-        L34.143,5.859c-7.811-7.811-20.475-7.811-28.285,0c-7.81,7.811-7.811,20.475,0,28.285l221.857,221.857L5.858,477.859
-        c-7.811,7.811-7.811,20.475,0,28.285c3.905,3.905,9.024,5.857,14.143,5.857c5.119,0,10.237-1.952,14.143-5.857L256,284.287
-        l221.857,221.857c3.905,3.905,9.024,5.857,14.143,5.857s10.237-1.952,14.143-5.857c7.811-7.811,7.811-20.475,0-28.285
-        L284.286,256.002z"
-                                ></path>
-                              </g>
-                            </g>
-                          </svg>
-                        </div>
-                      </>
+                    {savedCoins.map((savedCoin) => (
+                      <div key={savedCoin.id}>
+                        <li onClick={() => handleSelectSavedCoin(savedCoin)}>
+                          <span className="saved-coin-name">
+                            {savedCoin.name}
+                          </span>{" "}
+                          - Initial Investment:{" "}
+                          <span className="saved-value">
+                            ${savedCoin.initialInvestment}
+                          </span>{" "}
+                          - Initial Price:{" "}
+                          <span className="saved-value">
+                            ${savedCoin.initialPrice}
+                          </span>
+                        </li>
+                        <RemoveIcon onClick={() => handleRemoveCoin(savedCoin)} />
+                      </div>
                     ))}
                   </ul>
                 ) : (
@@ -489,31 +540,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                 )}
               </div>
             </div>
-            <svg
-              className="close-button"
-              onClick={() => closeModal()}
-              version="1.1"
-              id="Capa_1"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlnsXlink="http://www.w3.org/1999/xlink"
-              x="0px"
-              y="0px"
-              viewBox="0 0 512.001 512.001"
-              width="16"
-              fill="#333"
-            >
-              <g>
-                <g>
-                  <path
-                    d="M284.286,256.002L506.143,34.144c7.811-7.811,7.811-20.475,0-28.285c-7.811-7.81-20.475-7.811-28.285,0L256,227.717
-        L34.143,5.859c-7.811-7.811-20.475-7.811-28.285,0c-7.81,7.811-7.811,20.475,0,28.285l221.857,221.857L5.858,477.859
-        c-7.811,7.811-7.811,20.475,0,28.285c3.905,3.905,9.024,5.857,14.143,5.857c5.119,0,10.237-1.952,14.143-5.857L256,284.287
-        l221.857,221.857c3.905,3.905,9.024,5.857,14.143,5.857s10.237-1.952,14.143-5.857c7.811-7.811,7.811-20.475,0-28.285
-        L284.286,256.002z"
-                  ></path>
-                </g>
-              </g>
-            </svg>
+            <CloseIcon />
           </Modal>
         )}
 
@@ -536,31 +563,19 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                   </div>
                   <div>
                     <span className="title">Change 1h:</span>
-                    <span
-                      className={`result ${
-                        coin.percent_change_1h > 0 ? "green" : "red"
-                      }`}
-                    >
+                    <span className={`result ${trendClass(coin.percent_change_1h)}`}>
                       {coin.percent_change_1h}%
                     </span>
                   </div>
                   <div>
                     <span className="title">Change 24h:</span>
-                    <span
-                      className={`result ${
-                        coin.percent_change_24h > 0 ? "green" : "red"
-                      }`}
-                    >
+                    <span className={`result ${trendClass(coin.percent_change_24h)}`}>
                       {coin.percent_change_24h}%
                     </span>
                   </div>
                   <div>
                     <span className="title">Change 7 days:</span>
-                    <span
-                      className={`result ${
-                        coin.percent_change_7d > 0 ? "green" : "red"
-                      }`}
-                    >
+                    <span className={`result ${trendClass(coin.percent_change_7d)}`}>
                       {coin.percent_change_7d}%
                     </span>
                   </div>
@@ -592,25 +607,25 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                   <div>
                     <span className="title">Market Cap:</span>
                     <span className="result">
-                      ${formatNumber(coin.market_cap_usd)}
+                      ${formatNumber(Number(coin.market_cap_usd))}
                     </span>
                   </div>
                   <div>
                     <span className="title">Circulating Supply:</span>
                     <span className="result">
-                      ${formatNumber(coin.csupply)}
+                      {formatNumber(Number(coin.csupply))}
                     </span>
                   </div>
                   <div>
                     <span className="title">24h Volume:</span>
                     <span className="result">
-                      ${formatNumber(coin.volume24)}
+                      ${formatNumber(Number(coin.volume24))}
                     </span>
                   </div>
                   <div>
                     <span className="title">Total Supply:</span>
                     <span className="result">
-                      ${formatNumber(coin.msupply)}
+                      {formatNumber(Number(coin.msupply))}
                     </span>
                   </div>
                 </ul>
@@ -645,7 +660,11 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                     {news.length > 0 ? (
                       news.map((article, index) => (
                         <li key={index}>
-                          <img loading="lazy" src={article.urlToImage}></img>
+                          <img
+                            loading="lazy"
+                            src={article.urlToImage || "/placeholder-news.jpg"}
+                            alt={article.title}
+                          />
                           <div className="news-description">
                             <div className="news-author cp-text-s">
                               <span className="author">{article.author}</span>
@@ -669,9 +688,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                       <p className="cp-text">No news available</p>
                     )}
                   </ul>
-                  {/* <picture>
-                    <img src={cryptocurrencyImg.src} alt="" />
-                  </picture> */}
                 </div>
               </div>
             )}
