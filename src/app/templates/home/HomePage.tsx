@@ -6,13 +6,33 @@ import Link from "next/link";
 import ReactGA from "react-ga4";
 import CoinCarouselBar from "@/app/components/CoinCarouselBar/CoinCarouselBar";
 
+interface NewsArticle {
+  url: string;
+  urlToImage: string;
+  source: { name: string };
+  author: string;
+  publishedAt: string;
+  title: string;
+  description: string;
+}
+
+interface Coin {
+  id: string;
+  name: string;
+  symbol: string;
+  price_usd: string;
+  percent_change_24h: string;
+}
+
 const HomePage = () => {
-  const [news, setNews] = useState([]);
-  const [trendingCoins, setTrendingCoins] = useState([]);
+  const [news, setNews] = useState<NewsArticle[]>([]);
+  const [trendingCoins, setTrendingCoins] = useState<Coin[]>([]);
   const [showAllNews, setShowAllNews] = useState(false);
   const [showAllCoins, setShowAllCoins] = useState(false);
   const [isNewsLoading, setIsNewsLoading] = useState(true);
   const [isCoinsLoading, setIsCoinsLoading] = useState(true);
+  const [newsError, setNewsError] = useState<string | null>(null);
+  const [coinsError, setCoinsError] = useState<string | null>(null);
   const [testimonials, setTestimonials] = useState([
     {
       id: 1,
@@ -30,28 +50,42 @@ const HomePage = () => {
     const fetchNews = async () => {
       try {
         const response = await axios.get(`/api/fetchNews?coinName=bitcoin`);
-        console.log(response);
-        setNews(response.data.articles);
-        setIsNewsLoading(false);
-      } catch (error) {
-        setIsNewsLoading(true);
+        if (response.data && response.data.articles) {
+          setNews(response.data.articles);
+          setNewsError(null);
+        } else {
+          throw new Error('Invalid response format');
+        }
+      } catch (error: any) {
         console.error("Error fetching news:", error);
+        setNewsError(error.response?.data?.error || 'Failed to load news');
+        setNews([]);
+      } finally {
+        setIsNewsLoading(false);
       }
     };
 
     const fetchTrendingCoins = async () => {
       try {
         const response = await axios.get(
-          "https://api.coinlore.net/api/tickers/"
+          "https://api.coinlore.net/api/tickers/",
+          { timeout: 10000 }
         );
-        setTrendingCoins(response.data.data);
-      } catch (error) {
+        if (response.data && response.data.data) {
+          setTrendingCoins(response.data.data);
+          setCoinsError(null);
+        } else {
+          throw new Error('Invalid response format');
+        }
+      } catch (error: any) {
         console.error("Error fetching trending coins:", error);
-        setIsNewsLoading(true);
+        setCoinsError(error.message || 'Failed to load trending coins');
+        setTrendingCoins([]);
       } finally {
         setIsCoinsLoading(false);
       }
     };
+    
     fetchNews();
     fetchTrendingCoins();
   }, []);
@@ -105,31 +139,46 @@ const HomePage = () => {
           className={`news-articles ${isNewsLoading ? "loading" : ""}`}
           style={{ minHeight: isNewsLoading ? setLoadingHeight() : "auto" }}
         >
-          {(showAllNews ? news : news.slice(0, initialNewsToShow)).map(
-            (article: any, index) => (
-              <a
-                key={index}
-                href={article.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div key={index} className="news-article">
-                  <picture>
-                    <span className="news-source cp-text-s">
-                      {article.source.name}
-                    </span>
-                    <img loading="lazy" src={article.urlToImage}></img>
-                  </picture>
-                  <div className="news-description">
-                    <div className="news-author cp-text-s">
-                      <span className="author">{article.author}</span>
-                      <span className="date">{article.publishedAt}</span>
+          {newsError ? (
+            <div className="error-message">
+              <p>{newsError}</p>
+              <button onClick={() => window.location.reload()}>Retry</button>
+            </div>
+          ) : (
+            (showAllNews ? news : news.slice(0, initialNewsToShow)).map(
+              (article: NewsArticle, index) => (
+                <a
+                  key={`${article.url}-${index}`}
+                  href={article.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Read article: ${article.title}`}
+                >
+                  <div className="news-article">
+                    <picture>
+                      <span className="news-source cp-text-s">
+                        {article.source.name}
+                      </span>
+                      <img 
+                        loading="lazy" 
+                        src={article.urlToImage || '/placeholder-news.png'} 
+                        alt={article.title}
+                        onError={(e) => {
+                          e.currentTarget.src = '/placeholder-news.png';
+                        }}
+                      />
+                    </picture>
+                    <div className="news-description">
+                      <div className="news-author cp-text-s">
+                        <span className="author">{article.author || 'Unknown'}</span>
+                        <span className="date">{new Date(article.publishedAt).toLocaleDateString()}</span>
+                      </div>
+                      <span className="title">{article.title}</span>
+                      <p className="cp-text">{article.description}</p>
                     </div>
-                    <span className="title">{article.title}</span>
-                    <p className="cp-text">{article.description}</p>
                   </div>
-                </div>
-              </a>
+                </a>
+              )
             )
           )}
         </div>
@@ -149,23 +198,31 @@ const HomePage = () => {
           className={`coin-list ${isCoinsLoading ? "loading container" : ""}`}
           style={{ minHeight: isCoinsLoading ? setLoadingHeight() : "auto" }}
         >
-          {(showAllCoins
-            ? trendingCoins
-            : trendingCoins.slice(0, initialCoinsToShow)
-          ).map((coin: any) => (
-            <div key={coin.id} className="coin">
-              <h3>{coin.name}</h3>
-              <p>{coin.symbol}</p>
-              <p>{coin.price_usd} USD</p>
-              <button
-                onClick={() =>
-                  (window.location.href = `/templates/cryptolytics?coin=${coin.id}`)
-                }
-              >
-                View Details
-              </button>
+          {coinsError ? (
+            <div className="error-message">
+              <p>{coinsError}</p>
+              <button onClick={() => window.location.reload()}>Retry</button>
             </div>
-          ))}
+          ) : (
+            (showAllCoins
+              ? trendingCoins
+              : trendingCoins.slice(0, initialCoinsToShow)
+            ).map((coin: Coin) => (
+              <div key={coin.id} className="coin">
+                <h3>{coin.name}</h3>
+                <p>{coin.symbol}</p>
+                <p>${parseFloat(coin.price_usd).toFixed(2)} USD</p>
+                <button
+                  onClick={() =>
+                    (window.location.href = `/templates/cryptolytics?coin=${coin.id}`)
+                  }
+                  aria-label={`View details for ${coin.name}`}
+                >
+                  View Details
+                </button>
+              </div>
+            ))
+          )}
         </div>
         {!showAllCoins && trendingCoins.length > initialCoinsToShow && (
           <div className="load-more-btn">

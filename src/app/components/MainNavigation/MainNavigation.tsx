@@ -11,7 +11,7 @@ const MainNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const burgerRef = useRef<HTMLDivElement>(null);
+  const burgerRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const MainNavigation = () => {
     setIsMenuOpen(false);
   }, [pathname]);
 
-  const toggleMenu = (e: any) => {
+  const toggleMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsMenuOpen((prevIsMenuOpen) => !prevIsMenuOpen);
     ReactGA.event({
@@ -73,12 +73,12 @@ const MainNavigation = () => {
               <text
                 x="100"
                 y="35"
-                font-family="Arial, sans-serif"
-                font-size="24"
-                font-weight="bold"
+                fontFamily="Arial, sans-serif"
+                fontSize="24"
+                fontWeight="bold"
                 fill="#333333"
-                text-anchor="middle"
-                dominant-baseline="middle"
+                textAnchor="middle"
+                dominantBaseline="middle"
               >
                 ABUZZIFY
               </text>
@@ -110,43 +110,30 @@ const MainNavigation = () => {
               </div>
             </div>
 
-            <div className="burger-menu" ref={burgerRef} onClick={toggleMenu}>
+            <button 
+              className="burger-menu" 
+              ref={burgerRef} 
+              onClick={toggleMenu}
+              aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isMenuOpen}
+            >
               <div className="burger-icon">
                 {isMenuOpen ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="35px"
                     height="35px"
-                    viewBox="-2.4 -2.4 28.80 28.80"
+                    viewBox="0 0 24 24"
                     fill="none"
-                    stroke="#000000"
-                    transform="rotate(0)"
+                    aria-hidden="true"
                   >
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0" />
-
-                    <g
-                      id="SVGRepo_tracerCarrier"
+                    <path
+                      d="M18 6L6 18M6 6L18 18"
+                      stroke="#464455"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      stroke="#CCCCCC"
-                      strokeWidth="2.4"
-                    >
-                      <path
-                        d="M5 8H13.75M5 12H19M10.25 16L19 16"
-                        stroke="#464455"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </g>
-
-                    <g id="SVGRepo_iconCarrier">
-                      <path
-                        d="M5 8H13.75M5 12H19M10.25 16L19 16"
-                        stroke="#464455"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </g>
+                    />
                   </svg>
                 ) : (
                   <svg
@@ -155,6 +142,7 @@ const MainNavigation = () => {
                     height="35px"
                     viewBox="0 0 24 24"
                     fill="none"
+                    aria-hidden="true"
                   >
                     <path
                       d="M5 8H13.75M5 12H19M10.25 16L19 16"
@@ -165,7 +153,7 @@ const MainNavigation = () => {
                   </svg>
                 )}
               </div>
-            </div>
+            </button>
           </>
         ) : (
           <div className="desktop nav-items">

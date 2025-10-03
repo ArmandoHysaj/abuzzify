@@ -33,6 +33,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Abuzzify - Your Ultimate Crypto Analytics Hub. Track cryptocurrency prices, read latest news, and analyze market trends." />
+        <meta name="keywords" content="cryptocurrency, crypto, bitcoin, ethereum, trading, analytics, news" />
+        <meta name="author" content="Abuzzify" />
+        <link rel="canonical" href="https://abuzzify.com" />
         <Script
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_ID}`}
@@ -43,24 +48,25 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <GoogleTagManager gtmId={gtmConfig.containerId} />
       )}
       <body>
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         <MainNavigation />
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
         <GoToTopButton />
-        <footer>
+        <footer role="contentinfo">
           <div className="footer-content">
             <div className="quick-links">
               <ul>
                 <li>
-                  <a href="/templates/about">About Us</a>
+                  <a href="/templates/about" aria-label="Learn more about Abuzzify">About Us</a>
                 </li>
                 <li>
-                  <a href="/templates/privacy">Privacy Policy</a>
+                  <a href="/templates/privacy" aria-label="Read our privacy policy">Privacy Policy</a>
                 </li>
                 <li>
-                  <a href="/templates/terms">Terms of Service</a>
+                  <a href="/templates/terms" aria-label="Read our terms of service">Terms of Service</a>
                 </li>
                 <li>
-                  <a href="/templates/contact">Contact Us</a>
+                  <a href="/templates/contact" aria-label="Contact us for support">Contact Us</a>
                 </li>
               </ul>
             </div>

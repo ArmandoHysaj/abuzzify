@@ -15,8 +15,10 @@ import { Bar } from "react-chartjs-2";
 import "../../components/CustomDropdown/dropdown.scss";
 import dynamic from "next/dynamic";
 import Dropdown from "@/app/components/CustomDropdown/Dropdown";
+
+// IMPORTANT: Move the dynamic import OUTSIDE the component
 const MapComponent = dynamic(() => import("./exchangesMap"), {
-  ssr: false, // This will ensure that the component is only rendered on the client side
+  ssr: false,
 });
 
 // Define the Exchange interface
@@ -42,10 +44,8 @@ const ExchangesPage: React.FC = () => {
     const fetchExchanges = async () => {
       try {
         const response = await axios.get("/api/fetchExchanges");
-        // Convert the response data from an object to an array and assert the type
-        const exchangeArray: Exchange[] = Object.values(
-          response.data
-        ) as Exchange[];
+        // The API now returns an array directly
+        const exchangeArray: Exchange[] = response.data as Exchange[];
         setExchanges(exchangeArray);
       } catch (error) {
         console.error("Error fetching exchanges", error);

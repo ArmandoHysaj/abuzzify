@@ -1,9 +1,15 @@
-import React, { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Exchange } from "./types/exchanges";
-// const markerImg = require("./marker-icon-2x.png").default;
+
+// Fix for default markers in Leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 const countryCoordinates: Record<string, [number, number]> = {
   Japan: [35.6895, 139.6917],
@@ -23,75 +29,94 @@ const customIcon = L.icon({
   iconAnchor: [12, 41],
 });
 
-interface UpdateMapViewProps {
-  exchanges: Exchange[];
-}
-
-const UpdateMapView: React.FC<UpdateMapViewProps> = ({ exchanges }) => {
-  const map = useMap();
-
-  useEffect(() => {
-    if (exchanges.length > 0) {
-      const bounds = L.latLngBounds(
-        exchanges
-          .map((exchange) => {
-            const coords = countryCoordinates[exchange.country];
-            return coords ? L.latLng(coords) : null;
-          })
-          .filter(Boolean) as L.LatLng[]
-      );
-
-      const padding: [number, number] = [50, 50];
-      map.fitBounds(bounds, { padding });
-
-      if (map.getZoom() > 4) {
-        map.setZoom(4);
-      }
-    }
-  }, [exchanges, map]);
-
-  return null;
-};
 
 const MapComponent: React.FC<{ exchanges: Exchange[]; filter: string }> = ({
   exchanges,
   filter,
 }) => {
-  const filteredExchanges = exchanges.filter(
-    (exchange) => filter === "" || exchange.country === filter
-  );
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<L.Map | null>(null);
+  
+  // Memoize filtered exchanges to prevent unnecessary re-renders
+  const filteredExchanges = useMemo(() => {
+    return exchanges.filter(
+      (exchange) => filter === "" || exchange.country === filter
+    );
+  }, [exchanges, filter]);
+
+  // Initialize map once
+  useEffect(() => {
+    if (containerRef.current && !mapInstanceRef.current) {
+      try {
+        const map = L.map(containerRef.current, {
+          center: [20, 0],
+          zoom: 2,
+          scrollWheelZoom: false
+        });
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        mapInstanceRef.current = map;
+      } catch (error) {
+        console.error('Error creating map:', error);
+      }
+    }
+
+    // Cleanup on unmount
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
+
+  // Update markers when exchanges or filter change
+  useEffect(() => {
+    if (mapInstanceRef.current) {
+      // Clear existing markers
+      mapInstanceRef.current.eachLayer((layer) => {
+        if (layer instanceof L.Marker) {
+          mapInstanceRef.current?.removeLayer(layer);
+        }
+      });
+      
+      // Add new markers
+      const bounds = L.latLngBounds([]);
+      
+      filteredExchanges.forEach((exchange) => {
+        const coords = countryCoordinates[exchange.country];
+        if (coords && mapInstanceRef.current) {
+          try {
+            const marker = L.marker(coords, { icon: customIcon })
+              .bindPopup(`
+                <strong>${exchange.name}</strong><br/>
+                Trading Volume: $${exchange.volume_usd.toLocaleString()}<br/>
+                Country: ${exchange.country}
+              `);
+            
+            marker.addTo(mapInstanceRef.current);
+            bounds.extend(coords);
+          } catch (error) {
+            console.warn(`Failed to add marker for ${exchange.name}:`, error);
+          }
+        }
+      });
+      
+      // Fit bounds if we have markers
+      if (filteredExchanges.length > 0 && mapInstanceRef.current) {
+        mapInstanceRef.current.fitBounds(bounds, { padding: [50, 50] });
+        if (mapInstanceRef.current.getZoom() > 4) {
+          mapInstanceRef.current.setZoom(4);
+        }
+      }
+    }
+  }, [filteredExchanges]);
 
   return (
-    <MapContainer
-      center={[20, 0]}
-      zoom={2}
-      style={{ height: "400px", width: "100%" }}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      <UpdateMapView exchanges={filteredExchanges} />
-      {filteredExchanges.map((exchange) => {
-        const coords = countryCoordinates[exchange.country];
-        if (coords) {
-          return (
-            <Marker key={exchange.id} position={coords} icon={customIcon}>
-              <Popup>
-                <strong>{exchange.name}</strong>
-                <br />
-                Trading Volume: ${exchange.volume_usd.toLocaleString()}
-                <br />
-                Country: {exchange.country}
-              </Popup>
-            </Marker>
-          );
-        } else {
-          console.warn(`No coordinates for ${exchange.country}`);
-          return null;
-        }
-      })}
-    </MapContainer>
+    <div ref={containerRef} style={{ height: "400px", width: "100%" }} />
   );
 };
 
