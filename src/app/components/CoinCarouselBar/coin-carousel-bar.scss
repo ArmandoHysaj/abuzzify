@@ -3,7 +3,8 @@
   padding-top: 10px;
   position: sticky;
   top: 0;
-  background-color: white;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
   z-index: 99;
   margin-top: -1px;
 
@@ -13,12 +14,29 @@
     will-change: transform;
     gap: 7px;
     font-family: "Montserrat-SemiBold";
-
     font-size: 0.75rem;
     line-height: 1rem;
     text-transform: capitalize;
+    color: var(--text-primary);
+
     span {
       white-space: nowrap;
+    }
+
+    .coin-name {
+      color: var(--text-primary);
+    }
+
+    .coin-price {
+      color: var(--text-secondary);
+    }
+
+    .coin-change.green {
+      color: var(--success-color);
+    }
+
+    .coin-change.red {
+      color: var(--error-color);
     }
   }
   .loading {

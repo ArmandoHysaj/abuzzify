@@ -6,6 +6,8 @@
   min-height: 112px;
   padding: 30px 32px;
   max-width: 1920px;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .header-title {
@@ -28,6 +30,12 @@
   .header-content-item {
     cursor: pointer;
     padding: 5px;
+    color: var(--text-primary);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--accent-primary);
+    }
   }
 }
 

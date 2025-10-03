@@ -1,0 +1,52 @@
+.contact-page {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2rem;
+
+    h1, h2, h3 {
+        color: var(--text-primary);
+        font-family: "Montserrat-SemiBold", sans-serif;
+    }
+
+    p, span {
+        color: var(--text-secondary);
+        font-family: "Montserrat-Regular", sans-serif;
+    }
+
+    .contact-form {
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: var(--shadow-sm);
+
+        input, textarea {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-family: "Montserrat-Regular", sans-serif;
+
+            &::placeholder {
+                color: var(--text-muted);
+            }
+
+            &:focus {
+                border-color: var(--accent-primary);
+                box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+            }
+        }
+
+        button {
+            background: var(--gradient-primary);
+            color: var(--text-inverse);
+            border: none;
+            font-family: "Montserrat-SemiBold", sans-serif;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-md);
+            }
+        }
+    }
+}

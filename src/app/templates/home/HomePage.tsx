@@ -86,32 +86,26 @@ const HomePage = () => {
 
   const features = [
     {
-      icon: "📊",
       title: "Real-time Analytics",
       description: "Track live cryptocurrency prices and market trends with precision.",
     },
     {
-      icon: "💰",
       title: "Portfolio Management",
       description: "Calculate profits, losses, and manage your crypto investments effortlessly.",
     },
     {
-      icon: "📈",
       title: "DCA Strategies",
       description: "Implement dollar-cost averaging strategies for optimal investment returns.",
     },
     {
-      icon: "🔔",
       title: "Price Alerts",
       description: "Get notified when your favorite cryptocurrencies hit target prices.",
     },
     {
-      icon: "📰",
       title: "Latest News",
       description: "Stay updated with the latest cryptocurrency news and market insights.",
     },
     {
-      icon: "🌍",
       title: "Exchange Map",
       description: "Discover crypto exchanges worldwide with our interactive map.",
     },
@@ -202,7 +196,6 @@ const HomePage = () => {
         </div>
         <div className="hero-content">
           <div className="hero-badge">
-            <span className="badge-icon">🚀</span>
             <span className="badge-text">Trusted by 10,000+ investors</span>
           </div>
           <h1 className="hero-title">
@@ -236,12 +229,6 @@ const HomePage = () => {
                 <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-            <Link href="/templates/articles" className="btn btn-secondary btn-large">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14.828 14.828a4 4 0 0 1-5.656 0M9 10h1m4 0h1m-6 4h8m-5-8h2a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              <span>View Demo</span>
-            </Link>
           </div>
           <div className="hero-features">
             <div className="feature-item">
@@ -307,7 +294,6 @@ const HomePage = () => {
           <div className="features-grid">
             {features.map((feature, index) => (
               <div key={index} className="feature-card">
-                <div className="feature-icon">{feature.icon}</div>
                 <h3 className="feature-title">{feature.title}</h3>
                 <p className="feature-description">{feature.description}</p>
               </div>
@@ -377,7 +363,7 @@ const HomePage = () => {
       </div>
 
       {/* Trending Coins */}
-      <div className="trending-coins">
+      <div className="trending-coins container">
         <h2>Trending Coins</h2>
         <div
           className={`coin-list ${isCoinsLoading ? "loading container" : ""}`}

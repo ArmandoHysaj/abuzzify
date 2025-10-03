@@ -1,9 +1,18 @@
 .about-page {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2rem;
+
     span {
         display: block;
         margin: 10px 0;
+        color: var(--text-secondary);
+        font-family: "Montserrat-Regular", sans-serif;
     }
     h3 {
         margin: 20px 0;
+        color: var(--text-primary);
+        font-family: "Montserrat-SemiBold", sans-serif;
     }
 }

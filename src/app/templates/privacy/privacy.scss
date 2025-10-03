@@ -1,5 +1,21 @@
 .privacy-policy {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 2rem;
+
+  h1, h2, h3, h4 {
+    color: var(--text-primary);
+    font-family: "Montserrat-SemiBold", sans-serif;
+  }
+
   h4 {
     margin: 20px 0;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-family: "Montserrat-Regular", sans-serif;
+    line-height: 1.6;
   }
 }

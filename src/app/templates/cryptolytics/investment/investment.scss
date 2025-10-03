@@ -1,19 +1,20 @@
 /* Professional Investment Calculator Styles */
 .investment-calculator {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  transition: box-shadow 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
   overflow: hidden;
 
   &:hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-accent);
   }
 
   .calculator-header {
     padding: 24px 24px 0 24px;
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid var(--border-color);
 
     .coin-info {
       margin-bottom: 20px;
@@ -21,7 +22,7 @@
       .coin-name {
         font-size: 24px;
         font-weight: 600;
-        color: #111827;
+        color: var(--text-primary);
         margin-bottom: 8px;
         font-family: "Montserrat-SemiBold", sans-serif;
       }
@@ -31,11 +32,11 @@
         align-items: center;
         gap: 8px;
         padding: 8px 16px;
-        background: #f9fafb;
-        border: 1px solid #e5e7eb;
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
         border-radius: 8px;
         font-size: 14px;
-        color: #6b7280;
+        color: var(--text-muted);
 
         .price-label {
           font-weight: 500;
@@ -43,7 +44,7 @@
 
         .price-value {
           font-weight: 600;
-          color: #111827;
+          color: var(--text-primary);
         }
       }
     }
@@ -51,7 +52,7 @@
     .tabs {
       display: flex;
       gap: 4px;
-      background: #f8fafc;
+      background: var(--bg-secondary);
       padding: 4px;
       border-radius: 8px;
       margin-bottom: -1px;
@@ -64,20 +65,20 @@
         border-radius: 6px;
         font-size: 14px;
         font-weight: 500;
-        color: #6b7280;
+        color: var(--text-muted);
         cursor: pointer;
         transition: all 0.2s ease;
         font-family: "Montserrat-Medium", sans-serif;
 
         &:hover {
-          color: #374151;
-          background: rgba(59, 130, 246, 0.1);
+          color: var(--text-secondary);
+          background: rgba(14, 165, 233, 0.1);
         }
 
         &.active {
-          background: #ffffff;
-          color: #3b82f6;
-          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+          background: var(--bg-primary);
+          color: var(--accent-primary);
+          box-shadow: var(--shadow-sm);
         }
       }
     }
@@ -93,26 +94,26 @@
     .input-group {
       margin-bottom: 20px;
 
-      .input-label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 500;
-        font-size: 14px;
-        color: #374151;
-        font-family: "Montserrat-Medium", sans-serif;
-      }
-
-      .input-wrapper {
-        position: relative;
-        background: #ffffff;
-        border: 1px solid #d1d5db;
-        border-radius: 8px;
-        transition: all 0.2s ease;
-
-        &:focus-within {
-          border-color: #3b82f6;
-          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        .input-label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: 500;
+          font-size: 14px;
+          color: var(--text-secondary);
+          font-family: "Montserrat-Medium", sans-serif;
         }
+
+        .input-wrapper {
+          position: relative;
+          background: var(--bg-primary);
+          border: 1px solid var(--border-color);
+          border-radius: 8px;
+          transition: all 0.2s ease;
+
+          &:focus-within {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+          }
 
         .currency-symbol {
           position: absolute;
@@ -120,7 +121,7 @@
           top: 50%;
           transform: translateY(-50%);
           font-weight: 500;
-          color: #6b7280;
+          color: var(--text-muted);
           font-size: 14px;
           pointer-events: none;
         }
@@ -130,14 +131,14 @@
           background: transparent;
           border: none;
           outline: none;
-          color: #111827;
+          color: var(--text-primary);
           font-size: 16px;
           font-weight: 400;
           padding: 12px 12px 12px 28px;
           font-family: "Montserrat-Regular", sans-serif;
           
           &::placeholder {
-            color: #9ca3af;
+            color: var(--text-muted);
           }
 
           &::-webkit-outer-spin-button,
@@ -153,33 +154,33 @@
       }
     }
 
-    .coins-owned {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      margin-top: 16px;
+      .coins-owned {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        margin-top: 16px;
 
-      .coins-icon {
-        font-size: 20px;
-        opacity: 0.7;
-      }
+        .coins-icon {
+          font-size: 20px;
+          opacity: 0.7;
+        }
 
-      .coins-text {
-        font-size: 14px;
-        color: #475569;
-        font-family: "Montserrat-Regular", sans-serif;
+        .coins-text {
+          font-size: 14px;
+          color: var(--text-secondary);
+          font-family: "Montserrat-Regular", sans-serif;
 
-        strong {
-          color: #1e293b;
-          font-weight: 600;
-          font-family: "Montserrat-SemiBold", sans-serif;
+          strong {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-family: "Montserrat-SemiBold", sans-serif;
+          }
         }
       }
-    }
   }
 
   .results-section {
@@ -189,16 +190,16 @@
     margin-bottom: 24px;
 
     .result-card {
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
       border-radius: 8px;
       padding: 20px;
       transition: all 0.2s ease;
       text-align: center;
 
       &:hover {
-        background: #f3f4f6;
-        border-color: #d1d5db;
+        background: var(--bg-tertiary);
+        border-color: var(--border-accent);
       }
 
       &.profit-loss {
@@ -216,7 +217,7 @@
         h3 {
           font-size: 12px;
           font-weight: 500;
-          color: #6b7280;
+          color: var(--text-muted);
           margin-bottom: 8px;
           text-transform: uppercase;
           letter-spacing: 0.5px;
@@ -226,7 +227,7 @@
         .result-value {
           font-size: 20px;
           font-weight: 600;
-          color: #111827;
+          color: var(--text-primary);
           font-family: "Montserrat-SemiBold", sans-serif;
         }
       }
@@ -238,8 +239,8 @@
     align-items: center;
     gap: 12px;
     padding: 16px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
 
     .indicator {
@@ -248,7 +249,7 @@
 
     .performance-text {
       font-size: 14px;
-      color: #475569;
+      color: var(--text-secondary);
       font-weight: 400;
       font-family: "Montserrat-Regular", sans-serif;
     }
@@ -256,15 +257,15 @@
 
   // Color variants
   .profit {
-    color: #059669;
+    color: var(--success-color);
   }
 
   .loss {
-    color: #dc2626;
+    color: var(--error-color);
   }
 
   .neutral {
-    color: #6b7280;
+    color: var(--text-muted);
   }
 }
 
@@ -289,7 +290,7 @@
     h3 {
       font-size: 16px;
       font-weight: 600;
-      color: #111827;
+      color: var(--text-primary);
       margin-bottom: 12px;
       font-family: "Montserrat-SemiBold", sans-serif;
     }
@@ -309,26 +310,26 @@
     li {
       cursor: pointer;
       padding: 12px 16px;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
       border-radius: 8px;
       transition: all 0.2s ease;
       font-size: 14px;
       
       &:hover {
-        background: #f3f4f6;
-        border-color: #d1d5db;
+        background: var(--bg-tertiary);
+        border-color: var(--border-accent);
       }
     }
     
     .saved-coin-name {
-      color: #3b82f6;
+      color: var(--accent-primary);
       font-weight: 600;
       font-family: "Montserrat-SemiBold", sans-serif;
     }
     
     .saved-value {
-      color: #6b7280;
+      color: var(--text-muted);
       font-family: "Montserrat-Regular", sans-serif;
     }
   }
@@ -356,8 +357,8 @@
   .save-scenario-btn {
     width: 100%;
     padding: 12px 20px;
-    background: #10b981;
-    color: white;
+    background: var(--success-color);
+    color: var(--text-inverse);
     border: none;
     border-radius: 8px;
     font-size: 14px;
@@ -369,6 +370,8 @@
 
     &:hover {
       background: #059669;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
     }
 
     &:active {
@@ -382,7 +385,7 @@
     top: 50%;
     transform: translateY(-50%);
     font-size: 14px;
-    color: #6b7280;
+    color: var(--text-muted);
     pointer-events: none;
   }
 
@@ -392,7 +395,7 @@
     h3 {
       font-size: 18px;
       font-weight: 600;
-      color: #111827;
+      color: var(--text-primary);
       margin-bottom: 16px;
       font-family: "Montserrat-SemiBold", sans-serif;
     }
@@ -401,14 +404,14 @@
   .dca-info {
     margin-top: 24px;
     padding: 16px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
 
     h4 {
       font-size: 16px;
       font-weight: 600;
-      color: #111827;
+      color: var(--text-primary);
       margin-bottom: 12px;
       font-family: "Montserrat-SemiBold", sans-serif;
     }
@@ -422,7 +425,7 @@
         padding: 4px 0;
         position: relative;
         padding-left: 20px;
-        color: #475569;
+        color: var(--text-secondary);
         font-size: 14px;
         font-family: "Montserrat-Regular", sans-serif;
 
@@ -430,7 +433,7 @@
           content: "✓";
           position: absolute;
           left: 0;
-          color: #10b981;
+          color: var(--success-color);
           font-weight: bold;
         }
       }
@@ -443,13 +446,13 @@
     h3 {
       font-size: 18px;
       font-weight: 600;
-      color: #111827;
+      color: var(--text-primary);
       margin-bottom: 8px;
       font-family: "Montserrat-SemiBold", sans-serif;
     }
 
     p {
-      color: #6b7280;
+      color: var(--text-muted);
       font-size: 14px;
       font-family: "Montserrat-Regular", sans-serif;
     }
@@ -462,15 +465,15 @@
   }
 
   .scenario-card {
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 16px;
     transition: all 0.2s ease;
 
     &:hover {
-      background: #f3f4f6;
-      border-color: #d1d5db;
+      background: var(--bg-tertiary);
+      border-color: var(--border-accent);
     }
 
     .scenario-header {
@@ -482,14 +485,14 @@
       h4 {
         font-size: 16px;
         font-weight: 600;
-        color: #111827;
+        color: var(--text-primary);
         margin: 0;
         font-family: "Montserrat-SemiBold", sans-serif;
       }
 
       .remove-scenario {
-        background: #fee2e2;
-        border: 1px solid #fecaca;
+        background: var(--bg-tertiary);
+        border: 1px solid var(--error-color);
         border-radius: 50%;
         width: 24px;
         height: 24px;
@@ -497,13 +500,14 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        color: #dc2626;
+        color: var(--error-color);
         font-size: 16px;
         font-weight: bold;
         transition: all 0.2s ease;
 
         &:hover {
-          background: #fecaca;
+          background: var(--error-color);
+          color: var(--text-inverse);
         }
       }
     }
@@ -517,7 +521,7 @@
 
         span {
           font-size: 14px;
-          color: #6b7280;
+          color: var(--text-muted);
           font-family: "Montserrat-Regular", sans-serif;
         }
       }
@@ -535,7 +539,7 @@
 
           .label {
             font-size: 12px;
-            color: #6b7280;
+            color: var(--text-muted);
             font-weight: 500;
             font-family: "Montserrat-Medium", sans-serif;
           }
@@ -551,8 +555,8 @@
       .load-scenario-btn {
         width: 100%;
         padding: 8px 16px;
-        background: #3b82f6;
-        color: white;
+        background: var(--accent-primary);
+        color: var(--text-inverse);
         border: none;
         border-radius: 6px;
         font-size: 14px;
@@ -562,7 +566,9 @@
         font-family: "Montserrat-Medium", sans-serif;
 
         &:hover {
-          background: #2563eb;
+          background: var(--accent-hover);
+          transform: translateY(-1px);
+          box-shadow: var(--shadow-sm);
         }
       }
     }
@@ -571,21 +577,21 @@
   .no-scenarios {
     text-align: center;
     padding: 32px 16px;
-    color: #6b7280;
+    color: var(--text-muted);
     font-size: 14px;
     font-family: "Montserrat-Regular", sans-serif;
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
   }
 }
 .investment-calculator-modal {
-  background: #ffffff;
+  background: var(--bg-primary);
   padding: 24px;
   border-radius: 12px;
   outline: none;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  border: 1px solid #e5e7eb;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-color);
   position: relative;
   max-width: 800px;
   width: 90%;
@@ -596,7 +602,7 @@
     font-family: "Montserrat-Regular", sans-serif;
     margin-top: 16px;
     max-width: 100%;
-    color: #6b7280;
+    color: var(--text-muted);
     line-height: 1.6;
     font-size: 14px;
   }
@@ -604,13 +610,13 @@
   h3 {
     font-size: 24px;
     font-weight: 600;
-    color: #111827;
+    color: var(--text-primary);
     margin-bottom: 16px;
     font-family: "Montserrat-SemiBold", sans-serif;
   }
   
-         .close-button {
-           position: absolute;
+  .close-button {
+    position: absolute;
            top: 16px;
            right: 16px;
            width: 40px;
@@ -618,29 +624,24 @@
            display: flex;
            align-items: center;
            justify-content: center;
-           background: #ffffff;
-           border: 1px solid #e5e7eb;
+           background: var(--bg-primary);
+           border: 1px solid var(--border-color);
            border-radius: 8px;
-           cursor: pointer;
+    cursor: pointer;
            transition: all 0.2s ease;
-           color: #6b7280;
+           color: var(--text-muted);
            
            &:hover {
-             background: #f9fafb;
-             border-color: #d1d5db;
-             color: #374151;
-           }
-           
-           &:focus {
-             outline: 2px solid #3b82f6;
-             outline-offset: 2px;
+             background: var(--bg-secondary);
+             border-color: var(--border-accent);
+             color: var(--text-primary);
            }
            
            svg {
              width: 20px;
              height: 20px;
            }
-         }
+  }
 }
 
 .investment-calculator-overlay {
@@ -668,15 +669,17 @@
   cursor: pointer;
   display: inline-block;
   margin: 0 auto 32px;
-  background: #3b82f6;
-  color: white;
+  background: var(--accent-primary);
+  color: var(--text-inverse);
   border: none;
   font-size: 14px;
   font-weight: 600;
   transition: all 0.2s ease;
   
   &:hover {
-    background: #2563eb;
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
   }
   
   &:active {
@@ -770,14 +773,14 @@
           li {
             width: 100%;
             padding: 12px 16px;
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             transition: all 0.2s ease;
             
             &:hover {
-              background: #f3f4f6;
-              border-color: #d1d5db;
+              background: var(--bg-tertiary);
+              border-color: var(--border-accent);
             }
           }
         }

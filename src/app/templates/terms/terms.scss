@@ -1,9 +1,27 @@
 .terms-of-service {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 2rem;
+
+  h1, h2, h3, h4 {
+    color: var(--text-primary);
+    font-family: "Montserrat-SemiBold", sans-serif;
+  }
+
   h4 {
     margin: 20px 0;
   }
+  
   h5 {
     margin: 20px;
-    color: #a70532;
+    color: var(--accent-primary);
+    font-family: "Montserrat-Medium", sans-serif;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-family: "Montserrat-Regular", sans-serif;
+    line-height: 1.6;
   }
 }
