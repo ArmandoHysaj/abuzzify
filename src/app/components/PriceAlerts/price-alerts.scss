@@ -1,0 +1,283 @@
+.price-alerts {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+
+  .alerts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+      font-family: "Montserrat-SemiBold", sans-serif;
+    }
+
+    .alerts-stats {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+
+      .active-count {
+        color: var(--success-color);
+        font-weight: 500;
+      }
+
+      .coin-count {
+        color: var(--accent-color);
+        font-weight: 500;
+      }
+    }
+  }
+
+  .alert-form {
+    margin-bottom: 1.5rem;
+
+    .add-alert-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: "Montserrat-Medium", sans-serif;
+
+      &:hover {
+        background: var(--accent-hover);
+        transform: translateY(-1px);
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .form-container {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+
+      .form-group {
+        margin-bottom: 1rem;
+
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-size: 0.875rem;
+          font-weight: 500;
+          color: var(--text-primary);
+          font-family: "Montserrat-Medium", sans-serif;
+        }
+
+        input, select {
+          width: 100%;
+          padding: 0.5rem;
+          border: 1px solid var(--border-color);
+          border-radius: 6px;
+          background: var(--bg-secondary);
+          color: var(--text-primary);
+          font-size: 0.875rem;
+          transition: border-color 0.2s ease;
+
+          &:focus {
+            outline: none;
+            border-color: var(--accent-color);
+          }
+        }
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 0.5rem;
+
+        .save-btn {
+          background: var(--success-color);
+          color: white;
+          border: none;
+          padding: 0.5rem 1rem;
+          border-radius: 6px;
+          font-size: 0.875rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: #059669;
+          }
+        }
+
+        .cancel-btn {
+          background: transparent;
+          color: var(--text-secondary);
+          border: 1px solid var(--border-color);
+          padding: 0.5rem 1rem;
+          border-radius: 6px;
+          font-size: 0.875rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+          }
+        }
+      }
+    }
+  }
+
+  .alerts-list {
+    .alert-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+      transition: all 0.2s ease;
+
+      &:hover {
+        border-color: var(--accent-color);
+      }
+
+      &.active {
+        border-left: 4px solid var(--success-color);
+      }
+
+      &.inactive {
+        opacity: 0.6;
+        border-left: 4px solid var(--text-muted);
+      }
+
+      .alert-info {
+        flex: 1;
+
+        .alert-coin {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 0.25rem;
+
+          .coin-symbol {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: "Montserrat-SemiBold", sans-serif;
+          }
+
+          .alert-condition {
+            color: var(--accent-color);
+            font-size: 0.875rem;
+            font-weight: 500;
+          }
+        }
+
+        .alert-status {
+          font-size: 0.75rem;
+          color: var(--text-secondary);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      }
+
+      .alert-actions {
+        display: flex;
+        gap: 0.5rem;
+
+        button {
+          background: transparent;
+          border: none;
+          padding: 0.25rem;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+          font-size: 0.875rem;
+
+          &:hover {
+            background: var(--bg-tertiary);
+          }
+
+          &.delete-btn:hover {
+            background: #fef2f2;
+            color: var(--error-color);
+          }
+        }
+      }
+    }
+
+    .no-alerts {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+  }
+}
+
+/* Dark mode specific styles */
+:root.dark {
+  .price-alerts {
+    .form-container {
+      .form-actions {
+        .cancel-btn:hover {
+          background: var(--bg-tertiary);
+        }
+      }
+    }
+
+    .alert-item {
+      .alert-actions {
+        .delete-btn:hover {
+          background: #7f1d1d;
+        }
+      }
+    }
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .price-alerts {
+    padding: 1rem;
+
+    .alerts-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+
+      .alerts-stats {
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+    }
+
+    .alert-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+
+      .alert-actions {
+        align-self: flex-end;
+      }
+    }
+  }
+}

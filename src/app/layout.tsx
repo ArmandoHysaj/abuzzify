@@ -10,6 +10,7 @@ import MainNavigation from "./components/MainNavigation/MainNavigation";
 import GoToTopButton from "./components/GoToTopButton/GoToTopButton";
 import { gtmConfig } from "./config";
 import { GoogleTagManager } from "@next/third-parties/google";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
@@ -44,14 +45,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           strategy="afterInteractive"
         />
       </head>
-      {gtmConfig.containerId && (
-        <GoogleTagManager gtmId={gtmConfig.containerId} />
-      )}
-      <body>
-        <a href="#main-content" className="skip-link">Skip to main content</a>
-        <MainNavigation />
-        <main id="main-content">{children}</main>
-        <GoToTopButton />
+        {gtmConfig.containerId && (
+          <GoogleTagManager gtmId={gtmConfig.containerId} />
+        )}
+        <body>
+          <a href="#main-content" className="skip-link">Skip to main content</a>
+          <ThemeProvider>
+            <MainNavigation />
+            <main id="main-content">{children}</main>
+            <GoToTopButton />
+          </ThemeProvider>
         <footer role="contentinfo">
           <div className="footer-content">
             <div className="quick-links">

@@ -176,3 +176,62 @@
     }
   }
 }
+
+/* Theme Toggle Styles */
+.theme-toggle-container {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  margin-left: 5%;
+}
+
+.theme-toggle-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-top: 1px solid #e2e8f0;
+  margin-top: 1rem;
+
+  .theme-toggle-label {
+    font-size: 1rem;
+    color: #111111;
+    font-family: "Montserrat-Medium", sans-serif;
+  }
+}
+
+/* Dark mode navigation styles */
+:root.dark {
+  .main-nav {
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+
+    a {
+      color: var(--text-primary);
+
+      &:visited {
+        color: var(--text-primary);
+      }
+
+      &:hover {
+        color: var(--accent-color);
+      }
+    }
+
+    .nav-layer {
+      background-color: var(--bg-secondary);
+
+      &:after {
+        background-color: var(--bg-secondary);
+      }
+    }
+
+    .theme-toggle-mobile {
+      border-top-color: var(--border-color);
+
+      .theme-toggle-label {
+        color: var(--text-primary);
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@ import Abuzzify from "../../images/Abuzzify.png";
 import "./main-nav.scss";
 import { usePathname } from "next/navigation";
 import ReactGA from "react-ga4";
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
 
 const MainNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -107,6 +108,10 @@ const MainNavigation = () => {
                 <div className="hdl-4">
                   <Link href="/templates/about">About Us</Link>
                 </div>
+                <div className="hdl-4 theme-toggle-mobile">
+                  <div className="theme-toggle-label">Theme</div>
+                  <ThemeToggle />
+                </div>
               </div>
             </div>
 
@@ -171,6 +176,9 @@ const MainNavigation = () => {
             </div>
             <div className="hdl-4 left-space">
               <Link href="/templates/about">About Us</Link>
+            </div>
+            <div className="theme-toggle-container">
+              <ThemeToggle />
             </div>
           </div>
         )}

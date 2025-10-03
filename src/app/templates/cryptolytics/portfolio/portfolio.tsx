@@ -5,6 +5,7 @@ import axios, { CancelTokenSource } from "axios";
 import Modal from "react-modal";
 import InvestmentCalculator from "../investment/InvestmentCalculator";
 import EducationalContent from "./EducationalContent";
+import PriceAlerts from "../../../components/PriceAlerts/PriceAlerts";
 import "./portfolio.scss";
 import SearchBar from "../search/search";
 import formatNumber from "@/app/helpers/formatNumbers";
@@ -565,6 +566,18 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                     </ul>
                   </div>
                 </div>
+
+                {/* Price Alerts Component */}
+                {selectedCoin && (
+                  <div className="price-alerts-container">
+                    <PriceAlerts
+                      coinId={selectedCoin.id}
+                      coinName={selectedCoin.name}
+                      coinSymbol={selectedCoin.symbol}
+                      currentPrice={parseFloat(selectedCoin.price_usd)}
+                    />
+                  </div>
+                )}
               </div>
             </div>
             {newsActive && (

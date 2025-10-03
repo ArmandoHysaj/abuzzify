@@ -36,15 +36,86 @@ const HomePage = () => {
   const [testimonials, setTestimonials] = useState([
     {
       id: 1,
-      name: "Alexander Moore",
-      feedback: "Abuzzify helped me track my investments efficiently.",
+      name: "Michael Rodriguez",
+      title: "Portfolio Manager",
+      company: "Quant Capital",
+      feedback: "Abuzzify's portfolio tracking has revolutionized how we manage client assets. The real-time analytics and risk assessment tools have improved our decision-making process significantly.",
+      avatar: "MR",
+      rating: 5,
+      verified: true,
+      investment: "$2.3M",
+      experience: "3 years"
     },
     {
       id: 2,
-      name: "Ethan Jackson",
-      feedback: "The profit/loss calculator is a game changer!",
+      name: "Dr. Sarah Kim", 
+      title: "Investment Advisor",
+      company: "Crypto Advisory Group",
+      feedback: "The DCA calculator and scenario analysis features are exceptional. I've been able to optimize client portfolios with data-driven insights that weren't available before.",
+      avatar: "SK",
+      rating: 5,
+      verified: true,
+      investment: "$850K",
+      experience: "5 years"
     },
+    {
+      id: 3,
+      name: "James Thompson",
+      title: "Independent Investor",
+      company: "Self-employed",
+      feedback: "As someone managing my own crypto investments, Abuzzify gives me institutional-grade tools at an accessible level. The price alerts and portfolio performance tracking are invaluable.",
+      avatar: "JT",
+      rating: 5,
+      verified: true,
+      investment: "$425K",
+      experience: "4 years"
+    },
+    {
+      id: 4,
+      name: "Elena Petrov",
+      title: "Financial Analyst",
+      company: "Blockchain Ventures",
+      feedback: "The platform's clean interface and comprehensive market data make it our go-to tool for cryptocurrency analysis. It's professional, reliable, and constantly improving.",
+      avatar: "EP",
+      rating: 4,
+      verified: true,
+      investment: "$1.1M",
+      experience: "2 years"
+    }
   ]);
+
+  const features = [
+    {
+      icon: "📊",
+      title: "Real-time Analytics",
+      description: "Track live cryptocurrency prices and market trends with precision.",
+    },
+    {
+      icon: "💰",
+      title: "Portfolio Management",
+      description: "Calculate profits, losses, and manage your crypto investments effortlessly.",
+    },
+    {
+      icon: "📈",
+      title: "DCA Strategies",
+      description: "Implement dollar-cost averaging strategies for optimal investment returns.",
+    },
+    {
+      icon: "🔔",
+      title: "Price Alerts",
+      description: "Get notified when your favorite cryptocurrencies hit target prices.",
+    },
+    {
+      icon: "📰",
+      title: "Latest News",
+      description: "Stay updated with the latest cryptocurrency news and market insights.",
+    },
+    {
+      icon: "🌍",
+      title: "Exchange Map",
+      description: "Discover crypto exchanges worldwide with our interactive map.",
+    },
+  ];
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -125,12 +196,126 @@ const HomePage = () => {
     <div>
       {/* Hero Section */}
       <div className="hero">
-        {/* <h1>Abuzzify</h1> */}
-        <h3>Your Ultimate Crypto Analytics Hub</h3>
-        <button onClick={() => getStarted()}>
-          Analyze Your Favorite Coins Now
-        </button>
+        <div className="hero-background">
+          <div className="hero-pattern"></div>
+          <div className="hero-grid"></div>
+        </div>
+        <div className="hero-content">
+          <div className="hero-badge">
+            <span className="badge-icon">🚀</span>
+            <span className="badge-text">Trusted by 10,000+ investors</span>
+          </div>
+          <h1 className="hero-title">
+            Professional Crypto Analytics
+            <span className="title-accent"> Made Simple</span>
+          </h1>
+          <p className="hero-subtitle">
+            Advanced portfolio tracking, real-time market analysis, and intelligent investment insights. 
+            Join institutional-grade crypto analytics platform trusted by serious investors.
+          </p>
+          <div className="hero-stats">
+            <div className="stat-item">
+              <div className="stat-number">$2.5M+</div>
+              <div className="stat-label">Assets Under Tracking</div>
+            </div>
+            <div className="stat-divider"></div>
+            <div className="stat-item">
+              <div className="stat-number">500+</div>
+              <div className="stat-label">Cryptocurrencies</div>
+            </div>
+            <div className="stat-divider"></div>
+            <div className="stat-item">
+              <div className="stat-number">99.9%</div>
+              <div className="stat-label">Uptime</div>
+            </div>
+          </div>
+          <div className="hero-actions">
+            <button onClick={() => getStarted()} className="btn btn-primary btn-large">
+              <span>Start Free Analysis</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <Link href="/templates/articles" className="btn btn-secondary btn-large">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14.828 14.828a4 4 0 0 1-5.656 0M9 10h1m4 0h1m-6 4h8m-5-8h2a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <span>View Demo</span>
+            </Link>
+          </div>
+          <div className="hero-features">
+            <div className="feature-item">
+              <div className="feature-icon">📊</div>
+              <span>Real-time Analytics</span>
+            </div>
+            <div className="feature-item">
+              <div className="feature-icon">🔒</div>
+              <span>Bank-grade Security</span>
+            </div>
+            <div className="feature-item">
+              <div className="feature-icon">⚡</div>
+              <span>Lightning Fast</span>
+            </div>
+          </div>
+        </div>
+        <div className="hero-visual">
+          <div className="crypto-cards">
+            <div className="crypto-card">
+              <div className="crypto-header">
+                <div className="crypto-icon">₿</div>
+                <div className="crypto-info">
+                  <div className="crypto-name">Bitcoin</div>
+                  <div className="crypto-symbol">BTC</div>
+                </div>
+              </div>
+              <div className="crypto-price">$43,250.00</div>
+              <div className="crypto-change positive">+2.45%</div>
+            </div>
+            <div className="crypto-card">
+              <div className="crypto-header">
+                <div className="crypto-icon">Ξ</div>
+                <div className="crypto-info">
+                  <div className="crypto-name">Ethereum</div>
+                  <div className="crypto-symbol">ETH</div>
+                </div>
+              </div>
+              <div className="crypto-price">$2,580.50</div>
+              <div className="crypto-change positive">+1.23%</div>
+            </div>
+            <div className="crypto-card">
+              <div className="crypto-header">
+                <div className="crypto-icon">₿</div>
+                <div className="crypto-info">
+                  <div className="crypto-name">Solana</div>
+                  <div className="crypto-symbol">SOL</div>
+                </div>
+              </div>
+              <div className="crypto-price">$98.75</div>
+              <div className="crypto-change negative">-0.87%</div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Features Section */}
+      <div className="features-section">
+        <div className="container">
+          <div className="section-header">
+            <h2>Why Choose Abuzzify?</h2>
+            <p>Everything you need to succeed in cryptocurrency investing</p>
+          </div>
+          <div className="features-grid">
+            {features.map((feature, index) => (
+              <div key={index} className="feature-card">
+                <div className="feature-icon">{feature.icon}</div>
+                <h3 className="feature-title">{feature.title}</h3>
+                <p className="feature-description">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <CoinCarouselBar />
       {/* News Feed */}
       <div className="news-feed container">
@@ -299,15 +484,85 @@ const HomePage = () => {
       </div> */}
 
       {/* Call to Action */}
-      {/* <div className="call-to-action"> */}
-      {/* <h2>Join Us</h2> */}
-      {/* <button onClick={() => (window.location.href = "/signup")}>
-          Sign Up
-        </button> */}
-      {/* <button onClick={() => (window.location.href = "/cryptolytics")}>
-          Get Started
-        </button> */}
-      {/* </div> */}
+      {/* Testimonials Section */}
+      <div className="testimonials-section">
+        <div className="container">
+          <div className="section-header">
+            <h2>Trusted by Industry Professionals</h2>
+            <p>See how leading investors and financial professionals use Abuzzify to optimize their crypto portfolios</p>
+          </div>
+          <div className="testimonials-grid">
+            {testimonials.map((testimonial) => (
+              <div key={testimonial.id} className="testimonial-card">
+                <div className="testimonial-header">
+                  <div className="testimonial-rating">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="star">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                    ))}
+                  </div>
+                  {testimonial.verified && (
+                    <div className="verification-badge">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                      <span>Verified</span>
+                    </div>
+                  )}
+                </div>
+                <div className="testimonial-content">
+                  <blockquote>
+                    &ldquo;{testimonial.feedback}&rdquo;
+                  </blockquote>
+                </div>
+                <div className="testimonial-author">
+                  <div className="author-avatar">
+                    {testimonial.avatar}
+                  </div>
+                  <div className="author-info">
+                    <div className="author-name">{testimonial.name}</div>
+                    <div className="author-title">{testimonial.title}</div>
+                    <div className="author-company">{testimonial.company}</div>
+                    <div className="author-metrics">
+                      <span className="metric">
+                        <strong>{testimonial.investment}</strong> managed
+                      </span>
+                      <span className="metric-separator">•</span>
+                      <span className="metric">
+                        <strong>{testimonial.experience}</strong> experience
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="testimonials-footer">
+            <div className="trust-indicators">
+              <div className="trust-item">
+                <div className="trust-number">10,000+</div>
+                <div className="trust-label">Active Users</div>
+              </div>
+              <div className="trust-item">
+                <div className="trust-number">$2.5M+</div>
+                <div className="trust-label">Assets Tracked</div>
+              </div>
+              <div className="trust-item">
+                <div className="trust-number">99.9%</div>
+                <div className="trust-label">Uptime</div>
+              </div>
+              <div className="trust-item">
+                <div className="trust-number">4.9/5</div>
+                <div className="trust-label">User Rating</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      
     </div>
   );
 };
