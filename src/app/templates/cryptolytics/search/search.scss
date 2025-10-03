@@ -1,106 +1,343 @@
-input[type="text"]:focus-visible {
-  outline: none;
-}
-
-@keyframes fadeInAndScale {
-  0% {
-    opacity: 0;
-    transform: scale(0.9);
-    width: 1px;
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    width: 170px;
-  }
-}
-
+/* Enhanced Search Component Styles */
 .search-bar {
-  min-height: 44px;
   position: relative;
-  .search-box {
+  width: 100%;
+  max-width: 400px;
+
+  .search-trigger {
     display: flex;
-    cursor: pointer;
     align-items: center;
-    gap: 15px;
-  }
-  [data-simplebar] {
-    max-height: 250px !important;
-    position: absolute;
-    filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.07))
-      drop-shadow(0 0 6.2592px rgba(0, 0, 0, 0.050624))
-      drop-shadow(0 0 2.9376px rgba(0, 0, 0, 0.039312))
-      drop-shadow(0 0 1.2864px rgba(0, 0, 0, 0.030688))
-      drop-shadow(0 0 0.5568px rgba(0, 0, 0, 0.019376));
-
-    background: white;
+    justify-content: space-between;
     width: 100%;
-    z-index: 999;
+    padding: 12px 16px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    &:focus {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+
+    .search-placeholder {
+      color: #6b7280;
+      font-size: 16px;
+      font-family: "Montserrat-Regular", sans-serif;
+      margin: 0;
+      text-align: left;
+    }
+
+    .search-icon {
+      color: #9ca3af;
+      transition: color 0.2s ease;
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover .search-icon {
+      color: #3b82f6;
+    }
+  }
+
+  .search-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .search-input {
+      width: 100%;
+      padding: 12px 16px;
+      padding-right: 80px;
+      background: #ffffff;
+      border: 2px solid #3b82f6;
+      border-radius: 12px;
+      font-size: 16px;
+      font-family: "Montserrat-Regular", sans-serif;
+      color: #111827;
+      outline: none;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(59, 130, 246, 0.1);
+
+      &::placeholder {
+        color: #9ca3af;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    .search-loading {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+
+      .spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #e5e7eb;
+        border-top: 2px solid #3b82f6;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+    }
+
+    .search-close {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: #6b7280;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background: #f3f4f6;
+        color: #374151;
+      }
+
+      &:focus {
+        outline: 2px solid #3b82f6;
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 50;
+    margin-top: 2px;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f3f4f6;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 3px;
+
+      &:hover {
+        background: #9ca3af;
+      }
+    }
+  }
+
+  .coin-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f3f4f6;
+    text-align: left;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover,
+    &.selected {
+      background: #f8fafc;
+    }
+
+    &:focus {
+      outline: 2px solid #3b82f6;
+      outline-offset: -2px;
+    }
+
+    .coin-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .coin-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #111827;
+        font-family: "Montserrat-SemiBold", sans-serif;
+      }
+
+      .coin-symbol {
+        font-size: 12px;
+        color: #6b7280;
+        font-family: "Montserrat-Medium", sans-serif;
+        text-transform: uppercase;
+      }
+    }
+
+    .coin-price-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+
+      .coin-price {
+        font-size: 14px;
+        font-weight: 600;
+        color: #111827;
+        font-family: "Montserrat-SemiBold", sans-serif;
+      }
+
+      .coin-change {
+        font-size: 12px;
+        font-weight: 500;
+        font-family: "Montserrat-Medium", sans-serif;
+
+        &.positive {
+          color: #059669;
+        }
+
+        &.negative {
+          color: #dc2626;
+        }
+      }
+    }
+  }
+
+  .search-empty {
+    padding: 32px 16px;
+    text-align: center;
+    color: #6b7280;
+
+    p {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 0 0 8px 0;
+      font-family: "Montserrat-Medium", sans-serif;
+    }
+
+    span {
+      font-size: 14px;
+      font-family: "Montserrat-Regular", sans-serif;
+      color: #9ca3af;
+    }
+  }
+
+  .search-error {
+    padding: 24px 16px;
+    text-align: center;
+    color: #dc2626;
+
+    p {
+      font-size: 14px;
+      font-weight: 500;
+      margin: 0 0 12px 0;
+      font-family: "Montserrat-Medium", sans-serif;
+    }
+
+    .retry-button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: "Montserrat-Medium", sans-serif;
+
+      &:hover {
+        background: #2563eb;
+      }
+    }
+  }
+
+  .search-help {
+    padding: 8px 16px;
+    background: #f8fafc;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+
+    span {
+      font-size: 11px;
+      color: #6b7280;
+      font-family: "Montserrat-Regular", sans-serif;
+    }
   }
 }
 
-input[type="text"] {
-  border-radius: 5px;
-  padding-left: 15px;
-  font-family: "Montserrat-Light";
-  height: 30px;
-  transition: width 0.3s ease;
-  border: none;
-  width: 170px;
-  background: rgb(183 183 183 / 44%);
-  animation: fadeInAndScale 0.6s ease;
-  font-size: 16px;
-}
-
-.search-results {
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 15px;
-  background: white;
-  margin-top: 5px;
-  z-index: 9;
-  max-height: 250px;
-  position: absolute;
-  overflow: auto;
-  width: 185px;
-  padding-right: 5px;
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  &::-webkit-scrollbar-thumb {
-    background-color: #cbd2d9;
-  }
-
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &:hover::-webkit-scrollbar-thumb {
-    background-color: #9aa5b1;
-  }
-
-  &:hover::-webkit-scrollbar-track {
-    background-color: #f5f7fa;
-  }
-}
-
-.coin {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @media screen and (max-width: 639px) {
-  @keyframes fadeInAndScale {
-    0% {
-      opacity: 0;
-      transform: scale(0.9);
-      width: 1px;
+  .search-bar {
+    max-width: 100%;
+    
+    .search-trigger,
+    .search-input {
+      font-size: 16px; // Prevent zoom on iOS
     }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-      width: 140px;
+    
+    .search-results {
+      max-height: 250px;
     }
-  }
-
-  .search-bar input[type="text"] {
-    width: 140px;
+    
+    .coin-option {
+      padding: 16px;
+      
+      .coin-name {
+        font-size: 16px;
+      }
+      
+      .coin-symbol {
+        font-size: 14px;
+      }
+      
+      .coin-price {
+        font-size: 16px;
+      }
+      
+      .coin-change {
+        font-size: 14px;
+      }
+    }
   }
 }

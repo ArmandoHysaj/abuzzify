@@ -257,20 +257,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     return () => source.cancel();
   };
 
-  const handleSaveCoin = useCallback(() => {
-    if (!coin || initialInvestment <= 0 || initialPrice <= 0) return;
-
-    const newCoin: CoinWithInvestment = {
-      ...coin,
-      initialInvestment,
-      initialPrice,
-    };
-
-    setSavedCoins((prev) => {
-      const withoutCurrent = prev.filter((c) => c.id !== coin.id);
-      return [...withoutCurrent, newCoin];
-    });
-  }, [coin, initialInvestment, initialPrice]);
+  // Remove handleSaveCoin since we're using scenario saving now
 
   const openModal = useCallback(() => {
     setIsModalOpen(true);
@@ -315,28 +302,28 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   };
 
   const CloseIcon = () => (
-    <svg
+    <button
       className="close-button"
       onClick={closeModal}
-      version="1.1"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      x="0px"
-      y="0px"
-      viewBox="0 0 512.001 512.001"
-      width="16"
-      fill="#333"
-      role="button"
-      tabIndex={0}
       aria-label="Close modal"
-      onKeyDown={(e) => e.key === "Enter" && closeModal()}
+      type="button"
     >
-      <g>
-        <g>
-          <path d="M284.286,256.002L506.143,34.144c7.811-7.811,7.811-20.475,0-28.285c-7.811-7.81-20.475-7.811-28.285,0L256,227.717 L34.143,5.859c-7.811-7.811-20.475-7.811-28.285,0c-7.81,7.811-7.811,20.475,0,28.285l221.857,221.857L5.858,477.859 c-7.811,7.811-7.811,20.475,0,28.285c3.905,3.905,9.024,5.857,14.143,5.857c5.119,0,10.237-1.952,14.143-5.857L256,284.287 l221.857,221.857c3.905,3.905,9.024,5.857,14.143,5.857s10.237-1.952,14.143-5.857c7.811-7.811,7.811-20.475,0-28.285 L284.286,256.002z"></path>
-        </g>
-      </g>
-    </svg>
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M18 6L6 18M6 6L18 18"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
   );
 
   const RemoveIcon = ({ onClick }: { onClick: () => void }) => (
@@ -364,7 +351,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
     </svg>
   );
 
-  const isSaveDisabled = !coin || initialInvestment <= 0 || initialPrice <= 0;
+  // Remove isSaveDisabled since we're not using save button anymore
 
   return (
     <>
@@ -399,64 +386,25 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
             </p>
             <SearchBar setSelectedCoin={setCoin} />
             <div className="investment-modal">
-              <div className="modal-wrapper">
-                {coin ? (
-                  <>
-                    <InvestmentCalculator
-                      initialInvestment={initialInvestment}
-                      setInitialInvestment={setInitialInvestment}
-                      initialPrice={initialPrice}
-                      setInitialPrice={setInitialPrice}
-                      coin={coin}
-                      name={coin.name}
-                      price={coin.price_usd}
-                    />
-                    <button
-                      className="save-button"
-                      onClick={handleSaveCoin}
-                      disabled={isSaveDisabled}
-                      aria-label="Save coin with investment data"
-                      title={
-                        isSaveDisabled
-                          ? "Enter valid investment amount and price to save"
-                          : "Save coin"
-                      }
-                    >
-                      Save Coin
-                    </button>
-                  </>
-                ) : (
-                  <div className="title red">No coin selected</div>
-                )}
-              </div>
-
-              <div className="saved-coins">
-                <h3>Saved Coins</h3>
-                {savedCoins.length > 0 ? (
-                  <ul>
-                    {savedCoins.map((savedCoin) => (
-                      <div key={savedCoin.id}>
-                        <li onClick={() => handleSelectSavedCoin(savedCoin)}>
-                          <span className="saved-coin-name">
-                            {savedCoin.name}
-                          </span>{" "}
-                          - Initial Investment:{" "}
-                          <span className="saved-value">
-                            ${savedCoin.initialInvestment}
-                          </span>{" "}
-                          - Initial Price:{" "}
-                          <span className="saved-value">
-                            ${savedCoin.initialPrice}
-                          </span>
-                        </li>
-                        <RemoveIcon onClick={() => handleRemoveCoin(savedCoin)} />
-                      </div>
-                    ))}
-                  </ul>
-                ) : (
-                  <div>No coins saved.</div>
-                )}
-              </div>
+                     <div className="modal-wrapper">
+                       {coin ? (
+                         <InvestmentCalculator
+                           initialInvestment={initialInvestment}
+                           setInitialInvestment={setInitialInvestment}
+                           initialPrice={initialPrice}
+                           setInitialPrice={setInitialPrice}
+                           coin={coin}
+                           name={coin.name}
+                           price={coin.price_usd}
+                           onSaveScenario={(scenario) => {
+                             // Handle scenario saving through the calculator
+                             console.log('Scenario saved:', scenario);
+                           }}
+                         />
+                       ) : (
+                         <div className="title red">No coin selected</div>
+                       )}
+                     </div>
             </div>
             <CloseIcon />
           </Modal>
@@ -481,62 +429,24 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
             </p>
             <div className="investment-modal">
               <div className="modal-wrapper">
+              <SearchBar setSelectedCoin={setCoin} />
+
                 {coin ? (
-                  <>
-                    <InvestmentCalculator
-                      initialInvestment={initialInvestment}
-                      setInitialInvestment={setInitialInvestment}
-                      initialPrice={initialPrice}
-                      setInitialPrice={setInitialPrice}
-                      coin={coin}
-                      name={coin.name}
-                      price={coin.price_usd}
-                    />
-                    <button
-                      className="save-button"
-                      onClick={handleSaveCoin}
-                      disabled={isSaveDisabled}
-                      aria-label="Save coin with investment data"
-                      title={
-                        isSaveDisabled
-                          ? "Enter valid investment amount and price to save"
-                          : "Save coin"
-                      }
-                    >
-                      Save Coin
-                    </button>
-                  </>
+                  <InvestmentCalculator
+                    initialInvestment={initialInvestment}
+                    setInitialInvestment={setInitialInvestment}
+                    initialPrice={initialPrice}
+                    setInitialPrice={setInitialPrice}
+                    coin={coin}
+                    name={coin.name}
+                    price={coin.price_usd}
+                    onSaveScenario={(scenario) => {
+                      // Handle scenario saving through the calculator
+                      console.log('Scenario saved:', scenario);
+                    }}
+                  />
                 ) : (
                   <div className="title red">No coin selected</div>
-                )}
-                <SearchBar setSelectedCoin={setCoin} />
-              </div>
-
-              <div className="saved-coins">
-                <h3>Saved Coins</h3>
-                {savedCoins.length > 0 ? (
-                  <ul>
-                    {savedCoins.map((savedCoin) => (
-                      <div key={savedCoin.id}>
-                        <li onClick={() => handleSelectSavedCoin(savedCoin)}>
-                          <span className="saved-coin-name">
-                            {savedCoin.name}
-                          </span>{" "}
-                          - Initial Investment:{" "}
-                          <span className="saved-value">
-                            ${savedCoin.initialInvestment}
-                          </span>{" "}
-                          - Initial Price:{" "}
-                          <span className="saved-value">
-                            ${savedCoin.initialPrice}
-                          </span>
-                        </li>
-                        <RemoveIcon onClick={() => handleRemoveCoin(savedCoin)} />
-                      </div>
-                    ))}
-                  </ul>
-                ) : (
-                  <div>No coins saved.</div>
                 )}
               </div>
             </div>
@@ -547,109 +457,114 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
         {coin ? (
           <>
             <div className="coin-container">
-              <div className="coin-details">
-                <div className="coin-name">
-                  <h3>Coin Name:</h3>
-                  <h3 className="name">{coin.name}</h3>
+              <div className="coin-header-card">
+                <div className="coin-header">
+                  <div className="coin-icon">🪙</div>
+                  <div className="coin-title">
+                    <h2 className="coin-name">{coin.name}</h2>
+                    <span className="coin-symbol">{coin.symbol}</span>
+                  </div>
+                  <div className="coin-price-main">
+                    <span className="price-label">Current Price</span>
+                    <span className="price-value">${coin.price_usd}</span>
+                  </div>
                 </div>
-                <ul className={`${!selectedCoinLoaded ? "loading" : ""}`}>
-                  <div>
-                    <span className="title">Symbol:</span>
-                    <span className="result"> {coin.symbol}</span>
-                  </div>
-                  <div>
-                    <span className="title">Price:</span>
-                    <span className="result">${coin.price_usd}</span>
-                  </div>
-                  <div>
-                    <span className="title">Change 1h:</span>
-                    <span className={`result ${trendClass(coin.percent_change_1h)}`}>
-                      {coin.percent_change_1h}%
-                    </span>
-                  </div>
-                  <div>
-                    <span className="title">Change 24h:</span>
-                    <span className={`result ${trendClass(coin.percent_change_24h)}`}>
-                      {coin.percent_change_24h}%
-                    </span>
-                  </div>
-                  <div>
-                    <span className="title">Change 7 days:</span>
-                    <span className={`result ${trendClass(coin.percent_change_7d)}`}>
-                      {coin.percent_change_7d}%
-                    </span>
-                  </div>
-                </ul>
-              </div>
-              <div className="coin-details">
-                <h3>
-                  Market Statistics{" "}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="#000000"
-                    height="800px"
-                    width="800px"
-                    version="1.1"
-                    id="Capa_1"
-                    viewBox="0 0 459.75 459.75"
-                  >
-                    <g>
-                      <path d="M447.652,304.13h-40.138c-6.681,0-12.097,5.416-12.097,12.097v95.805c0,6.681,5.416,12.098,12.097,12.098h40.138   c6.681,0,12.098-5.416,12.098-12.098v-95.805C459.75,309.546,454.334,304.13,447.652,304.13z"></path>
-                      <path d="M348.798,258.13H308.66c-6.681,0-12.098,5.416-12.098,12.097v141.805c0,6.681,5.416,12.098,12.098,12.098h40.138   c6.681,0,12.097-5.416,12.097-12.098V270.228C360.896,263.546,355.48,258.13,348.798,258.13z"></path>
-                      <path d="M151.09,304.13h-40.138c-6.681,0-12.097,5.416-12.097,12.097v95.805c0,6.681,5.416,12.098,12.097,12.098h40.138   c6.681,0,12.098-5.416,12.098-12.098v-95.805C163.188,309.546,157.771,304.13,151.09,304.13z"></path>
-                      <path d="M52.236,258.13H12.098C5.416,258.13,0,263.546,0,270.228v141.805c0,6.681,5.416,12.098,12.098,12.098h40.138   c6.681,0,12.097-5.416,12.097-12.098V270.228C64.333,263.546,58.917,258.13,52.236,258.13z"></path>
-                      <path d="M249.944,196.968h-40.138c-6.681,0-12.098,5.416-12.098,12.098v202.967c0,6.681,5.416,12.098,12.098,12.098h40.138   c6.681,0,12.098-5.416,12.098-12.098V209.066C262.042,202.384,256.625,196.968,249.944,196.968z"></path>
-                      <path d="M436.869,244.62c8.14,0,15-6.633,15-15v-48.479c0-8.284-6.716-15-15-15c-8.284,0-15,6.716-15,15v12.119L269.52,40.044   c-3.148-3.165-7.536-4.767-11.989-4.362c-4.446,0.403-8.482,2.765-11.011,6.445L131.745,209.185L30.942,144.969   c-6.987-4.451-16.26-2.396-20.71,4.592c-4.451,6.987-2.396,16.259,4.592,20.71l113.021,72c2.495,1.589,5.286,2.351,8.046,2.351   c4.783,0,9.475-2.285,12.376-6.507L261.003,74.025L400.8,214.62h-12.41c-8.284,0-15,6.716-15,15c0,8.284,6.716,15,15,15   c6.71,0,41.649,0,48.443,0H436.869z"></path>
-                    </g>
-                  </svg>
-                </h3>
-                <ul className={`${!selectedCoinLoaded ? "loading" : ""}`}>
-                  <div>
-                    <span className="title">Market Cap:</span>
-                    <span className="result">
-                      ${formatNumber(Number(coin.market_cap_usd))}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="title">Circulating Supply:</span>
-                    <span className="result">
-                      {formatNumber(Number(coin.csupply))}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="title">24h Volume:</span>
-                    <span className="result">
-                      ${formatNumber(Number(coin.volume24))}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="title">Total Supply:</span>
-                    <span className="result">
-                      {formatNumber(Number(coin.msupply))}
-                    </span>
-                  </div>
-                </ul>
               </div>
 
-              <div className="similar-coins">
-                <h3>Similar Coins</h3>
-                <ul
-                  className={`custom-scrollbar ${
-                    loadingCoins ? "loading" : ""
-                  }`}
-                >
-                  {similarCoins.map((c) => (
-                    <li key={c.id}>
-                      <span
-                        className="coin-name"
-                        onClick={() => selectSimilarCoin(c)}
-                      >
-                        {c.name} ({c.symbol})
+              <div className="stats-grid">
+                <div className="stat-card">
+                  <div className="stat-header">
+                    <h3>Price Changes</h3>
+                  </div>
+                  <div className="stat-content">
+                    <div className="stat-item">
+                      <span className="stat-label">1 Hour</span>
+                      <span className={`stat-value ${trendClass(coin.percent_change_1h)}`}>
+                        {coin.percent_change_1h}%
                       </span>
-                      <span className="coin-price">${c.price_usd}</span>
-                    </li>
-                  ))}
-                </ul>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-label">24 Hours</span>
+                      <span className={`stat-value ${trendClass(coin.percent_change_24h)}`}>
+                        {coin.percent_change_24h}%
+                      </span>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-label">7 Days</span>
+                      <span className={`stat-value ${trendClass(coin.percent_change_7d)}`}>
+                        {coin.percent_change_7d}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="stat-card">
+                  <div className="stat-header">
+                    <h3>Market Statistics</h3>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      height="20px"
+                      width="20px"
+                      viewBox="0 0 459.75 459.75"
+                      className="stat-icon"
+                    >
+                      <g>
+                        <path d="M447.652,304.13h-40.138c-6.681,0-12.097,5.416-12.097,12.097v95.805c0,6.681,5.416,12.098,12.097,12.098h40.138   c6.681,0,12.098-5.416,12.098-12.098v-95.805C459.75,309.546,454.334,304.13,447.652,304.13z"></path>
+                        <path d="M348.798,258.13H308.66c-6.681,0-12.098,5.416-12.098,12.097v141.805c0,6.681,5.416,12.098,12.098,12.098h40.138   c6.681,0,12.097-5.416,12.097-12.098V270.228C360.896,263.546,355.48,258.13,348.798,258.13z"></path>
+                        <path d="M151.09,304.13h-40.138c-6.681,0-12.097,5.416-12.097,12.097v95.805c0,6.681,5.416,12.098,12.097,12.098h40.138   c6.681,0,12.098-5.416,12.098-12.098v-95.805C163.188,309.546,157.771,304.13,151.09,304.13z"></path>
+                        <path d="M52.236,258.13H12.098C5.416,258.13,0,263.546,0,270.228v141.805c0,6.681,5.416,12.098,12.098,12.098h40.138   c6.681,0,12.097-5.416,12.097-12.098V270.228C64.333,263.546,58.917,258.13,52.236,258.13z"></path>
+                        <path d="M249.944,196.968h-40.138c-6.681,0-12.098,5.416-12.098,12.098v202.967c0,6.681,5.416,12.098,12.098,12.098h40.138   c6.681,0,12.098-5.416,12.098-12.098V209.066C262.042,202.384,256.625,196.968,249.944,196.968z"></path>
+                        <path d="M436.869,244.62c8.14,0,15-6.633,15-15v-48.479c0-8.284-6.716-15-15-15c-8.284,0-15,6.716-15,15v12.119L269.52,40.044   c-3.148-3.165-7.536-4.767-11.989-4.362c-4.446,0.403-8.482,2.765-11.011,6.445L131.745,209.185L30.942,144.969   c-6.987-4.451-16.26-2.396-20.71,4.592c-4.451,6.987-2.396,16.259,4.592,20.71l113.021,72c2.495,1.589,5.286,2.351,8.046,2.351   c4.783,0,9.475-2.285,12.376-6.507L261.003,74.025L400.8,214.62h-12.41c-8.284,0-15,6.716-15,15c0,8.284,6.716,15,15,15   c6.71,0,41.649,0,48.443,0H436.869z"></path>
+                      </g>
+                    </svg>
+                  </div>
+                  <div className="stat-content">
+                    <div className="stat-item">
+                      <span className="stat-label">Market Cap</span>
+                      <span className="stat-value">
+                        ${formatNumber(Number(coin.market_cap_usd))}
+                      </span>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-label">Circulating Supply</span>
+                      <span className="stat-value">
+                        {formatNumber(Number(coin.csupply))}
+                      </span>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-label">24h Volume</span>
+                      <span className="stat-value">
+                        ${formatNumber(Number(coin.volume24))}
+                      </span>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-label">Total Supply</span>
+                      <span className="stat-value">
+                        {formatNumber(Number(coin.msupply))}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="stat-card similar-coins-card">
+                  <div className="stat-header">
+                    <h3>Similar Coins</h3>
+                  </div>
+                  <div className="similar-coins-list">
+                    <ul className={`custom-scrollbar ${loadingCoins ? "loading" : ""}`}>
+                      {similarCoins.map((c) => (
+                        <li key={c.id} className="similar-coin-item" onClick={() => selectSimilarCoin(c)}>
+                          <div className="coin-info">
+                            <span className="coin-name">{c.name}</span>
+                            <span className="coin-symbol">({c.symbol})</span>
+                          </div>
+                          <span className="coin-price">${c.price_usd}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
             {newsActive && (

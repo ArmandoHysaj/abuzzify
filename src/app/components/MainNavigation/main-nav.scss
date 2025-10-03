@@ -28,14 +28,16 @@
   a {
     text-decoration: none;
     color: #111111;
+    position: relative;
+    padding-bottom: 2px;
 
     &:visited {
       color: #111111;
     }
 
-    position: relative;
-    padding-bottom: 2px;
     &:hover {
+      color: #214d44;
+      
       &:after {
         width: 100%;
         transition-delay: 0.3s;
@@ -44,7 +46,6 @@
         transition-property: all;
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       }
-      color: #214d44;
     }
     &:after {
       content: "";

@@ -1,133 +1,646 @@
-/* portfolio.scss */
+/* Professional Investment Calculator Styles */
+.investment-calculator {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease;
+  overflow: hidden;
+
+  &:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .calculator-header {
+    padding: 24px 24px 0 24px;
+    border-bottom: 1px solid #f3f4f6;
+
+    .coin-info {
+      margin-bottom: 20px;
+
+      .coin-name {
+        font-size: 24px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 8px;
+        font-family: "Montserrat-SemiBold", sans-serif;
+      }
+
+      .current-price {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #6b7280;
+
+        .price-label {
+          font-weight: 500;
+        }
+
+        .price-value {
+          font-weight: 600;
+          color: #111827;
+        }
+      }
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: #f8fafc;
+      padding: 4px;
+      border-radius: 8px;
+      margin-bottom: -1px;
+
+      .tab {
+        flex: 1;
+        padding: 8px 16px;
+        border: none;
+        background: transparent;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #6b7280;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-family: "Montserrat-Medium", sans-serif;
+
+        &:hover {
+          color: #374151;
+          background: rgba(59, 130, 246, 0.1);
+        }
+
+        &.active {
+          background: #ffffff;
+          color: #3b82f6;
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+      }
+    }
+  }
+
+  .calculator-content {
+    padding: 24px;
+  }
+
+  .calculator-inputs {
+    margin-bottom: 24px;
+
+    .input-group {
+      margin-bottom: 20px;
+
+      .input-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: 14px;
+        color: #374151;
+        font-family: "Montserrat-Medium", sans-serif;
+      }
+
+      .input-wrapper {
+        position: relative;
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+
+        &:focus-within {
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .currency-symbol {
+          position: absolute;
+          left: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-weight: 500;
+          color: #6b7280;
+          font-size: 14px;
+          pointer-events: none;
+        }
+
+        .modern-input {
+          width: 100%;
+          background: transparent;
+          border: none;
+          outline: none;
+          color: #111827;
+          font-size: 16px;
+          font-weight: 400;
+          padding: 12px 12px 12px 28px;
+          font-family: "Montserrat-Regular", sans-serif;
+          
+          &::placeholder {
+            color: #9ca3af;
+          }
+
+          &::-webkit-outer-spin-button,
+          &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+
+          &[type=number] {
+            -moz-appearance: textfield;
+          }
+        }
+      }
+    }
+
+    .coins-owned {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin-top: 16px;
+
+      .coins-icon {
+        font-size: 20px;
+        opacity: 0.7;
+      }
+
+      .coins-text {
+        font-size: 14px;
+        color: #475569;
+        font-family: "Montserrat-Regular", sans-serif;
+
+        strong {
+          color: #1e293b;
+          font-weight: 600;
+          font-family: "Montserrat-SemiBold", sans-serif;
+        }
+      }
+    }
+  }
+
+  .results-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+
+    .result-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+      transition: all 0.2s ease;
+      text-align: center;
+
+      &:hover {
+        background: #f3f4f6;
+        border-color: #d1d5db;
+      }
+
+      &.profit-loss {
+        .percentage-change {
+          font-size: 12px;
+          font-weight: 600;
+          margin-top: 8px;
+          padding: 4px 8px;
+          border-radius: 4px;
+          display: inline-block;
+        }
+      }
+
+      .result-header {
+        h3 {
+          font-size: 12px;
+          font-weight: 500;
+          color: #6b7280;
+          margin-bottom: 8px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          font-family: "Montserrat-Medium", sans-serif;
+        }
+
+        .result-value {
+          font-size: 20px;
+          font-weight: 600;
+          color: #111827;
+          font-family: "Montserrat-SemiBold", sans-serif;
+        }
+      }
+    }
+  }
+
+  .performance-indicator {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+
+    .indicator {
+      font-size: 24px;
+    }
+
+    .performance-text {
+      font-size: 14px;
+      color: #475569;
+      font-weight: 400;
+      font-family: "Montserrat-Regular", sans-serif;
+    }
+  }
+
+  // Color variants
+  .profit {
+    color: #059669;
+  }
+
+  .loss {
+    color: #dc2626;
+  }
+
+  .neutral {
+    color: #6b7280;
+  }
+}
+
 .investment-modal {
   display: flex;
-  margin-top: 30px;
-
+  margin-top: 24px;
   flex-direction: column;
-  gap: 40px;
+  gap: 24px;
+  
   .modal-wrapper {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
+    gap: 24px;
   }
 
   .saved-coins {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
+    
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 12px;
+      font-family: "Montserrat-SemiBold", sans-serif;
+    }
+    
     ul {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 12px;
+      
       > div {
         display: flex;
+        align-items: center;
+        gap: 8px;
       }
     }
+    
     li {
       cursor: pointer;
+      padding: 12px 16px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      font-size: 14px;
+      
       &:hover {
-        opacity: 0.8;
+        background: #f3f4f6;
+        border-color: #d1d5db;
       }
     }
-    li:not(:first-of-type) {
-      margin-top: 10px;
-    }
+    
     .saved-coin-name {
-      color: #e74c3c;
-      font-family: "Montserrat-Medium";
+      color: #3b82f6;
+      font-weight: 600;
+      font-family: "Montserrat-SemiBold", sans-serif;
     }
+    
     .saved-value {
-      font-family: "Montserrat-Medium";
+      color: #6b7280;
+      font-family: "Montserrat-Regular", sans-serif;
     }
   }
 
   .search-bar {
-    min-width: 187px;
+    min-width: 300px;
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     position: relative;
     z-index: 99;
-    justify-content: right;
+    
     [data-simplebar] {
       left: 0;
       top: 45px;
     }
-    .search-results {
-      top: 35px;
-    }
   }
+  
   .simplebar-content .coin {
     cursor: pointer;
   }
-  .save-button {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    cursor: pointer;
-    padding: 15px;
-    font-family: "Montserrat-SemiBold";
-    color: #fff;
-    background-color: #25c077;
+  
+  // Save button moved to calculator component
+
+  // New styles for enhanced features
+  .save-scenario-btn {
+    width: 100%;
+    padding: 12px 20px;
+    background: #10b981;
+    color: white;
     border: none;
-    border-radius: 5px;
-    &:hover:not(:disabled) {
-      animation: pulse 1s infinite;
-      transition: 0.3s;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 16px;
+    font-family: "Montserrat-SemiBold", sans-serif;
+
+    &:hover {
+      background: #059669;
     }
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+
+    &:active {
+      transform: translateY(1px);
     }
   }
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
+
+  .input-suffix {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #6b7280;
+    pointer-events: none;
+  }
+
+  .dca-settings {
+    margin-bottom: 24px;
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 16px;
+      font-family: "Montserrat-SemiBold", sans-serif;
     }
-    70% {
-      transform: scale(0.9);
+  }
+
+  .dca-info {
+    margin-top: 24px;
+    padding: 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+
+    h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 12px;
+      font-family: "Montserrat-SemiBold", sans-serif;
     }
-    100% {
-      transform: scale(1);
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        padding: 4px 0;
+        position: relative;
+        padding-left: 20px;
+        color: #475569;
+        font-size: 14px;
+        font-family: "Montserrat-Regular", sans-serif;
+
+        &:before {
+          content: "✓";
+          position: absolute;
+          left: 0;
+          color: #10b981;
+          font-weight: bold;
+        }
+      }
     }
+  }
+
+  .scenarios-header {
+    margin-bottom: 24px;
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 8px;
+      font-family: "Montserrat-SemiBold", sans-serif;
+    }
+
+    p {
+      color: #6b7280;
+      font-size: 14px;
+      font-family: "Montserrat-Regular", sans-serif;
+    }
+  }
+
+  .scenarios-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .scenario-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+    }
+
+    .scenario-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+
+      h4 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #111827;
+        margin: 0;
+        font-family: "Montserrat-SemiBold", sans-serif;
+      }
+
+      .remove-scenario {
+        background: #fee2e2;
+        border: 1px solid #fecaca;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #dc2626;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: #fecaca;
+        }
+      }
+    }
+
+    .scenario-details {
+      .scenario-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-bottom: 12px;
+
+        span {
+          font-size: 14px;
+          color: #6b7280;
+          font-family: "Montserrat-Regular", sans-serif;
+        }
+      }
+
+      .scenario-results {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 16px;
+
+        .scenario-result {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+
+          .label {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 500;
+            font-family: "Montserrat-Medium", sans-serif;
+          }
+
+          .value {
+            font-size: 14px;
+            font-weight: 600;
+            font-family: "Montserrat-SemiBold", sans-serif;
+          }
+        }
+      }
+
+      .load-scenario-btn {
+        width: 100%;
+        padding: 8px 16px;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-family: "Montserrat-Medium", sans-serif;
+
+        &:hover {
+          background: #2563eb;
+        }
+      }
+    }
+  }
+
+  .no-scenarios {
+    text-align: center;
+    padding: 32px 16px;
+    color: #6b7280;
+    font-size: 14px;
+    font-family: "Montserrat-Regular", sans-serif;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
   }
 }
 .investment-calculator-modal {
-  background: white;
-  padding: 20px;
-  border-radius: 4px;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
   outline: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
+  position: relative;
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  min-height: 90vh;
   .description {
-    font-family: "Montserrat-SemiBoldItalic";
-    margin-top: 15px;
-    max-width: calc(100% - 150px);
+    font-family: "Montserrat-Regular", sans-serif;
+    margin-top: 16px;
+    max-width: 100%;
+    color: #6b7280;
+    line-height: 1.6;
+    font-size: 14px;
   }
   
-  .close-button {
-    position: absolute;
-    top: 25px;
-    cursor: pointer;
-    right: 20px;
-    &:focus {
-      outline: 2px solid #007bff;
-      outline-offset: 2px;
-    }
+  h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 16px;
+    font-family: "Montserrat-SemiBold", sans-serif;
   }
-}
-
-.investments-wrapper {
-  padding: 20px 0 10px 0;
-
-  .coin-name {
-    color: #a70532;
-  }
-  .title.red {
-    margin-top: 7px;
-  }
-  .coin-number-amount {
-    font-family: "Montserrat-Italic";
-    margin-bottom: 10px;
-    display: block;
-  }
+  
+         .close-button {
+           position: absolute;
+           top: 16px;
+           right: 16px;
+           width: 40px;
+           height: 40px;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           background: #ffffff;
+           border: 1px solid #e5e7eb;
+           border-radius: 8px;
+           cursor: pointer;
+           transition: all 0.2s ease;
+           color: #6b7280;
+           
+           &:hover {
+             background: #f9fafb;
+             border-color: #d1d5db;
+             color: #374151;
+           }
+           
+           &:focus {
+             outline: 2px solid #3b82f6;
+             outline-offset: 2px;
+           }
+           
+           svg {
+             width: 20px;
+             height: 20px;
+           }
+         }
 }
 
 .investment-calculator-overlay {
@@ -137,153 +650,182 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 
   .modal-button {
     margin: 30px auto 0;
   }
 }
-.profit-loses {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
 
-  .neutral {
-    color: #666;
-  }
-}
 .modal-button {
-  border-radius: 5px;
-  padding: 20px;
-  font-family: "Montserrat-SemiBold";
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: "Montserrat-SemiBold", sans-serif;
   cursor: pointer;
   display: inline-block;
-  margin: 0 auto 50px;
-}
-.remove-button {
-  margin-left: 10px;
-  cursor: pointer;
-  width: 15px;
-  height: 15px;
-  margin-top: 3px;
-  &:focus {
-    outline: 2px solid #007bff;
-    outline-offset: 2px;
+  margin: 0 auto 32px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #2563eb;
+  }
+  
+  &:active {
+    transform: translateY(1px);
   }
 }
-.investment-calculator {
-  width: 50vw;
-}
 
-.input-container {
-  position: relative;
-  margin-bottom: 25px;
-  margin-top: 20px;
-  border-bottom: 2px solid lightgray;
-  max-width: 320px;
-}
-.input-container label {
-  position: absolute;
-  top: 15px;
-  left: 0px;
-  font-size: 16px;
-  color: black;
-  pointer-events: none;
-  transition: all 0.5s ease-in-out;
-}
-.input-container input {
-  width: 100% !important;
-  border: 0;
-  border-bottom: 1px solid #555;
-  background: transparent;
-  width: 100%;
-  border: none;
-  padding: 8px 0 5px 0;
-  font-size: 16px;
-  color: black;
-}
-.input-container input:focus {
-  border: none;
-  outline: none;
-}
-
-.input-container input:focus ~ label {
-  top: -12px;
-  font-size: 12px;
+.remove-button {
+  margin-left: 8px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  padding: 2px;
+  border-radius: 4px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+  }
+  
+  &:focus {
+    outline: 2px solid #ef4444;
+    outline-offset: 2px;
+  }
+  
+  svg {
+    fill: #dc2626;
+  }
 }
 
 @media screen and (min-width: 1024px) {
   .investment-calculator-modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    max-height: 600px;
-    overflow: auto;
-    right: auto;
-    min-width: 500px;
-    bottom: auto;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
+    max-width: 900px;
+    margin: 0 auto;
   }
 }
 
 @media screen and (max-width: 1023px) {
   .modal-button.default-button {
-    padding: 15px;
+    padding: 12px 20px;
     position: relative;
-    margin-top: 15px;
+    margin-top: 16px;
     margin-left: auto;
     margin-right: auto;
+    font-size: 14px;
   }
+  
   .modal-btn-wrapper {
-    max-width: 600px;
+    max-width: 100%;
     margin: 0 auto;
+    padding: 0 16px;
   }
+  
   .investment-calculator-modal {
     overflow: auto;
-    max-height: 100%;
+    max-height: 95vh;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 12px;
+    width: calc(100% - 40px);
+    
     .description {
       max-width: 100%;
+      font-size: 14px;
     }
+    
     .search-bar {
-      margin-top: 20px;
+      margin-top: 16px;
     }
+    
     .investment-modal {
       margin-top: 0;
+      
       .saved-coins {
-        padding-bottom: 50px;
+        padding-bottom: 24px;
+        
         ul {
           flex-direction: column;
+          gap: 12px;
+          
           > div {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            align-items: center;
           }
+          
           li {
-            width: max-content;
+            width: 100%;
+            padding: 12px 16px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            
+            &:hover {
+              background: #f3f4f6;
+              border-color: #d1d5db;
+            }
           }
         }
       }
     }
+    
     .modal-wrapper {
       flex-direction: column;
       gap: 20px;
     }
+    
     .investment-calculator {
       width: 100%;
+      padding: 0;
+      
+      .calculator-header {
+        .coin-info {
+          .coin-name {
+            font-size: 20px;
+          }
+          
+          .current-price {
+            padding: 8px 16px;
+            
+            .price-value {
+              font-size: 16px;
+            }
+          }
+        }
+      }
+      
+      .results-section {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        
+        .result-card {
+          padding: 16px;
+          
+          .result-header {
+            .result-value {
+              font-size: 18px;
+            }
+          }
+        }
+      }
     }
-    .input-container input {
-      width: 100% !important;
-    }
-    .save-button {
-      position: relative;
-      width: max-content;
-      right: auto;
-      bottom: auto;
-    }
-    .modal-button.default-button {
-      bottom: 30px;
-      left: 15px;
-      position: absolute;
-    }
+    
+         // Save button removed from mobile styles
   }
 }
+

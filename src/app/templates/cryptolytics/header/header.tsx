@@ -21,9 +21,7 @@ const Header: React.FC<HeaderProps> = ({
       <div className="header-contents">
         <div className="header-content-item search-btn">
           <SearchBar setSelectedCoin={setSelectedCoin} />
-        </div>
-        <div className="header-content-item reset-results">Reset</div>
-      </div>
+        </div> </div>
     </div>
   );
 };
