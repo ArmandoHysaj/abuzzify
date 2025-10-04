@@ -7,6 +7,7 @@ const protectedRoutes = [
   '/cryptolytics/investment',
   '/profile',
   '/dashboard',
+  '/admin',
 ];
 
 // Define public routes that should redirect to home if user is authenticated
@@ -29,15 +30,16 @@ export function middleware(request: NextRequest) {
     pathname.startsWith(route)
   );
 
-  // Get the authentication token from cookies
-  const token = request.cookies.get('auth-token')?.value;
-  const isAuthenticated = !!token;
+  // Get the Firebase session cookie
+  const sessionCookie = request.cookies.get('session')?.value;
+  const isAuthenticated = !!sessionCookie;
 
-  // If accessing a protected route without authentication, redirect to login
+  // If accessing a protected route without authentication, redirect to home with auth modal
   if (isProtectedRoute && !isAuthenticated) {
-    const loginUrl = new URL('/auth', request.url);
-    loginUrl.searchParams.set('redirect', pathname);
-    return NextResponse.redirect(loginUrl);
+    const homeUrl = new URL('/', request.url);
+    homeUrl.searchParams.set('auth', 'login');
+    homeUrl.searchParams.set('redirect', pathname);
+    return NextResponse.redirect(homeUrl);
   }
 
   // If accessing a public auth route while authenticated, redirect to home

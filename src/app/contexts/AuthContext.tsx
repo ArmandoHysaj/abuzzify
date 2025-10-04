@@ -50,16 +50,50 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const result = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(result.user, { displayName });
     await sendEmailVerification(result.user);
+    
+    // Auto-create user document in Firestore using server action
+    const { createUserAction } = await import('@/app/lib/data/user-actions');
+    await createUserAction({
+      name: displayName,
+      email: email,
+      password: password,
+      role: 'user' // Default role
+    });
+    
+    // Create session cookie after successful signup
+    const idToken = await result.user.getIdToken();
+    await fetch('/api/auth/session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idToken }),
+    });
+    
     return result;
   };
 
-  const login = (email: string, password: string) => {
+  const login = async (email: string, password: string) => {
     if (!auth) throw new Error('Firebase not initialized');
-    return signInWithEmailAndPassword(auth, email, password);
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    
+    // Create session cookie after successful login
+    const idToken = await result.user.getIdToken();
+    await fetch('/api/auth/session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idToken }),
+    });
+    
+    return result;
   };
 
-  const logout = () => {
+  const logout = async () => {
     if (!auth) throw new Error('Firebase not initialized');
+    
+    // Delete session cookie
+    await fetch('/api/auth/session', {
+      method: 'DELETE',
+    });
+    
     return signOut(auth);
   };
 
@@ -68,7 +102,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const provider = new GoogleAuthProvider();
     provider.addScope('email');
     provider.addScope('profile');
-    return signInWithPopup(auth, provider);
+    const result = await signInWithPopup(auth, provider);
+    
+    // Auto-create user document in Firestore using server action (if doesn't exist)
+    const { createUserAction } = await import('@/app/lib/data/user-actions');
+    try {
+      await createUserAction({
+        name: result.user.displayName || 'User',
+        email: result.user.email || '',
+        password: 'google-oauth-user', // Dummy password for Google users
+        role: 'user'
+      });
+    } catch (error) {
+      // User might already exist, that's okay
+      console.log('User creation skipped (likely already exists):', error);
+    }
+    
+    // Create session cookie after successful Google login
+    const idToken = await result.user.getIdToken();
+    await fetch('/api/auth/session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idToken }),
+    });
+    
+    return result;
   };
 
   const resetPassword = (email: string) => {
