@@ -568,13 +568,13 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                 </div>
 
                 {/* Price Alerts Component */}
-                {selectedCoin && (
+                {coin && (
                   <div className="price-alerts-container">
                     <PriceAlerts
-                      coinId={selectedCoin.id}
-                      coinName={selectedCoin.name}
-                      coinSymbol={selectedCoin.symbol}
-                      currentPrice={parseFloat(selectedCoin.price_usd)}
+                      coinId={coin.id}
+                      coinName={coin.name}
+                      coinSymbol={coin.symbol}
+                      currentPrice={parseFloat(coin.price_usd)}
                     />
                   </div>
                 )}

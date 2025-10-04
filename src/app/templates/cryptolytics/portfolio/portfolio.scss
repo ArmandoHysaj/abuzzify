@@ -292,12 +292,13 @@
       flex-direction: row;
       transition: all 0.2s ease;
       padding: 16px;
-      background: #f9fafb;
+      background: var(--bg-secondary);
+      color: var(--text-muted);
       border: 1px solid #e5e7eb;
       border-radius: 8px;
 
       &:hover {
-        background: #f3f4f6;
+        background: var(--bg-tertiary);
         border-color: #d1d5db;
         
         p {
@@ -307,9 +308,9 @@
 
       a {
         font-family: "Montserrat-Medium", sans-serif;
-        color: #111827;
         text-decoration: none;
         font-weight: 600;
+        color: var(--text-muted);
       }
     }
 
