@@ -1,8 +1,6 @@
-import HomePageComponent from "./templates/home/HomePage";
-export default function HomePage() {
-  return (
-    <>
-      <HomePageComponent />
-    </>
-  );
+import HomePage from "./HomePage";
+import "./home-page.scss";
+
+export default function Page() {
+  return <HomePage />;
 }

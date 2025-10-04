@@ -97,16 +97,16 @@ const MainNavigation = () => {
                   <Link href="/">Home</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/templates/cryptolytics">Crypto Analytics</Link>
+                  <Link href="/cryptolytics">Crypto Analytics</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/templates/exchanges">Crypto Exchanges</Link>
+                  <Link href="/exchanges">Crypto Exchanges</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/templates/articles">Crypto Articles</Link>
+                  <Link href="/articles">Crypto Articles</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/templates/about">About Us</Link>
+                  <Link href="/about">About Us</Link>
                 </div>
                 <div className="hdl-4 theme-toggle-mobile">
                   <div className="theme-toggle-label">Theme</div>
@@ -166,16 +166,16 @@ const MainNavigation = () => {
               <Link href="/">Home</Link>
             </div>
             <div className="hdl-4">
-              <Link href="/templates/cryptolytics">Crypto Analytics</Link>
+              <Link href="/cryptolytics">Crypto Analytics</Link>
             </div>
             <div className="hdl-4">
-              <Link href="/templates/exchanges">Crypto Exchanges</Link>
+              <Link href="/exchanges">Crypto Exchanges</Link>
             </div>
             <div className="hdl-4">
-              <Link href="/templates/articles">Crypto Articles</Link>
+              <Link href="/articles">Crypto Articles</Link>
             </div>
             <div className="hdl-4 left-space">
-              <Link href="/templates/about">About Us</Link>
+              <Link href="/about">About Us</Link>
             </div>
             <div className="theme-toggle-container">
               <ThemeToggle />

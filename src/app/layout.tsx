@@ -60,16 +60,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <div className="quick-links">
               <ul>
                 <li>
-                  <a href="/templates/about" aria-label="Learn more about Abuzzify">About Us</a>
+                  <a href="/about" aria-label="Learn more about Abuzzify">About Us</a>
                 </li>
                 <li>
-                  <a href="/templates/privacy" aria-label="Read our privacy policy">Privacy Policy</a>
+                  <a href="/privacy" aria-label="Read our privacy policy">Privacy Policy</a>
                 </li>
                 <li>
-                  <a href="/templates/terms" aria-label="Read our terms of service">Terms of Service</a>
+                  <a href="/terms" aria-label="Read our terms of service">Terms of Service</a>
                 </li>
                 <li>
-                  <a href="/templates/contact" aria-label="Contact us for support">Contact Us</a>
+                  <a href="/contact" aria-label="Contact us for support">Contact Us</a>
                 </li>
               </ul>
             </div>

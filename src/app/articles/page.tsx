@@ -1,7 +1,7 @@
 "use client";
 import CoinCarouselBar from "@/app/components/CoinCarouselBar/CoinCarouselBar";
-import "../../components/CoinCarouselBar/coin-carousel-bar.scss";
-import articleImg from "../../images/articles.webp";
+import "@/app/components/CoinCarouselBar/coin-carousel-bar.scss";
+import articleImg from "@/app/images/articles.webp";
 
 // src/app/articles/page.tsx
 

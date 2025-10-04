@@ -5,11 +5,11 @@ import axios, { CancelTokenSource } from "axios";
 import Modal from "react-modal";
 import InvestmentCalculator from "../investment/InvestmentCalculator";
 import EducationalContent from "./EducationalContent";
-import PriceAlerts from "../../../components/PriceAlerts/PriceAlerts";
+import PriceAlerts from "@/app/components/PriceAlerts/PriceAlerts";
 import "./portfolio.scss";
 import SearchBar from "../search/search";
 import formatNumber from "@/app/helpers/formatNumbers";
-import cryptocurrencyImg from "../../images/crypto.png";
+import cryptocurrencyImg from "@/app/images/crypto.png";
 import ReactGA from "react-ga4";
 
 interface Coin {

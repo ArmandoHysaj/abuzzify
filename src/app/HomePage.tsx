@@ -6,6 +6,18 @@ import Link from "next/link";
 import ReactGA from "react-ga4";
 import CoinCarouselBar from "@/app/components/CoinCarouselBar/CoinCarouselBar";
 
+// Lucide icons
+import {
+  TrendingUp,
+  ShieldCheck,
+  Zap,
+  Bell,
+  MapPin,
+  Wallet,
+  Activity,
+  Calendar,
+} from "lucide-react";
+
 interface NewsArticle {
   url: string;
   urlToImage: string;
@@ -84,30 +96,41 @@ const HomePage = () => {
     }
   ]);
 
-  const features = [
+  // features now include icons (lucide components)
+  const features: {
+    title: string;
+    description: string;
+    Icon?: React.ComponentType<any>;
+  }[] = [
     {
       title: "Real-time Analytics",
       description: "Track live cryptocurrency prices and market trends with precision.",
+      Icon: TrendingUp,
     },
     {
       title: "Portfolio Management",
       description: "Calculate profits, losses, and manage your crypto investments effortlessly.",
+      Icon: Wallet,
     },
     {
       title: "DCA Strategies",
       description: "Implement dollar-cost averaging strategies for optimal investment returns.",
+      Icon: Calendar,
     },
     {
       title: "Price Alerts",
       description: "Get notified when your favorite cryptocurrencies hit target prices.",
+      Icon: Bell,
     },
     {
       title: "Latest News",
       description: "Stay updated with the latest cryptocurrency news and market insights.",
+      Icon: Activity,
     },
     {
       title: "Exchange Map",
       description: "Discover crypto exchanges worldwide with our interactive map.",
+      Icon: MapPin,
     },
   ];
 
@@ -177,7 +200,7 @@ const HomePage = () => {
   };
 
   const getStarted = () => {
-    window.location.href = "/templates/cryptolytics";
+    window.location.href = "/cryptolytics";
     ReactGA.event({
       category: "User",
       action: "Clicked Get Started Button",
@@ -230,21 +253,32 @@ const HomePage = () => {
               </svg>
             </button>
           </div>
-          <div className="hero-features">
-            <div className="feature-item">
-              <div className="feature-icon">📊</div>
+
+          {/* HERO FEATURE ICONS (replaced emojis with lucide icons) */}
+          <div className="hero-features" aria-hidden={false}>
+            <div className="feature-item" role="img" aria-label="Real-time Analytics">
+              <div className="feature-icon">
+                <TrendingUp size={28} />
+              </div>
               <span>Real-time Analytics</span>
             </div>
-            <div className="feature-item">
-              <div className="feature-icon">🔒</div>
+
+            <div className="feature-item" role="img" aria-label="Bank-grade Security">
+              <div className="feature-icon">
+                <ShieldCheck size={28} />
+              </div>
               <span>Bank-grade Security</span>
             </div>
-            <div className="feature-item">
-              <div className="feature-icon">⚡</div>
+
+            <div className="feature-item" role="img" aria-label="Lightning Fast">
+              <div className="feature-icon">
+                <Zap size={28} />
+              </div>
               <span>Lightning Fast</span>
             </div>
           </div>
         </div>
+
         <div className="hero-visual">
           <div className="crypto-cards">
             <div className="crypto-card">
@@ -292,12 +326,22 @@ const HomePage = () => {
             <p>Everything you need to succeed in cryptocurrency investing</p>
           </div>
           <div className="features-grid">
-            {features.map((feature, index) => (
-              <div key={index} className="feature-card">
-                <h3 className="feature-title">{feature.title}</h3>
-                <p className="feature-description">{feature.description}</p>
-              </div>
-            ))}
+            {features.map((feature, index) => {
+              const Icon = feature.Icon;
+              return (
+                <div key={index} className="feature-card" role="article" aria-labelledby={`feature-title-${index}`}>
+                  <div className="feature-card-top">
+                    {Icon ? (
+                      <div className="feature-card-icon" aria-hidden="true">
+                        <Icon size={22} />
+                      </div>
+                    ) : null}
+                    <h3 id={`feature-title-${index}`} className="feature-title">{feature.title}</h3>
+                  </div>
+                  <p className="feature-description">{feature.description}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -384,9 +428,9 @@ const HomePage = () => {
                 <p>{coin.symbol}</p>
                 <p>${parseFloat(coin.price_usd).toFixed(2)} USD</p>
                 <button
-                  onClick={() =>
-                    (window.location.href = `/templates/cryptolytics?coin=${coin.id}`)
-                  }
+                        onClick={() =>
+                          (window.location.href = `/cryptolytics?coin=${coin.id}`)
+                        }
                   aria-label={`View details for ${coin.name}`}
                 >
                   View Details
@@ -411,7 +455,7 @@ const HomePage = () => {
           <h3>Profit/Loss Calculator</h3>
           <p>Calculate your profits and losses from your crypto investments.</p>
           <button
-            onClick={() => (window.location.href = "/templates/cryptolytics")}
+            onClick={() => (window.location.href = "/cryptolytics")}
           >
             Try Now
           </button>
@@ -429,7 +473,7 @@ const HomePage = () => {
               cryptocurrencies like Bitcoin. Learn more about its applications
               and potential impact on various industries.
             </p>
-            <Link href="/templates/cryptolytics/articles/blockchain-technology">
+            <Link href="/cryptolytics/articles/blockchain-technology">
               Read more
             </Link>
           </div>
@@ -440,7 +484,7 @@ const HomePage = () => {
               to trading strategies, market analysis, and essential tips for
               successful trading.
             </p>
-            <Link href="/templates/cryptolytics/articles/crypto-trading">
+            <Link href="/cryptolytics/articles/crypto-trading">
               Read more
             </Link>
           </div>
@@ -449,27 +493,13 @@ const HomePage = () => {
             <p className="cp-text-m">
               Get tips on how to invest in cryptocurrencies wisely.
             </p>
-            <Link href="/templates/cryptolytics/articles/investment-tips">
+            <Link href="/cryptolytics/articles/investment-tips">
               Read more
             </Link>
           </div>
         </div>
       </div>
 
-      {/* User Testimonials */}
-      {/* <div className="testimonials">
-        <h2>User Testimonials</h2>
-        <div className="testimonials-container">
-          {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="testimonial">
-              <p>&quot;{testimonial.feedback}&quot;</p>
-              <p>- {testimonial.name}</p>
-            </div>
-          ))}
-        </div>
-      </div> */}
-
-      {/* Call to Action */}
       {/* Testimonials Section */}
       <div className="testimonials-section">
         <div className="container">

@@ -13,7 +13,7 @@ import {
   ArcElement,
 } from "chart.js";
 import { Bar, Doughnut } from "react-chartjs-2";
-import "../../components/CustomDropdown/dropdown.scss";
+import "@/app/components/CustomDropdown/dropdown.scss";
 import dynamic from "next/dynamic";
 import Dropdown from "@/app/components/CustomDropdown/Dropdown";
 
