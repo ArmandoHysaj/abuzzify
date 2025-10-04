@@ -54,7 +54,7 @@ export async function verifySessionCookie(sessionCookie: string): Promise<AuthUs
 
 export async function getUserFromServer(): Promise<AuthUser | null> {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const sessionCookie = cookieStore.get('session')?.value;
 
     if (!sessionCookie) {
