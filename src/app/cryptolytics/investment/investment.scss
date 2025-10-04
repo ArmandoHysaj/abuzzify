@@ -1,15 +1,423 @@
 /* Professional Investment Calculator Styles */
 .investment-calculator {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.3s ease;
-  overflow: hidden;
+  .auth-required {
+    text-align: center;
+    padding: 60px 24px;
+    color: var(--text-muted);
 
-  &:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--border-accent);
+    .auth-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  }
+
+  .error-message {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+    border-radius: 8px;
+    margin: 16px;
+    font-size: 14px;
+
+    button {
+      background: none;
+      border: none;
+      color: var(--error-text);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 0;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+
+    .save-investment-btn,
+    .save-scenario-btn {
+      flex: 1;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: "Montserrat-SemiBold", sans-serif;
+
+      &.save-investment-btn {
+        background: var(--gradient-primary);
+        color: var(--text-inverse);
+
+        &:hover:not(:disabled) {
+          transform: translateY(-1px);
+          box-shadow: var(--shadow-md);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+
+      &.save-scenario-btn {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+
+        &:hover {
+          background: var(--bg-tertiary);
+          border-color: var(--border-accent);
+        }
+      }
+    }
+  }
+
+  .save-dca-btn {
+    width: 100%;
+    padding: 12px 24px;
+    margin-top: 20px;
+    background: var(--gradient-primary);
+    color: var(--text-inverse);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: "Montserrat-SemiBold", sans-serif;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  .section {
+    margin-bottom: 32px;
+
+    h4 {
+      color: var(--text-primary);
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-family: "Montserrat-SemiBold", sans-serif;
+    }
+  }
+
+  .investments-list,
+  .scenarios-list {
+    display: grid;
+    gap: 16px;
+  }
+
+  .investment-card,
+  .scenario-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: var(--border-accent);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .investment-header,
+    .scenario-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+
+      h5 {
+        color: var(--text-primary);
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+        font-family: "Montserrat-SemiBold", sans-serif;
+      }
+
+      .investment-date,
+      .scenario-date {
+        font-size: 12px;
+        color: var(--text-muted);
+        background: var(--bg-tertiary);
+        padding: 4px 8px;
+        border-radius: 4px;
+      }
+    }
+
+    .investment-details,
+    .scenario-details {
+      .investment-info,
+      .scenario-info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 16px;
+
+        span {
+          font-size: 14px;
+          color: var(--text-muted);
+          background: var(--bg-tertiary);
+          padding: 6px 12px;
+          border-radius: 6px;
+        }
+      }
+
+      .investment-results,
+      .scenario-results {
+        margin-bottom: 16px;
+
+        .investment-result,
+        .scenario-result {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 8px;
+
+          .label {
+            font-size: 14px;
+            color: var(--text-muted);
+          }
+
+          .value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+
+            &.profit {
+              color: var(--success-color);
+            }
+
+            &.loss {
+              color: var(--error-color);
+            }
+          }
+        }
+      }
+
+      .load-investment-btn,
+      .load-scenario-btn {
+        width: 100%;
+        padding: 10px 16px;
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: "Montserrat-Medium", sans-serif;
+
+        &:hover {
+          background: var(--bg-primary);
+          border-color: var(--border-accent);
+        }
+      }
+    }
+  }
+
+  .no-data {
+    text-align: center;
+    padding: 60px 24px;
+    color: var(--text-muted);
+
+    .no-data-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    h4 {
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+
+    .modal-content {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border-color);
+
+        h3 {
+          color: var(--text-primary);
+          font-size: 18px;
+          font-weight: 600;
+          margin: 0;
+          font-family: "Montserrat-SemiBold", sans-serif;
+        }
+
+        .modal-close {
+          background: none;
+          border: none;
+          color: var(--text-muted);
+          font-size: 24px;
+          cursor: pointer;
+          padding: 0;
+          width: 30px;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+
+          &:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+          }
+        }
+      }
+
+      .modal-body {
+        padding: 24px;
+
+        .input-group {
+          margin-bottom: 20px;
+
+          .input-label {
+            display: block;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-family: "Montserrat-Medium", sans-serif;
+          }
+
+          .modern-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: "Montserrat-Regular", sans-serif;
+
+            &:focus {
+              outline: none;
+              border-color: var(--primary-color);
+              box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+            }
+
+            &::placeholder {
+              color: var(--text-muted);
+            }
+          }
+        }
+      }
+
+      .modal-footer {
+        display: flex;
+        gap: 12px;
+        padding: 20px 24px;
+        border-top: 1px solid var(--border-color);
+
+        .cancel-btn,
+        .create-btn {
+          flex: 1;
+          padding: 12px 24px;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 14px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-family: "Montserrat-SemiBold", sans-serif;
+
+          &.cancel-btn {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+
+            &:hover {
+              background: var(--bg-tertiary);
+            }
+          }
+
+          &.create-btn {
+            background: var(--gradient-primary);
+            color: var(--text-inverse);
+            border: none;
+
+            &:hover:not(:disabled) {
+              transform: translateY(-1px);
+              box-shadow: var(--shadow-md);
+            }
+
+            &:disabled {
+              opacity: 0.6;
+              cursor: not-allowed;
+            }
+          }
+        }
+      }
+    }
   }
 
   .calculator-header {
@@ -144,11 +552,13 @@
           &::-webkit-outer-spin-button,
           &::-webkit-inner-spin-button {
             -webkit-appearance: none;
+            appearance: none;
             margin: 0;
           }
 
           &[type=number] {
             -moz-appearance: textfield;
+            appearance: textfield;
           }
         }
       }

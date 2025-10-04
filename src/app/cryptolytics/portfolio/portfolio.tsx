@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import axios, { CancelTokenSource } from "axios";
 import Modal from "react-modal";
-import InvestmentCalculator from "../investment/InvestmentCalculator";
+import InvestmentCalculator from "../investment/InvestmentCalculatorNew";
 import EducationalContent from "./EducationalContent";
 import PriceAlerts from "@/app/components/PriceAlerts/PriceAlerts";
 import "./portfolio.scss";
