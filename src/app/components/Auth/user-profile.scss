@@ -1,0 +1,345 @@
+// User Profile Styles
+.user-profile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.user-profile-modal {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: var(--shadow-xl);
+  animation: slideIn 0.3s ease;
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+.user-profile-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  z-index: 1;
+
+  &:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.user-profile-header {
+  padding: 2rem 2rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.user-avatar {
+  margin-bottom: 1rem;
+
+  img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--border-color);
+  }
+
+  .avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: var(--text-inverse);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 600;
+    font-family: "Montserrat-Bold", sans-serif;
+    margin: 0 auto;
+    border: 3px solid var(--border-color);
+  }
+}
+
+.user-info {
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    font-family: "Montserrat-SemiBold", sans-serif;
+  }
+
+  .user-email {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    font-family: "Montserrat-Regular", sans-serif;
+  }
+}
+
+.user-badges {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+
+  .badge {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-family: "Montserrat-Medium", sans-serif;
+
+    svg {
+      flex-shrink: 0;
+    }
+
+    &.google {
+      background: rgba(66, 133, 244, 0.1);
+      color: #4285f4;
+      border: 1px solid rgba(66, 133, 244, 0.2);
+    }
+
+    &.verified {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success-color);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    &.unverified {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning-color);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+  }
+}
+
+.user-profile-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin: 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-family: "Montserrat-Medium", sans-serif;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &.success {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: var(--success-color);
+  }
+
+  &.error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: var(--error-color);
+  }
+}
+
+.user-profile-content {
+  padding: 1.5rem 2rem 2rem;
+}
+
+.user-stats {
+  margin-bottom: 1.5rem;
+
+  .stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      font-family: "Montserrat-Medium", sans-serif;
+    }
+
+    .stat-value {
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: "Montserrat-SemiBold", sans-serif;
+    }
+  }
+}
+
+.verification-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+
+  .verification-info {
+    margin-bottom: 1rem;
+
+    h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-family: "Montserrat-SemiBold", sans-serif;
+    }
+
+    p {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      line-height: 1.5;
+      font-family: "Montserrat-Regular", sans-serif;
+    }
+  }
+
+  .verify-button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--gradient-primary);
+    color: var(--text-inverse);
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: "Montserrat-SemiBold", sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.user-actions {
+  .logout-button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--bg-secondary);
+    color: var(--error-color);
+    border: 2px solid var(--error-color);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: "Montserrat-SemiBold", sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    &:hover:not(:disabled) {
+      background: var(--error-color);
+      color: var(--text-inverse);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 480px) {
+  .user-profile-overlay {
+    padding: 0.5rem;
+  }
+
+  .user-profile-modal {
+    max-width: none;
+    width: 100%;
+  }
+
+  .user-profile-header {
+    padding: 1.5rem 1.5rem 1rem;
+  }
+
+  .user-profile-content {
+    padding: 1rem 1.5rem 1.5rem;
+  }
+
+  .user-profile-message {
+    margin: 1rem 1.5rem;
+  }
+}
+
+// Custom Scrollbar
+.user-profile-modal {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--border-accent);
+    border-radius: 3px;
+
+    &:hover {
+      background: var(--text-muted);
+    }
+  }
+}

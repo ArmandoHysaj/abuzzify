@@ -7,13 +7,19 @@ import "./main-nav.scss";
 import { usePathname } from "next/navigation";
 import ReactGA from "react-ga4";
 import ThemeToggle from "../ThemeToggle/ThemeToggle";
+import { useAuth } from "@/app/contexts/AuthContext";
+import AuthModal from "../Auth/AuthModal";
+import UserProfile from "../Auth/UserProfile";
 
 const MainNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     const handleResize = () => {
@@ -112,6 +118,32 @@ const MainNavigation = () => {
                   <div className="theme-toggle-label">Theme</div>
                   <ThemeToggle />
                 </div>
+                {currentUser ? (
+                  <div className="hdl-4 auth-user-mobile">
+                    <button 
+                      className="user-button"
+                      onClick={() => setIsProfileModalOpen(true)}
+                    >
+                      <div className="user-avatar-small">
+                        {currentUser.photoURL ? (
+                          <img src={currentUser.photoURL} alt="Profile" />
+                        ) : (
+                          <span>{currentUser.displayName?.charAt(0) || currentUser.email?.charAt(0) || 'U'}</span>
+                        )}
+                      </div>
+                      <span className="user-name">{currentUser.displayName || 'User'}</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="hdl-4 auth-buttons-mobile">
+                    <button 
+                      className="auth-button"
+                      onClick={() => setIsAuthModalOpen(true)}
+                    >
+                      Sign In
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -180,9 +212,45 @@ const MainNavigation = () => {
             <div className="theme-toggle-container">
               <ThemeToggle />
             </div>
+            {currentUser ? (
+              <div className="auth-user-desktop">
+                <button 
+                  className="user-button"
+                  onClick={() => setIsProfileModalOpen(true)}
+                >
+                  <div className="user-avatar-small">
+                    {currentUser.photoURL ? (
+                      <img src={currentUser.photoURL} alt="Profile" />
+                    ) : (
+                      <span>{currentUser.displayName?.charAt(0) || currentUser.email?.charAt(0) || 'U'}</span>
+                    )}
+                  </div>
+                  <span className="user-name">{currentUser.displayName || 'User'}</span>
+                </button>
+              </div>
+            ) : (
+              <div className="auth-buttons-desktop">
+                <button 
+                  className="auth-button"
+                  onClick={() => setIsAuthModalOpen(true)}
+                >
+                  Sign In
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
+
+      {/* Authentication Modals */}
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+      />
+      <UserProfile 
+        isOpen={isProfileModalOpen} 
+        onClose={() => setIsProfileModalOpen(false)} 
+      />
     </nav>
   );
 };

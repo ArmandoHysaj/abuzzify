@@ -5,6 +5,8 @@ import "./home-page.scss";
 import Link from "next/link";
 import ReactGA from "react-ga4";
 import CoinCarouselBar from "@/app/components/CoinCarouselBar/CoinCarouselBar";
+import AuthModal from "@/app/components/Auth/AuthModal";
+import { useSearchParams } from "next/navigation";
 
 // Lucide icons
 import {
@@ -45,6 +47,10 @@ const HomePage = () => {
   const [isCoinsLoading, setIsCoinsLoading] = useState(true);
   const [newsError, setNewsError] = useState<string | null>(null);
   const [coinsError, setCoinsError] = useState<string | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup' | 'forgot-password'>('login');
+  
+  const searchParams = useSearchParams();
   const [testimonials, setTestimonials] = useState([
     {
       id: 1,
@@ -177,6 +183,15 @@ const HomePage = () => {
     fetchNews();
     fetchTrendingCoins();
   }, []);
+
+  // Handle auth modal from URL parameters
+  useEffect(() => {
+    const authParam = searchParams.get('auth');
+    if (authParam === 'login' || authParam === 'signup' || authParam === 'forgot-password') {
+      setAuthMode(authParam);
+      setIsAuthModalOpen(true);
+    }
+  }, [searchParams]);
 
   const initialNewsToShow = 5;
   const initialCoinsToShow = 5;
@@ -579,6 +594,12 @@ const HomePage = () => {
 
       {/* CTA Section */}
       
+      {/* Authentication Modal */}
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)}
+        initialMode={authMode}
+      />
     </div>
   );
 };

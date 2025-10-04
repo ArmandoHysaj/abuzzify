@@ -11,6 +11,7 @@ import GoToTopButton from "./components/GoToTopButton/GoToTopButton";
 import { gtmConfig } from "./config";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
@@ -51,9 +52,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <body>
           <a href="#main-content" className="skip-link">Skip to main content</a>
           <ThemeProvider>
-            <MainNavigation />
-            <main id="main-content">{children}</main>
-            <GoToTopButton />
+            <AuthProvider>
+              <MainNavigation />
+              <main id="main-content">{children}</main>
+              <GoToTopButton />
+            </AuthProvider>
           </ThemeProvider>
         <footer role="contentinfo">
           <div className="footer-content">
