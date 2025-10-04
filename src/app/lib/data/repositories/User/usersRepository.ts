@@ -32,14 +32,13 @@ export class UserRepo implements UserRepository {
     const isGoogleUser = password === 'google-oauth-user';
     
     if (!isGoogleUser) {
-      // Create Firebase Auth user for email/password signup
+      // For email/password signup, Firebase Auth user already exists
+      // We just need to create the Firestore document
       const auth = getAuth();
       try {
-        const userRecord = await auth.createUser({
-          email: userData.email,
-          password
-        });
-
+        // Find the existing Firebase Auth user by email
+        const userRecord = await auth.getUserByEmail(userData.email);
+        
         const docRef = this.collection.doc(userRecord.uid);
         await docRef.set({
           ...restUserData,
@@ -52,7 +51,7 @@ export class UserRepo implements UserRepository {
         return docRef.id;
       } catch (error) {
         logger.error(
-          'Failed to create user',
+          'Failed to create Firestore document for email/password user',
           { 
             email: userData.email, 
             name: userData.name,
