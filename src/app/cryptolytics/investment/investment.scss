@@ -1,5 +1,49 @@
 /* Professional Investment Calculator Styles */
 .investment-calculator {
+  // Preset options styling
+  .preset-options {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+
+    .preset-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .preset-select {
+      padding: 6px 8px;
+      font-size: 12px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      min-width: 160px;
+      outline: none;
+
+      &:hover {
+        border-color: var(--primary-color);
+        background: var(--bg-primary);
+      }
+
+      &:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
+      }
+
+      option {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        padding: 4px;
+      }
+    }
+  }
   .auth-required {
     text-align: center;
     padding: 60px 24px;

@@ -8,34 +8,17 @@ import {
   getInvestmentByIdDomain,
   updateInvestmentDomain,
   deleteInvestmentDomain,
-  createScenarioDomain,
-  getScenariosByUserIdDomain,
-  getScenarioByIdDomain,
-  updateScenarioDomain,
-  deleteScenarioDomain,
   calculateInvestmentResults,
   calculateSingleInvestmentResults
 } from './domain/investment';
 import {
   InvestmentCalculationInput,
   CreateInvestmentInput,
-  CreateScenarioInput,
   UpdateInvestmentInput,
-  UpdateScenarioInput
+  investmentCalculationSchema
 } from './repositories/Investment/model';
 
-// Investment calculation schema
-const investmentCalculationSchema = z.object({
-  coinSymbol: z.string().min(1, 'Coin symbol is required'),
-  coinName: z.string().min(1, 'Coin name is required'),
-  initialInvestment: z.number().positive('Initial investment must be positive'),
-  initialCoinPrice: z.number().positive('Initial coin price must be positive'),
-  investmentDate: z.string().optional(), // ISO date string
-  monthlyContribution: z.number().min(0, 'Monthly contribution must be non-negative'),
-  investmentPeriod: z.number().positive('Investment period must be positive'),
-  expectedReturn: z.number().positive('Expected return must be positive'),
-  currentMarketPrice: z.number().positive('Current market price is required'), // Add current market price
-});
+
 
 // Investment update schema
 const investmentUpdateSchema = z.object({
@@ -45,54 +28,37 @@ const investmentUpdateSchema = z.object({
     coinName: z.string().optional(),
     initialInvestment: z.number().positive().optional(),
     initialCoinPrice: z.number().positive().optional(),
+    currentPrice: z.number().positive().optional(),
     investmentDate: z.string().optional(),
     monthlyContribution: z.number().min(0).optional(),
-    investmentPeriod: z.number().positive().optional(),
-    expectedReturn: z.number().positive().optional(),
-  })
-});
-
-// Scenario creation schema
-const scenarioCreationSchema = z.object({
-  name: z.string().min(1, 'Scenario name is required'),
-  description: z.string().optional(),
-  scenarioType: z.enum(['what-if', 'portfolio', 'dca-strategy']).default('what-if'),
-  timeHorizon: z.number().optional(),
-  expectedReturn: z.number().optional(),
-  riskLevel: z.enum(['low', 'medium', 'high']).optional(),
-  investments: z.array(z.object({
-    coinSymbol: z.string(),
-    coinName: z.string(),
-    initialInvestment: z.number(),
-    initialCoinPrice: z.number(),
-    investmentDate: z.string().optional(),
-    monthlyContribution: z.number(),
-    investmentPeriod: z.number(),
-    expectedReturn: z.number(),
-    currentMarketPrice: z.number(),
+    investmentPeriod: z.number().min(1).optional(),
+    expectedReturn: z.number().optional(),
     calculatedResults: z.object({
       totalInvested: z.number(),
       totalValue: z.number(),
       totalGain: z.number(),
       gainPercentage: z.number(),
-      finalPrice: z.number(),
-    }),
-  }))
-});
-
-// Scenario update schema
-const scenarioUpdateSchema = z.object({
-  scenarioId: z.string().min(1, 'Scenario ID is required'),
-  updates: z.object({
-    name: z.string().optional(),
-    description: z.string().optional(),
-    scenarioType: z.enum(['what-if', 'portfolio', 'dca-strategy']).optional(),
-    timeHorizon: z.number().optional(),
-    expectedReturn: z.number().optional(),
-    riskLevel: z.enum(['low', 'medium', 'high']).optional(),
-    investments: z.array(z.any()).optional(),
+      finalPrice: z.number()
+    }).optional()
   })
 });
+
+// Calculate investment results action
+export const calculateInvestmentResultsAction = createServerAction()
+  .input(investmentCalculationSchema)
+  .handler(async ({ input }) => {
+    const results = calculateSingleInvestmentResults(
+      input.initialInvestment,
+      input.initialCoinPrice,
+      input.currentPrice
+    );
+
+    return {
+      ...results,
+      coinSymbol: input.coinSymbol,
+      coinName: input.coinName
+    };
+  });
 
 // Create investment action
 export const createInvestmentAction = createServerAction()
@@ -103,20 +69,37 @@ export const createInvestmentAction = createServerAction()
       throw new Error('User not authenticated');
     }
 
+    // Calculate results using the domain function
+    const calculatedResults = calculateSingleInvestmentResults(
+      input.initialInvestment,
+      input.initialCoinPrice,
+      input.currentMarketPrice
+    );
+
+    // Build investment data, filtering out undefined values
     const investmentData: CreateInvestmentInput = {
-      ...input,
+      coinSymbol: input.coinSymbol,
+      coinName: input.coinName,
+      initialInvestment: input.initialInvestment,
+      initialCoinPrice: input.initialCoinPrice,
+      monthlyContribution: input.monthlyContribution,
+      investmentPeriod: input.investmentPeriod,
+      expectedReturn: input.expectedReturn,
       calculatedResults: {
-        totalInvested: 0,
-        totalValue: 0,
-        totalGain: 0,
-        gainPercentage: 0,
-        finalPrice: 0,
+        totalInvested: calculatedResults.totalInvested,
+        totalValue: calculatedResults.totalValue,
+        totalGain: calculatedResults.totalGain,
+        gainPercentage: calculatedResults.gainPercentage,
+        finalPrice: calculatedResults.finalPrice
       }
     };
 
-    // Use the current market price from the input
-    const currentPrice = input.currentMarketPrice;
-    const result = await createInvestmentDomain(ctx.user.id, investmentData, currentPrice);
+    // Only include investmentDate if it's provided
+    if (input.investmentDate) {
+      investmentData.investmentDate = input.investmentDate;
+    }
+
+    const result = await createInvestmentDomain(ctx.user.id, investmentData);
     return result;
   });
 
@@ -184,126 +167,4 @@ export const deleteInvestmentAction = createServerAction()
     }
 
     return await deleteInvestmentDomain(input.investmentId);
-  });
-
-// Create scenario action
-export const createScenarioAction = createServerAction()
-  .input(scenarioCreationSchema)
-  .withAuth({ optional: false })
-  .handler(async ({ input, ctx }) => {
-    if (!ctx.user) {
-      throw new Error('User not authenticated');
-    }
-
-    // Calculate individual investment results first
-    const investmentsWithCalculatedResults = input.investments.map((inv: any) => {
-      let calculatedResults;
-      
-      // If there's no monthly contribution, it's a single investment
-      if (inv.monthlyContribution === 0 && inv.investmentPeriod === 1) {
-        calculatedResults = calculateSingleInvestmentResults(
-          inv.initialInvestment,
-          inv.initialCoinPrice,
-          inv.currentMarketPrice // Use the actual current market price
-        );
-      } else {
-        calculatedResults = calculateInvestmentResults(
-          inv.initialInvestment,
-          inv.monthlyContribution,
-          inv.investmentPeriod,
-          inv.expectedReturn,
-          inv.currentMarketPrice
-        );
-      }
-      
-      return {
-        ...inv,
-        calculatedResults
-      };
-    });
-
-    // Calculate portfolio totals
-    const totalPortfolioValue = investmentsWithCalculatedResults.reduce((sum: number, inv: any) => sum + inv.calculatedResults.totalValue, 0);
-    const totalInvested = investmentsWithCalculatedResults.reduce((sum: number, inv: any) => sum + inv.calculatedResults.totalInvested, 0);
-    const totalGain = totalPortfolioValue - totalInvested;
-    const gainPercentage = totalInvested > 0 ? (totalGain / totalInvested) * 100 : 0;
-
-    const scenarioData: CreateScenarioInput = {
-      ...input,
-      investments: investmentsWithCalculatedResults,
-      totalPortfolioValue,
-      totalInvested,
-      totalGain,
-      gainPercentage,
-      isProjection: true // Scenarios are always projections
-    };
-
-    const result = await createScenarioDomain(ctx.user.id, scenarioData);
-    return result;
-  });
-
-// Get user scenarios action
-export const getUserScenariosAction = createServerAction()
-  .withAuth({ optional: false })
-  .handler(async ({ ctx }) => {
-    if (!ctx.user) {
-      throw new Error('User not authenticated');
-    }
-
-    return await getScenariosByUserIdDomain(ctx.user.id);
-  });
-
-// Get scenario by ID action
-export const getScenarioByIdAction = createServerAction()
-  .input(z.object({ scenarioId: z.string() }))
-  .withAuth({ optional: false })
-  .handler(async ({ input, ctx }) => {
-    if (!ctx.user) {
-      throw new Error('User not authenticated');
-    }
-
-    const scenario = await getScenarioByIdDomain(input.scenarioId);
-    
-    // Verify the scenario belongs to the user
-    if (scenario && scenario.userId !== ctx.user.id) {
-      throw new Error('Unauthorized access to scenario');
-    }
-
-    return scenario;
-  });
-
-// Update scenario action
-export const updateScenarioAction = createServerAction()
-  .input(scenarioUpdateSchema)
-  .withAuth({ optional: false })
-  .handler(async ({ input, ctx }) => {
-    if (!ctx.user) {
-      throw new Error('User not authenticated');
-    }
-
-    // Verify the scenario belongs to the user
-    const scenario = await getScenarioByIdDomain(input.scenarioId);
-    if (!scenario || scenario.userId !== ctx.user.id) {
-      throw new Error('Unauthorized access to scenario');
-    }
-
-    return await updateScenarioDomain(input.scenarioId, input.updates);
-  });
-
-// Delete scenario action
-export const deleteScenarioAction = createServerAction()
-  .input(z.object({ scenarioId: z.string() }))
-  .withAuth({ optional: false })
-  .handler(async ({ input, ctx }) => {
-    if (!ctx.user) {
-      throw new Error('User not authenticated');
-    }
-
-    // Verify the scenario belongs to the user
-    const scenario = await getScenarioByIdDomain(input.scenarioId);
-    if (!scenario || scenario.userId !== ctx.user.id) {
-      throw new Error('Unauthorized access to scenario');
-    }
-
-    return await deleteScenarioDomain(input.scenarioId);
   });

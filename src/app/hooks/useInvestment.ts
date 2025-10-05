@@ -7,16 +7,10 @@ import {
   getUserInvestmentsAction,
   getInvestmentByIdAction,
   updateInvestmentAction,
-  deleteInvestmentAction,
-  createScenarioAction,
-  getUserScenariosAction,
-  getScenarioByIdAction,
-  updateScenarioAction,
-  deleteScenarioAction
+  deleteInvestmentAction
 } from '@/app/lib/data/investment-actions';
 import {
   InvestmentRecord,
-  InvestmentScenario,
   InvestmentCalculationInput
 } from '@/app/lib/data/repositories/Investment/model';
 
@@ -118,91 +112,6 @@ export const useInvestment = () => {
     }
   }, [requireAuth]);
 
-  // Scenario Actions
-  const createScenario = useCallback(async (scenarioData: { name: string; description?: string; investments: any[] }) => {
-    requireAuth();
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await createScenarioAction(scenarioData);
-      return result;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to create scenario';
-      setError(errorMessage);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [requireAuth]);
-
-  const getUserScenarios = useCallback(async (): Promise<InvestmentScenario[]> => {
-    requireAuth();
-    setLoading(true);
-    setError(null);
-
-    try {
-      const scenarios = await getUserScenariosAction({}) as InvestmentScenario[];
-      return scenarios;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch scenarios';
-      setError(errorMessage);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [requireAuth]);
-
-  const getScenarioById = useCallback(async (scenarioId: string): Promise<InvestmentScenario | null> => {
-    requireAuth();
-    setLoading(true);
-    setError(null);
-
-    try {
-      const scenario = await getScenarioByIdAction({ scenarioId }) as InvestmentScenario | null;
-      return scenario;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch scenario';
-      setError(errorMessage);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [requireAuth]);
-
-  const updateScenario = useCallback(async (scenarioId: string, updates: any) => {
-    requireAuth();
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await updateScenarioAction({ scenarioId, updates });
-      return result;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to update scenario';
-      setError(errorMessage);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [requireAuth]);
-
-  const deleteScenario = useCallback(async (scenarioId: string) => {
-    requireAuth();
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await deleteScenarioAction({ scenarioId });
-      return result;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to delete scenario';
-      setError(errorMessage);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [requireAuth]);
 
   return {
     // State
@@ -216,13 +125,6 @@ export const useInvestment = () => {
     getInvestmentById,
     updateInvestment,
     deleteInvestment,
-    
-    // Scenario methods
-    createScenario,
-    getUserScenarios,
-    getScenarioById,
-    updateScenario,
-    deleteScenario,
     
     // Utility
     clearError: () => setError(null)

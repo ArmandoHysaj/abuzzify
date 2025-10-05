@@ -1,19 +1,8 @@
 import { firestore } from '@/app/lib/firestoreConnection';
-import { 
-  collection, 
-  doc, 
-  addDoc, 
-  getDoc, 
-  getDocs, 
-  updateDoc, 
-  deleteDoc, 
-  query, 
-  where, 
-  orderBy,
-  Timestamp 
-} from 'firebase-admin/firestore';
+import { Timestamp } from 'firebase-admin/firestore';
 import { IPriceAlertRepository } from './interface';
-import { PriceAlert, CreatePriceAlertInput, UpdatePriceAlertInput } from '../Investment/model';
+import { PriceAlert } from '../Investment/model';
+import { CreatePriceAlertInput, UpdatePriceAlertInput } from './model';
 
 export class PriceAlertRepository implements IPriceAlertRepository {
   private collectionName = 'priceAlerts';
@@ -28,14 +17,14 @@ export class PriceAlertRepository implements IPriceAlertRepository {
       alertType: 'sell-price',
       alertStatus: 'active',
       notifications: {
-        emailEnabled: priceAlertData.emailEnabled,
-        browserEnabled: priceAlertData.browserEnabled,
+        emailEnabled: priceAlertData.emailEnabled ?? true,
+        browserEnabled: priceAlertData.browserEnabled ?? true,
         notificationCount: 0,
       },
       alertRules: {
-        priceDropThreshold: priceAlertData.priceDropThreshold,
-        priceIncreaseThreshold: priceAlertData.priceIncreaseThreshold,
-        cooldownPeriod: priceAlertData.cooldownPeriod,
+        priceDropThreshold: priceAlertData.priceDropThreshold ?? 10,
+        priceIncreaseThreshold: priceAlertData.priceIncreaseThreshold ?? 5,
+        cooldownPeriod: priceAlertData.cooldownPeriod ?? 24,
       },
       createdAt: Timestamp.now(),
       updatedAt: Timestamp.now(),

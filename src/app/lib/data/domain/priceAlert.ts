@@ -1,5 +1,6 @@
 import { PriceAlertRepository } from '../repositories/PriceAlert/priceAlertRepository';
-import { CreatePriceAlertInput, UpdatePriceAlertInput, PriceAlert } from '../repositories/Investment/model';
+import { PriceAlert } from '../repositories/Investment/model';
+import { CreatePriceAlertInput, UpdatePriceAlertInput } from '../repositories/PriceAlert/model';
 
 export interface PriceAlertCheckResult {
   shouldNotify: boolean;
@@ -15,13 +16,9 @@ export class PriceAlertDomain {
   constructor(private priceAlertRepository: PriceAlertRepository) {}
 
   async createPriceAlert(userId: string, input: CreatePriceAlertInput): Promise<{ alertId: string }> {
-    // Calculate buy back price based on drop threshold
-    const buyBackPrice = input.sellPrice * (1 - input.priceDropThreshold / 100);
-    
     const alertData = {
       ...input,
       userId,
-      buyBackPrice,
       alertType: 'sell-price' as const,
       alertStatus: 'active' as const,
     };

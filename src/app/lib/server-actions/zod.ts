@@ -1,5 +1,5 @@
 import { z, ZodError, ZodType } from 'zod';
-import { ERROR_CODES, ServerActionError } from './error';
+import { SERVER_ERROR_CODES, ServerError } from './server-error';
 
 export function clientServerActionErrorParser(error: ZodError): string {
   const fieldMappedErrors = error.issues.reduce((acc, issue) => {
@@ -17,8 +17,8 @@ export async function validateZodSchema<T extends ZodType>(
 ) {
   const parsed = await schema.safeParseAsync(data);
   if (!parsed.success) {
-    throw new ServerActionError(
-      ERROR_CODES.VALIDATION_ERROR,
+    throw new ServerError(
+      SERVER_ERROR_CODES.VALIDATION_ERROR,
       clientServerActionErrorParser(parsed.error)
     );
   }

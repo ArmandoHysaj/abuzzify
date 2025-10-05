@@ -83,7 +83,7 @@ export class InvestmentRepo implements InvestmentRepository {
         } else {
           logger.warn('❌ Invalid investment data', { 
             investmentId: doc.id, 
-            error: parseResult.error.errors
+            error: parseResult.error.issues
           });
         }
       });

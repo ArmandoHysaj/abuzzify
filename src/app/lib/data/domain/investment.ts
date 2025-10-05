@@ -2,11 +2,8 @@ import { logger } from '../../utils/logger';
 import { investmentRepository } from '../repositories/Investment/investmentRepository';
 import {
   InvestmentRecord,
-  InvestmentScenario,
   CreateInvestmentInput,
-  CreateScenarioInput,
-  UpdateInvestmentInput,
-  UpdateScenarioInput
+  UpdateInvestmentInput
 } from '../repositories/Investment/model';
 
 // Investment calculation logic for single investment
@@ -76,36 +73,15 @@ export function calculateInvestmentResults(
 // Domain functions for investments
 export async function createInvestmentDomain(
   userId: string,
-  investmentData: CreateInvestmentInput,
-  currentPrice?: number
+  investmentData: CreateInvestmentInput
 ): Promise<{ investmentId: string }> {
-  let calculatedResults;
-  
-  // If there's no monthly contribution, it's a single investment
-  if (investmentData.monthlyContribution === 0 && investmentData.investmentPeriod === 1) {
-    // For single investments, we need current price to calculate results
-    if (!currentPrice) {
-      throw new Error('Current price is required for single investment calculations');
-    }
-    calculatedResults = calculateSingleInvestmentResults(
-      investmentData.initialInvestment,
-      investmentData.initialCoinPrice,
-      currentPrice
-    );
-  } else {
-    // For DCA/projected investments, use the original calculation
-    calculatedResults = calculateInvestmentResults(
-      investmentData.initialInvestment,
-      investmentData.monthlyContribution,
-      investmentData.investmentPeriod,
-      investmentData.expectedReturn,
-      currentPrice || investmentData.initialCoinPrice
-    );
+  // The investment data should already have calculated results from the server action
+  if (!investmentData.calculatedResults) {
+    throw new Error('Calculated results are required for investment creation');
   }
 
   const investmentWithResults: CreateInvestmentInput = {
-    ...investmentData,
-    calculatedResults
+    ...investmentData
   };
 
   const investmentId = await investmentRepository.createInvestment(userId, investmentWithResults);
@@ -178,46 +154,3 @@ export async function deleteInvestmentDomain(investmentId: string): Promise<{ su
   return await investmentRepository.deleteInvestment(investmentId);
 }
 
-// Domain functions for scenarios
-export async function createScenarioDomain(
-  userId: string,
-  scenarioData: CreateScenarioInput
-): Promise<{ scenarioId: string }> {
-  const scenarioId = await investmentRepository.createScenario(userId, scenarioData);
-  
-  logger.info('✅ Investment scenario created via domain', { userId, scenarioId });
-  
-  return { scenarioId };
-}
-
-export async function getScenariosByUserIdDomain(userId: string): Promise<InvestmentScenario[]> {
-  return await investmentRepository.getScenariosByUserId(userId);
-}
-
-export async function getScenarioByIdDomain(scenarioId: string): Promise<InvestmentScenario | null> {
-  return await investmentRepository.getScenarioById(scenarioId);
-}
-
-export async function updateScenarioDomain(
-  scenarioId: string,
-  updates: UpdateScenarioInput
-): Promise<{ success: boolean; error?: string }> {
-  // If investments are updated, recalculate portfolio totals
-  if (updates.investments) {
-    const totalPortfolioValue = updates.investments.reduce((sum, inv) => sum + inv.calculatedResults.totalValue, 0);
-    const totalInvested = updates.investments.reduce((sum, inv) => sum + inv.calculatedResults.totalInvested, 0);
-    const totalGain = totalPortfolioValue - totalInvested;
-    const gainPercentage = totalInvested > 0 ? (totalGain / totalInvested) * 100 : 0;
-
-    updates.totalPortfolioValue = totalPortfolioValue;
-    updates.totalInvested = totalInvested;
-    updates.totalGain = totalGain;
-    updates.gainPercentage = gainPercentage;
-  }
-
-  return await investmentRepository.updateScenario(scenarioId, updates);
-}
-
-export async function deleteScenarioDomain(scenarioId: string): Promise<{ success: boolean; error?: string }> {
-  return await investmentRepository.deleteScenario(scenarioId);
-}

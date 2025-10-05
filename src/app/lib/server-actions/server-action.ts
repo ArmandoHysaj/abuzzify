@@ -1,6 +1,6 @@
 import 'server-only';
 import { ZodType } from 'zod';
-import { ERROR_CODES, ServerActionError } from './error';
+import { SERVER_ERROR_CODES, ServerError } from './server-error';
 import { validateZodSchema } from './zod';
 import { AuthCtx, Ctx, WithAuthOptionsType } from './types';
 import { getCurrentUserDomain } from '../data/domain/user';
@@ -95,14 +95,14 @@ class ServerAction<
       const sessionCookie = cookieStore.get('session')?.value;
 
       if (!sessionCookie || !auth) {
-        throw new ServerActionError(ERROR_CODES.NOT_AUTHORIZED, '');
+        throw new ServerError(SERVER_ERROR_CODES.NOT_AUTHORIZED, '');
       }
 
       const decodedClaims = await auth.verifySessionCookie(sessionCookie, true);
       const user = await getCurrentUserDomain(decodedClaims.uid);
       
       if (!user) {
-        throw new ServerActionError(ERROR_CODES.NOT_AUTHORIZED, '');
+        throw new ServerError(SERVER_ERROR_CODES.NOT_AUTHORIZED, '');
       }
 
       return {
@@ -112,7 +112,7 @@ class ServerAction<
         role: user.role
       };
     } catch {
-      throw new ServerActionError(ERROR_CODES.NOT_AUTHORIZED, '');
+      throw new ServerError(SERVER_ERROR_CODES.NOT_AUTHORIZED, '');
     }
   }
 

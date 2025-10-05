@@ -1,4 +1,5 @@
-import { PriceAlert, CreatePriceAlertInput, UpdatePriceAlertInput } from '../Investment/model';
+import { PriceAlert } from '../Investment/model';
+import { CreatePriceAlertInput, UpdatePriceAlertInput } from './model';
 
 export interface IPriceAlertRepository {
   create(priceAlert: CreatePriceAlertInput): Promise<string>;

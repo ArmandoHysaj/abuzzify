@@ -21,8 +21,8 @@ const createPriceAlertSchema = z.object({
   sellDate: z.string(), // ISO date string when sold
   profitEarned: z.number(), // Profit made from the sale
   currentPrice: z.number().positive('Current price is required'),
-  priceDropThreshold: z.number().min(1).max(50).default(10),
-  priceIncreaseThreshold: z.number().min(1).max(50).default(5),
+  priceDropThreshold: z.number().min(0.0001).max(50).default(10),
+  priceIncreaseThreshold: z.number().min(0.0001).max(50).default(5),
   cooldownPeriod: z.number().min(1).default(24),
   emailEnabled: z.boolean().default(true),
   browserEnabled: z.boolean().default(true),
@@ -37,8 +37,8 @@ const updatePriceAlertSchema = z.object({
       browserEnabled: z.boolean().optional(),
     }).optional(),
     alertRules: z.object({
-      priceDropThreshold: z.number().min(1).max(50).optional(),
-      priceIncreaseThreshold: z.number().min(1).max(50).optional(),
+      priceDropThreshold: z.number().min(0.0001).max(50).optional(),
+      priceIncreaseThreshold: z.number().min(0.0001).max(50).optional(),
       cooldownPeriod: z.number().min(1).optional(),
     }).optional(),
   }),
