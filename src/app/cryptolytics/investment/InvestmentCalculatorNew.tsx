@@ -66,6 +66,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
   });
   const [newScenarioName, setNewScenarioName] = useState<string>("");
   const [showCreateScenario, setShowCreateScenario] = useState<boolean>(false);
+  const [loadedInvestment, setLoadedInvestment] = useState<any>(null);
 
   useEffect(() => {
     setInvestmentInput(initialInvestment === 0 ? "" : initialInvestment.toString());
@@ -97,6 +98,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
       setDateInput("");
       setInitialInvestment(0);
       setInitialPrice(0);
+      setLoadedInvestment(null); // Clear loaded investment when switching coins
     }
   }, [coin?.id]); // Reset when coin ID changes
 
@@ -114,7 +116,11 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
 
   const investment = toNum(investmentInput);
   const paidPrice = toNum(priceInput);
-  const currentPrice = toNum(coin?.price_usd);
+  
+  // Use loaded investment's market price if available, otherwise use current coin's price
+  const currentPrice = loadedInvestment 
+    ? toNum(loadedInvestment.calculatedResults?.finalPrice) 
+    : toNum(coin?.price_usd);
 
   const numberOfCoins = useMemo(
     () => (paidPrice > 0 ? investment / paidPrice : 0),
@@ -219,6 +225,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
       });
       
       alert('Investment saved successfully!');
+      setLoadedInvestment(null); // Clear loaded investment after saving
       await loadUserData(); // Refresh the data
     } catch (err) {
       console.error('Failed to save investment:', err);
@@ -251,6 +258,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
       });
       
       alert('DCA strategy saved successfully!');
+      setLoadedInvestment(null); // Clear loaded investment after saving
       await loadUserData(); // Refresh the data
     } catch (err) {
       console.error('Failed to save DCA strategy:', err);
@@ -302,6 +310,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
       alert('Scenario created successfully!');
       setNewScenarioName("");
       setShowCreateScenario(false);
+      setLoadedInvestment(null); // Clear loaded investment after saving
       await loadUserData(); // Refresh the data
     } catch (err) {
       console.error('Failed to create scenario:', err);
@@ -316,6 +325,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     setDateInput("");
     setInitialInvestment(0);
     setInitialPrice(0);
+    setLoadedInvestment(null);
     
     // Then set the loaded investment values
     setInvestmentInput(investment.initialInvestment.toString());
@@ -323,6 +333,9 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     setDateInput(investment.investmentDate || "");
     setInitialInvestment(investment.initialInvestment);
     setInitialPrice(investment.initialCoinPrice);
+    
+    // Store the loaded investment so calculations use its market price
+    setLoadedInvestment(investment);
     
     // Switch to single investment tab to show the loaded investment
     setActiveTab('single');
@@ -399,10 +412,17 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
 
       <div className="calculator-header">
         <div className="coin-info">
-          <h2 className="coin-name">{name}</h2>
+          <h2 className="coin-name">
+            {loadedInvestment ? loadedInvestment.coinName : name}
+          </h2>
           <div className="current-price">
             <span className="price-label">Current Price</span>
-            <span className="price-value">${price}</span>
+            <span className="price-value">
+              ${loadedInvestment 
+                ? fmtNumber(loadedInvestment.calculatedResults?.finalPrice || 0, 8)
+                : price
+              }
+            </span>
           </div>
         </div>
         
@@ -483,7 +503,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
               <div className="coins-owned">
                 <div className="coins-icon">🪙</div>
                 <span className="coins-text">
-                  You own <strong>{fmtNumber(numberOfCoins)}</strong> {name}
+                  You own <strong>{fmtNumber(numberOfCoins)}</strong> {loadedInvestment ? loadedInvestment.coinName : name}
                 </span>
               </div>
             )}
