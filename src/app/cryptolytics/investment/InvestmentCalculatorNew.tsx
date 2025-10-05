@@ -88,6 +88,18 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     setPriceInput(initialPrice === 0 ? "" : initialPrice.toString());
   }, [initialPrice]);
 
+  // Reset form values when coin changes
+  useEffect(() => {
+    if (coin) {
+      // Reset form inputs when switching to a different coin
+      setInvestmentInput("");
+      setPriceInput("");
+      setDateInput("");
+      setInitialInvestment(0);
+      setInitialPrice(0);
+    }
+  }, [coin?.id]); // Reset when coin ID changes
+
   // Load user's investments and scenarios from Firestore
   useEffect(() => {
     if (isAuthenticated) {
@@ -171,16 +183,39 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
       return;
     }
 
+    // Validate that we have the current market price
+    if (!currentPrice || currentPrice <= 0) {
+      alert('Unable to get current market price. Please try again.');
+      return;
+    }
+
+    // Validate that the initial coin price is reasonable (not 0)
+    if (paidPrice <= 0) {
+      alert('Please enter a valid initial coin price');
+      return;
+    }
+
     try {
       clearError();
+      console.log('Saving investment:', {
+        coinSymbol: coin.symbol,
+        coinName: coin.name,
+        initialInvestment: investment,
+        initialCoinPrice: paidPrice,
+        currentMarketPrice: currentPrice,
+        investmentDate: dateInput
+      });
+
       await createInvestment({
         coinSymbol: coin.symbol,
         coinName: coin.name,
         initialInvestment: investment,
+        initialCoinPrice: paidPrice,
+        investmentDate: dateInput || undefined,
         monthlyContribution: 0,
         investmentPeriod: 1, // Single investment
         expectedReturn: 10, // Default expected return
-        currentPrice: paidPrice
+        currentMarketPrice: currentPrice, // Pass the current market price
       });
       
       alert('Investment saved successfully!');
@@ -208,10 +243,11 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
         coinSymbol: coin.symbol,
         coinName: coin.name,
         initialInvestment: 0,
+        initialCoinPrice: currentPrice,
         monthlyContribution: dcaSettings.amount,
         investmentPeriod: dcaSettings.duration,
         expectedReturn: dcaSettings.expectedReturn,
-        currentPrice: currentPrice
+        currentMarketPrice: currentPrice,
       });
       
       alert('DCA strategy saved successfully!');
@@ -247,10 +283,12 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
           coinSymbol: coin.symbol,
           coinName: coin.name,
           initialInvestment: investment,
+          initialCoinPrice: paidPrice,
+          investmentDate: dateInput || undefined,
           monthlyContribution: 0,
           investmentPeriod: 1,
           expectedReturn: 10,
-          currentPrice: paidPrice,
+          currentMarketPrice: currentPrice,
           calculatedResults: {
             totalInvested: 0,
             totalValue: 0,
@@ -272,10 +310,22 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
   };
 
   const loadInvestment = (investment: any) => {
+    // Clear any existing form state first
+    setInvestmentInput("");
+    setPriceInput("");
+    setDateInput("");
+    setInitialInvestment(0);
+    setInitialPrice(0);
+    
+    // Then set the loaded investment values
     setInvestmentInput(investment.initialInvestment.toString());
-    setPriceInput(investment.currentPrice.toString());
+    setPriceInput(investment.initialCoinPrice.toString());
+    setDateInput(investment.investmentDate || "");
     setInitialInvestment(investment.initialInvestment);
-    setInitialPrice(investment.currentPrice);
+    setInitialPrice(investment.initialCoinPrice);
+    
+    // Switch to single investment tab to show the loaded investment
+    setActiveTab('single');
   };
 
   const loadScenario = (scenario: any) => {
@@ -300,6 +350,31 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
 
   const fmtPercent = (n: number): string =>
     `${new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 }).format(n)}%`;
+
+  // Calculate real-time values for saved investments
+  const calculateCurrentInvestmentValue = (investment: any) => {
+    if (investment.monthlyContribution === 0 && investment.investmentPeriod === 1) {
+      // Single investment - calculate based on the saved final price (market price when saved)
+      const savedCurrentPrice = investment.calculatedResults.finalPrice;
+      const numberOfCoins = investment.initialInvestment / investment.initialCoinPrice;
+      const currentValue = numberOfCoins * savedCurrentPrice;
+      const profitLoss = currentValue - investment.initialInvestment;
+      const percentageChange = ((savedCurrentPrice / investment.initialCoinPrice) - 1) * 100;
+      
+      return {
+        currentValue,
+        profitLoss,
+        percentageChange
+      };
+    } else {
+      // DCA investment - use saved calculated results
+      return {
+        currentValue: investment.calculatedResults.totalValue,
+        profitLoss: investment.calculatedResults.totalGain,
+        percentageChange: investment.calculatedResults.gainPercentage
+      };
+    }
+  };
 
   if (!isAuthenticated) {
     return (
@@ -588,45 +663,52 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
             <div className="section">
               <h4>Saved Investments ({investments.length})</h4>
               <div className="investments-list">
-                {investments.map((investment) => (
-                  <div key={investment.id} className="investment-card">
-                    <div className="investment-header">
-                      <h5>{investment.coinName} ({investment.coinSymbol})</h5>
-                      <span className="investment-date">
-                        {new Date(investment.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                    
-                    <div className="investment-details">
-                      <div className="investment-info">
-                        <span>Investment: {fmtCurrency(investment.initialInvestment)}</span>
-                        <span>Monthly: {fmtCurrency(investment.monthlyContribution)}</span>
-                        <span>Period: {investment.investmentPeriod} months</span>
+                {investments.map((investment) => {
+                  const realTimeValues = calculateCurrentInvestmentValue(investment);
+                  return (
+                    <div key={investment.id} className="investment-card">
+                      <div className="investment-header">
+                        <h5>{investment.coinName} ({investment.coinSymbol})</h5>
+                        <span className="investment-date">
+                          {new Date(investment.createdAt).toLocaleDateString()}
+                        </span>
                       </div>
                       
-                      <div className="investment-results">
-                        <div className="investment-result">
-                          <span className="label">Projected Value:</span>
-                          <span className="value">{fmtCurrency(investment.calculatedResults.totalValue)}</span>
+                      <div className="investment-details">
+                        <div className="investment-info">
+                          <span>Investment: {fmtCurrency(investment.initialInvestment)}</span>
+                          <span>Initial Price: {fmtCurrency(investment.initialCoinPrice)}</span>
+                          {investment.investmentDate && (
+                            <span>Date: {new Date(investment.investmentDate).toLocaleDateString()}</span>
+                          )}
+                          <span>Monthly: {fmtCurrency(investment.monthlyContribution)}</span>
+                          <span>Period: {investment.investmentPeriod} months</span>
                         </div>
-                        <div className="investment-result">
-                          <span className="label">Projected Gain:</span>
-                          <span className={`value ${trendClass(investment.calculatedResults.totalGain)}`}>
-                            {fmtCurrency(investment.calculatedResults.totalGain)} ({fmtPercent(investment.calculatedResults.gainPercentage)})
-                          </span>
+                        
+                        <div className="investment-results">
+                          <div className="investment-result">
+                            <span className="label">Current Value:</span>
+                            <span className="value">{fmtCurrency(realTimeValues.currentValue)}</span>
+                          </div>
+                          <div className="investment-result">
+                            <span className="label">Profit/Loss:</span>
+                            <span className={`value ${trendClass(realTimeValues.profitLoss)}`}>
+                              {fmtCurrency(realTimeValues.profitLoss)} ({fmtPercent(realTimeValues.percentageChange)})
+                            </span>
+                          </div>
                         </div>
-                      </div>
                       
-                      <button 
-                        className="load-investment-btn"
-                        onClick={() => loadInvestment(investment)}
-                        type="button"
-                      >
-                        Load Investment
-                      </button>
+                        <button 
+                          className="load-investment-btn"
+                          onClick={() => loadInvestment(investment)}
+                          type="button"
+                        >
+                          Load Investment
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
@@ -635,41 +717,56 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
             <div className="section">
               <h4>Saved Scenarios ({scenarios.length})</h4>
               <div className="scenarios-list">
-                {scenarios.map((scenario) => (
-                  <div key={scenario.id} className="scenario-card">
-                    <div className="scenario-header">
-                      <h5>{scenario.name}</h5>
-                      <span className="scenario-date">
-                        {new Date(scenario.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                    
-                    <div className="scenario-details">
-                      <div className="scenario-info">
-                        <span>Portfolio Value: {fmtCurrency(scenario.totalPortfolioValue)}</span>
-                        <span>Total Invested: {fmtCurrency(scenario.totalInvested)}</span>
-                        <span>Investments: {scenario.investments.length}</span>
+                {scenarios.map((scenario) => {
+                  // Calculate real-time portfolio values
+                  let realTimePortfolioValue = 0;
+                  let realTimeTotalGain = 0;
+                  let realTimeGainPercentage = 0;
+                  
+                  scenario.investments.forEach((investment: any) => {
+                    const realTimeValues = calculateCurrentInvestmentValue(investment);
+                    realTimePortfolioValue += realTimeValues.currentValue;
+                    realTimeTotalGain += realTimeValues.profitLoss;
+                  });
+                  
+                  realTimeGainPercentage = scenario.totalInvested > 0 ? (realTimeTotalGain / scenario.totalInvested) * 100 : 0;
+                  
+                  return (
+                    <div key={scenario.id} className="scenario-card">
+                      <div className="scenario-header">
+                        <h5>{scenario.name}</h5>
+                        <span className="scenario-date">
+                          {new Date(scenario.createdAt).toLocaleDateString()}
+                        </span>
                       </div>
                       
-                      <div className="scenario-results">
-                        <div className="scenario-result">
-                          <span className="label">Total Gain:</span>
-                          <span className={`value ${trendClass(scenario.totalGain)}`}>
-                            {fmtCurrency(scenario.totalGain)} ({fmtPercent(scenario.gainPercentage)})
-                          </span>
+                      <div className="scenario-details">
+                        <div className="scenario-info">
+                          <span>Portfolio Value: {fmtCurrency(realTimePortfolioValue)}</span>
+                          <span>Total Invested: {fmtCurrency(scenario.totalInvested)}</span>
+                          <span>Investments: {scenario.investments.length}</span>
                         </div>
+                        
+                        <div className="scenario-results">
+                          <div className="scenario-result">
+                            <span className="label">Total Gain:</span>
+                            <span className={`value ${trendClass(realTimeTotalGain)}`}>
+                              {fmtCurrency(realTimeTotalGain)} ({fmtPercent(realTimeGainPercentage)})
+                            </span>
+                          </div>
+                        </div>
+                        
+                        <button 
+                          className="load-scenario-btn"
+                          onClick={() => loadScenario(scenario)}
+                          type="button"
+                        >
+                          Load Scenario
+                        </button>
                       </div>
-                      
-                      <button 
-                        className="load-scenario-btn"
-                        onClick={() => loadScenario(scenario)}
-                        type="button"
-                      >
-                        Load Scenario
-                      </button>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}

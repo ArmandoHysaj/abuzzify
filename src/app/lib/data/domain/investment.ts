@@ -9,7 +9,35 @@ import {
   UpdateScenarioInput
 } from '../repositories/Investment/model';
 
-// Investment calculation logic
+// Investment calculation logic for single investment
+export function calculateSingleInvestmentResults(
+  initialInvestment: number,
+  initialCoinPrice: number,
+  currentPrice: number
+) {
+  // Calculate number of coins purchased
+  const numberOfCoins = initialInvestment / initialCoinPrice;
+  
+  // Calculate current value
+  const currentValue = numberOfCoins * currentPrice;
+  
+  // Calculate profit/loss
+  const profitLoss = currentValue - initialInvestment;
+  
+  // Calculate percentage change
+  const percentageChange = ((currentPrice / initialCoinPrice) - 1) * 100;
+
+  return {
+    totalInvested: initialInvestment,
+    totalValue: currentValue,
+    totalGain: profitLoss,
+    gainPercentage: percentageChange,
+    finalPrice: currentPrice,
+    numberOfCoins
+  };
+}
+
+// Investment calculation logic for DCA/projected scenarios
 export function calculateInvestmentResults(
   initialInvestment: number,
   monthlyContribution: number,
@@ -48,16 +76,32 @@ export function calculateInvestmentResults(
 // Domain functions for investments
 export async function createInvestmentDomain(
   userId: string,
-  investmentData: CreateInvestmentInput
+  investmentData: CreateInvestmentInput,
+  currentPrice?: number
 ): Promise<{ investmentId: string }> {
-  // Calculate results
-  const calculatedResults = calculateInvestmentResults(
-    investmentData.initialInvestment,
-    investmentData.monthlyContribution,
-    investmentData.investmentPeriod,
-    investmentData.expectedReturn,
-    investmentData.currentPrice
-  );
+  let calculatedResults;
+  
+  // If there's no monthly contribution, it's a single investment
+  if (investmentData.monthlyContribution === 0 && investmentData.investmentPeriod === 1) {
+    // For single investments, we need current price to calculate results
+    if (!currentPrice) {
+      throw new Error('Current price is required for single investment calculations');
+    }
+    calculatedResults = calculateSingleInvestmentResults(
+      investmentData.initialInvestment,
+      investmentData.initialCoinPrice,
+      currentPrice
+    );
+  } else {
+    // For DCA/projected investments, use the original calculation
+    calculatedResults = calculateInvestmentResults(
+      investmentData.initialInvestment,
+      investmentData.monthlyContribution,
+      investmentData.investmentPeriod,
+      investmentData.expectedReturn,
+      currentPrice || investmentData.initialCoinPrice
+    );
+  }
 
   const investmentWithResults: CreateInvestmentInput = {
     ...investmentData,
@@ -81,11 +125,12 @@ export async function getInvestmentByIdDomain(investmentId: string): Promise<Inv
 
 export async function updateInvestmentDomain(
   investmentId: string,
-  updates: UpdateInvestmentInput
+  updates: UpdateInvestmentInput,
+  currentPrice?: number
 ): Promise<{ success: boolean; error?: string }> {
   // If any calculation inputs are updated, recalculate results
-  if (updates.initialInvestment || updates.monthlyContribution || 
-      updates.investmentPeriod || updates.expectedReturn || updates.currentPrice) {
+  if (updates.initialInvestment || updates.initialCoinPrice || updates.monthlyContribution || 
+      updates.investmentPeriod || updates.expectedReturn) {
     
     // Get current investment to get all values
     const currentInvestment = await investmentRepository.getInvestmentById(investmentId);
@@ -99,14 +144,29 @@ export async function updateInvestmentDomain(
       ...updates
     };
 
-    // Recalculate results
-    const calculatedResults = calculateInvestmentResults(
-      updatedData.initialInvestment,
-      updatedData.monthlyContribution,
-      updatedData.investmentPeriod,
-      updatedData.expectedReturn,
-      updatedData.currentPrice
-    );
+    let calculatedResults;
+    
+    // If there's no monthly contribution, it's a single investment
+    if (updatedData.monthlyContribution === 0 && updatedData.investmentPeriod === 1) {
+      // For single investments, we need current price to calculate results
+      if (!currentPrice) {
+        currentPrice = updatedData.calculatedResults.finalPrice; // Use the saved final price as fallback
+      }
+      calculatedResults = calculateSingleInvestmentResults(
+        updatedData.initialInvestment,
+        updatedData.initialCoinPrice,
+        currentPrice
+      );
+    } else {
+      // For DCA/projected investments, use the original calculation
+      calculatedResults = calculateInvestmentResults(
+        updatedData.initialInvestment,
+        updatedData.monthlyContribution,
+        updatedData.investmentPeriod,
+        updatedData.expectedReturn,
+        currentPrice || updatedData.initialCoinPrice
+      );
+    }
 
     updates.calculatedResults = calculatedResults;
   }

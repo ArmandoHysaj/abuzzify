@@ -13,7 +13,8 @@ import {
   getScenarioByIdDomain,
   updateScenarioDomain,
   deleteScenarioDomain,
-  calculateInvestmentResults
+  calculateInvestmentResults,
+  calculateSingleInvestmentResults
 } from './domain/investment';
 import {
   InvestmentCalculationInput,
@@ -28,10 +29,12 @@ const investmentCalculationSchema = z.object({
   coinSymbol: z.string().min(1, 'Coin symbol is required'),
   coinName: z.string().min(1, 'Coin name is required'),
   initialInvestment: z.number().positive('Initial investment must be positive'),
+  initialCoinPrice: z.number().positive('Initial coin price must be positive'),
+  investmentDate: z.string().optional(), // ISO date string
   monthlyContribution: z.number().min(0, 'Monthly contribution must be non-negative'),
   investmentPeriod: z.number().positive('Investment period must be positive'),
   expectedReturn: z.number().positive('Expected return must be positive'),
-  currentPrice: z.number().positive('Current price must be positive'),
+  currentMarketPrice: z.number().positive('Current market price is required'), // Add current market price
 });
 
 // Investment update schema
@@ -41,10 +44,11 @@ const investmentUpdateSchema = z.object({
     coinSymbol: z.string().optional(),
     coinName: z.string().optional(),
     initialInvestment: z.number().positive().optional(),
+    initialCoinPrice: z.number().positive().optional(),
+    investmentDate: z.string().optional(),
     monthlyContribution: z.number().min(0).optional(),
     investmentPeriod: z.number().positive().optional(),
     expectedReturn: z.number().positive().optional(),
-    currentPrice: z.number().positive().optional(),
   })
 });
 
@@ -56,10 +60,12 @@ const scenarioCreationSchema = z.object({
     coinSymbol: z.string(),
     coinName: z.string(),
     initialInvestment: z.number(),
+    initialCoinPrice: z.number(),
+    investmentDate: z.string().optional(),
     monthlyContribution: z.number(),
     investmentPeriod: z.number(),
     expectedReturn: z.number(),
-    currentPrice: z.number(),
+    currentMarketPrice: z.number(),
     calculatedResults: z.object({
       totalInvested: z.number(),
       totalValue: z.number(),
@@ -100,7 +106,9 @@ export const createInvestmentAction = createServerAction()
       }
     };
 
-    const result = await createInvestmentDomain(ctx.user.id, investmentData);
+    // Use the current market price from the input
+    const currentPrice = input.currentMarketPrice;
+    const result = await createInvestmentDomain(ctx.user.id, investmentData, currentPrice);
     return result;
   });
 
@@ -181,13 +189,24 @@ export const createScenarioAction = createServerAction()
 
     // Calculate individual investment results first
     const investmentsWithCalculatedResults = input.investments.map((inv: any) => {
-      const calculatedResults = calculateInvestmentResults(
-        inv.initialInvestment,
-        inv.monthlyContribution,
-        inv.investmentPeriod,
-        inv.expectedReturn,
-        inv.currentPrice
-      );
+      let calculatedResults;
+      
+      // If there's no monthly contribution, it's a single investment
+      if (inv.monthlyContribution === 0 && inv.investmentPeriod === 1) {
+        calculatedResults = calculateSingleInvestmentResults(
+          inv.initialInvestment,
+          inv.initialCoinPrice,
+          inv.currentMarketPrice // Use the actual current market price
+        );
+      } else {
+        calculatedResults = calculateInvestmentResults(
+          inv.initialInvestment,
+          inv.monthlyContribution,
+          inv.investmentPeriod,
+          inv.expectedReturn,
+          inv.currentMarketPrice
+        );
+      }
       
       return {
         ...inv,

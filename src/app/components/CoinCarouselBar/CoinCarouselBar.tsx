@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./coin-carousel-bar.scss";
 
@@ -13,44 +13,46 @@ const CoinCarouselBar = () => {
   const [coins, setCoins] = useState<Coin[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const hasAnimationStarted = useRef(false);
 
+  // Fetch coins only once on mount
   useEffect(() => {
-    fetchSimilarCoins();
-
-    const startAnimation = () => {
-      const track = document.querySelector(
-        ".coin-carousel-track"
-      ) as HTMLElement;
-      if (track && coins.length > 0) {
-        track.style.animation = "scroll 350s linear infinite";
+    const fetchSimilarCoins = async () => {
+      try {
+        const response = await axios.get(`https://api.coinlore.net/api/tickers/`, {
+          timeout: 10000
+        });
+        
+        if (response.data && response.data.data && Array.isArray(response.data.data)) {
+          setCoins(response.data.data);
+          setError(null);
+        } else {
+          throw new Error('Invalid response format');
+        }
+      } catch (error: any) {
+        console.error("Error fetching similar coins", error);
+        setError(error.message || 'Failed to load coin data');
+        setCoins([]);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    if (coins.length > 0) {
-      requestAnimationFrame(startAnimation);
-    }
-  }, [coins]);
+    fetchSimilarCoins();
+  }, []); // Empty dependency array - fetch only once
 
-  const fetchSimilarCoins = async () => {
-    try {
-      const response = await axios.get(`https://api.coinlore.net/api/tickers/`, {
-        timeout: 10000
-      });
-      
-      if (response.data && response.data.data && Array.isArray(response.data.data)) {
-        setCoins(response.data.data);
-        setError(null);
-      } else {
-        throw new Error('Invalid response format');
+  // Start animation only after coins are loaded
+  useEffect(() => {
+    if (coins.length > 0 && !hasAnimationStarted.current) {
+      const track = document.querySelector(".coin-carousel-track") as HTMLElement;
+      if (track) {
+        requestAnimationFrame(() => {
+          track.style.animation = "scroll 350s linear infinite";
+        });
+        hasAnimationStarted.current = true;
       }
-    } catch (error: any) {
-      console.error("Error fetching similar coins", error);
-      setError(error.message || 'Failed to load coin data');
-      setCoins([]);
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [coins.length]); // Only depend on coins.length, not the entire array
 
   return (
     <div className="coin-carousel-bar">

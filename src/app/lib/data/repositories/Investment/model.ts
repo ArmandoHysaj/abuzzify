@@ -5,10 +5,12 @@ export const investmentCalculationSchema = z.object({
   coinSymbol: z.string().min(1, 'Coin symbol is required'),
   coinName: z.string().min(1, 'Coin name is required'),
   initialInvestment: z.number().positive('Initial investment must be positive'),
+  initialCoinPrice: z.number().positive('Initial coin price must be positive'),
+  investmentDate: z.string().optional(), // ISO date string
   monthlyContribution: z.number().min(0, 'Monthly contribution must be non-negative'),
   investmentPeriod: z.number().positive('Investment period must be positive'),
   expectedReturn: z.number().positive('Expected return must be positive'),
-  currentPrice: z.number().positive('Current price must be positive'),
+  currentMarketPrice: z.number().positive('Current market price is required'),
 });
 
 // Investment record schema (what gets stored in Firestore)
@@ -18,10 +20,11 @@ export const investmentRecordSchema = z.object({
   coinSymbol: z.string(),
   coinName: z.string(),
   initialInvestment: z.number(),
+  initialCoinPrice: z.number(),
+  investmentDate: z.string().optional(), // ISO date string
   monthlyContribution: z.number(),
   investmentPeriod: z.number(), // in months
   expectedReturn: z.number(), // annual percentage
-  currentPrice: z.number(),
   calculatedResults: z.object({
     totalInvested: z.number(),
     totalValue: z.number(),
