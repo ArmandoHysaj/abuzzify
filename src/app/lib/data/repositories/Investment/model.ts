@@ -36,17 +36,32 @@ export const investmentRecordSchema = z.object({
   updatedAt: z.string(),
 });
 
-// Investment scenario schema (for saving scenarios)
-export const investmentScenarioSchema = z.object({
+// Price alert schema for buy/sell notifications
+export const priceAlertSchema = z.object({
   id: z.string(),
   userId: z.string(),
-  name: z.string().min(1, 'Scenario name is required'),
-  description: z.string().optional(),
-  investments: z.array(investmentRecordSchema.omit({ id: true, userId: true, createdAt: true, updatedAt: true })),
-  totalPortfolioValue: z.number(),
-  totalInvested: z.number(),
-  totalGain: z.number(),
-  gainPercentage: z.number(),
+  investmentId: z.string(), // Reference to the investment this alert is based on
+  coinSymbol: z.string().min(1, 'Coin symbol is required'),
+  coinName: z.string().min(1, 'Coin name is required'),
+  alertType: z.enum(['sell-price', 'buy-back', 'price-monitor']),
+  sellPrice: z.number().positive('Sell price must be positive'),
+  sellAmount: z.number().positive('Sell amount must be positive'),
+  sellDate: z.string(), // ISO date string when sold
+  profitEarned: z.number(), // Profit made from the sale
+  buyBackPrice: z.number().positive('Buy back price must be positive'), // Target price to buy back
+  currentPrice: z.number().positive('Current price is required'),
+  alertStatus: z.enum(['active', 'triggered', 'paused', 'completed']),
+  notifications: z.object({
+    emailEnabled: z.boolean().default(true),
+    browserEnabled: z.boolean().default(true),
+    lastNotified: z.string().optional(),
+    notificationCount: z.number().default(0),
+  }),
+  alertRules: z.object({
+    priceDropThreshold: z.number().min(1).max(50).default(10), // % drop to trigger buy back alert
+    priceIncreaseThreshold: z.number().min(1).max(50).default(5), // % increase to warn against buying
+    cooldownPeriod: z.number().min(1).default(24), // Hours between notifications
+  }),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
@@ -54,10 +69,10 @@ export const investmentScenarioSchema = z.object({
 // Form data types
 export type InvestmentCalculationInput = z.infer<typeof investmentCalculationSchema>;
 export type InvestmentRecord = z.infer<typeof investmentRecordSchema>;
-export type InvestmentScenario = z.infer<typeof investmentScenarioSchema>;
+export type PriceAlert = z.infer<typeof priceAlertSchema>;
 
 // Repository input types
 export type CreateInvestmentInput = Omit<InvestmentRecord, 'id' | 'userId' | 'createdAt' | 'updatedAt'>;
-export type CreateScenarioInput = Omit<InvestmentScenario, 'id' | 'userId' | 'createdAt' | 'updatedAt'>;
+export type CreatePriceAlertInput = Omit<PriceAlert, 'id' | 'userId' | 'createdAt' | 'updatedAt'>;
 export type UpdateInvestmentInput = Partial<Omit<InvestmentRecord, 'id' | 'userId' | 'createdAt'>>;
-export type UpdateScenarioInput = Partial<Omit<InvestmentScenario, 'id' | 'userId' | 'createdAt'>>;
+export type UpdatePriceAlertInput = Partial<Omit<PriceAlert, 'id' | 'userId' | 'createdAt'>>;

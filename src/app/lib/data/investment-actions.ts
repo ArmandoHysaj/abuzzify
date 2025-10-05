@@ -56,6 +56,10 @@ const investmentUpdateSchema = z.object({
 const scenarioCreationSchema = z.object({
   name: z.string().min(1, 'Scenario name is required'),
   description: z.string().optional(),
+  scenarioType: z.enum(['what-if', 'portfolio', 'dca-strategy']).default('what-if'),
+  timeHorizon: z.number().optional(),
+  expectedReturn: z.number().optional(),
+  riskLevel: z.enum(['low', 'medium', 'high']).optional(),
   investments: z.array(z.object({
     coinSymbol: z.string(),
     coinName: z.string(),
@@ -82,6 +86,10 @@ const scenarioUpdateSchema = z.object({
   updates: z.object({
     name: z.string().optional(),
     description: z.string().optional(),
+    scenarioType: z.enum(['what-if', 'portfolio', 'dca-strategy']).optional(),
+    timeHorizon: z.number().optional(),
+    expectedReturn: z.number().optional(),
+    riskLevel: z.enum(['low', 'medium', 'high']).optional(),
     investments: z.array(z.any()).optional(),
   })
 });
@@ -226,7 +234,8 @@ export const createScenarioAction = createServerAction()
       totalPortfolioValue,
       totalInvested,
       totalGain,
-      gainPercentage
+      gainPercentage,
+      isProjection: true // Scenarios are always projections
     };
 
     const result = await createScenarioDomain(ctx.user.id, scenarioData);

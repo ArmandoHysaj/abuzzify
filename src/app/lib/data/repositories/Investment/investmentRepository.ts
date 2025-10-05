@@ -5,13 +5,9 @@ import {
 import { InvestmentRepository } from './interface';
 import {
   InvestmentRecord,
-  InvestmentScenario,
   CreateInvestmentInput,
-  CreateScenarioInput,
   UpdateInvestmentInput,
-  UpdateScenarioInput,
-  investmentRecordSchema,
-  investmentScenarioSchema
+  investmentRecordSchema
 } from './model';
 import { firestore } from '../../../firestoreConnection';
 import { serializeFirestoreData } from '../../../data/helpers';
@@ -25,12 +21,6 @@ export class InvestmentRepo implements InvestmentRepository {
     return firestore.collection('investments');
   }
 
-  private get scenariosCollection(): CollectionReference {
-    if (!firestore) {
-      throw new Error('Firestore not initialized');
-    }
-    return firestore.collection('investment_scenarios');
-  }
 
   // Investment Records
   async createInvestment(userId: string, investment: CreateInvestmentInput): Promise<string> {
@@ -64,13 +54,20 @@ export class InvestmentRepo implements InvestmentRepository {
   }
 
   async getInvestmentsByUserId(userId: string): Promise<InvestmentRecord[]> {
-    if (!this.investmentsCollection) return [];
+    if (!this.investmentsCollection) {
+      logger.error('❌ Investments collection not initialized');
+      return [];
+    }
     
     try {
+      logger.info('🔍 Fetching investments for user:', { userId });
+      
       const query = await this.investmentsCollection
         .where('userId', '==', userId)
         .orderBy('createdAt', 'desc')
         .get();
+
+      logger.info('📊 Query executed, found documents:', { count: query.size });
 
       const investments: InvestmentRecord[] = [];
 
@@ -82,14 +79,16 @@ export class InvestmentRepo implements InvestmentRepository {
         const parseResult = investmentRecordSchema.safeParse(serializedData);
         if (parseResult.success) {
           investments.push(parseResult.data);
+          logger.info('✅ Valid investment parsed:', { investmentId: doc.id });
         } else {
-          logger.warn('Invalid investment data', { 
+          logger.warn('❌ Invalid investment data', { 
             investmentId: doc.id, 
-            error: parseResult.error 
+            error: parseResult.error.errors
           });
         }
       });
 
+      logger.info('📋 Total valid investments:', { count: investments.length });
       return investments;
     } catch (error) {
       logger.error('❌ Failed to get investments by user ID', { 
@@ -174,147 +173,6 @@ export class InvestmentRepo implements InvestmentRepository {
     }
   }
 
-  // Investment Scenarios
-  async createScenario(userId: string, scenario: CreateScenarioInput): Promise<string> {
-    if (!this.scenariosCollection) throw new Error('Firestore collection not available');
-    
-    try {
-      const docRef = this.scenariosCollection.doc();
-      const scenarioData = {
-        ...scenario,
-        userId,
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now()
-      };
-
-      await docRef.set(scenarioData);
-      
-      logger.info('✅ Investment scenario created successfully', { 
-        userId, 
-        scenarioId: docRef.id,
-        scenarioName: scenario.name 
-      });
-
-      return docRef.id;
-    } catch (error) {
-      logger.error('❌ Failed to create investment scenario', { 
-        userId, 
-        error: error instanceof Error ? error.message : String(error) 
-      });
-      throw error;
-    }
-  }
-
-  async getScenariosByUserId(userId: string): Promise<InvestmentScenario[]> {
-    if (!this.scenariosCollection) return [];
-    
-    try {
-      const query = await this.scenariosCollection
-        .where('userId', '==', userId)
-        .orderBy('createdAt', 'desc')
-        .get();
-
-      const scenarios: InvestmentScenario[] = [];
-
-      query.forEach(doc => {
-        const rawData = doc.data();
-        const serializedData = serializeFirestoreData(rawData) as Record<string, unknown>;
-        serializedData.id = doc.id;
-
-        const parseResult = investmentScenarioSchema.safeParse(serializedData);
-        if (parseResult.success) {
-          scenarios.push(parseResult.data);
-        } else {
-          logger.warn('Invalid scenario data', { 
-            scenarioId: doc.id, 
-            error: parseResult.error 
-          });
-        }
-      });
-
-      return scenarios;
-    } catch (error) {
-      logger.error('❌ Failed to get scenarios by user ID', { 
-        userId, 
-        error: error instanceof Error ? error.message : String(error) 
-      });
-      throw error;
-    }
-  }
-
-  async getScenarioById(scenarioId: string): Promise<InvestmentScenario | null> {
-    if (!this.scenariosCollection) return null;
-    
-    try {
-      const doc = await this.scenariosCollection.doc(scenarioId).get();
-
-      if (!doc.exists) {
-        return null;
-      }
-
-      const rawData = doc.data();
-      if (!rawData) return null;
-
-      const serializedData = serializeFirestoreData(rawData) as Record<string, unknown>;
-      serializedData.id = doc.id;
-
-      const parseResult = investmentScenarioSchema.safeParse(serializedData);
-      if (parseResult.success) {
-        return parseResult.data;
-      } else {
-        logger.warn('Invalid scenario data', { 
-          scenarioId, 
-          error: parseResult.error 
-        });
-        return null;
-      }
-    } catch (error) {
-      logger.error('❌ Failed to get scenario by ID', { 
-        scenarioId, 
-        error: error instanceof Error ? error.message : String(error) 
-      });
-      throw error;
-    }
-  }
-
-  async updateScenario(scenarioId: string, updates: UpdateScenarioInput): Promise<{ success: boolean; error?: string }> {
-    if (!this.scenariosCollection) {
-      return { success: false, error: 'Firestore not available' };
-    }
-
-    try {
-      const updateData = {
-        ...updates,
-        updatedAt: Timestamp.now()
-      };
-
-      await this.scenariosCollection.doc(scenarioId).update(updateData);
-      
-      logger.info('✅ Investment scenario updated successfully', { scenarioId });
-      return { success: true };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      logger.error('❌ Failed to update scenario', { scenarioId, error: errorMessage });
-      return { success: false, error: errorMessage };
-    }
-  }
-
-  async deleteScenario(scenarioId: string): Promise<{ success: boolean; error?: string }> {
-    if (!this.scenariosCollection) {
-      return { success: false, error: 'Firestore not available' };
-    }
-
-    try {
-      await this.scenariosCollection.doc(scenarioId).delete();
-      
-      logger.info('✅ Investment scenario deleted successfully', { scenarioId });
-      return { success: true };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      logger.error('❌ Failed to delete scenario', { scenarioId, error: errorMessage });
-      return { success: false, error: errorMessage };
-    }
-  }
 }
 
 export const investmentRepository = new InvestmentRepo();
