@@ -4,32 +4,19 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useInvestment } from "@/app/hooks/useInvestment";
 import { usePriceAlert } from "@/app/hooks/usePriceAlert";
 import { useAuth } from "@/app/contexts/AuthContext";
+import { Coin, Investment, PriceAlert, InvestmentCalculatorProps, TabType } from "./types/investment.types";
+
+// Import components
+import InvestmentTabs from "./components/InvestmentTabs/InvestmentTabs";
+import AuthRequired from "./components/AuthRequired/AuthRequired";
+import InvestmentForm from "./components/InvestmentForm/InvestmentForm";
+import InvestmentResults from "./components/InvestmentResults/InvestmentResults";
+import InvestmentPortfolio from "./components/InvestmentPortfolio/InvestmentPortfolio";
+import PriceAlerts from "./components/PriceAlerts/PriceAlerts";
+import PriceAlertModal from "./components/PriceAlertModal/PriceAlertModal";
+
+// Import styles
 import "./investment.scss";
-
-interface Coin {
-  id: string;
-  name: string;
-  symbol: string;
-  price_usd: string;
-  percent_change_1h: string;
-  percent_change_24h: string;
-  percent_change_7d: string;
-  market_cap_usd: string;
-  csupply: string;
-  msupply: string;
-  volume24: string;
-}
-
-interface InvestmentCalculatorProps {
-  initialInvestment: number;
-  setInitialInvestment: React.Dispatch<React.SetStateAction<number>>;
-  initialPrice: number;
-  setInitialPrice: React.Dispatch<React.SetStateAction<number>>;
-  coin: Coin | null;
-  name: string;
-  price: string;
-  onSaveScenario?: (scenario: any) => void;
-}
 
 const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
   initialInvestment,
@@ -61,30 +48,24 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     clearError: clearAlertError
   } = usePriceAlert();
 
-  const [activeTab, setActiveTab] = useState<'single' | 'investments' | 'price-alerts'>('single');
+  const [activeTab, setActiveTab] = useState<TabType>('single');
   const [investmentInput, setInvestmentInput] = useState<string>("");
   const [priceInput, setPriceInput] = useState<string>("");
   const [dateInput, setDateInput] = useState<string>("");
-  const [investments, setInvestments] = useState<any[]>([]);
-  const [priceAlerts, setPriceAlerts] = useState<any[]>([]);
+  const [investments, setInvestments] = useState<Investment[]>([]);
+  const [priceAlerts, setPriceAlerts] = useState<PriceAlert[]>([]);
   
   // Price Alert Settings
   const [showCreateAlert, setShowCreateAlert] = useState<boolean>(false);
-  const [selectedInvestment, setSelectedInvestment] = useState<any>(null);
-  const [alertPriceDropThreshold, setAlertPriceDropThreshold] = useState<number>(10);
-  const [alertPriceIncreaseThreshold, setAlertPriceIncreaseThreshold] = useState<number>(5);
-  const [alertEmailEnabled, setAlertEmailEnabled] = useState<boolean>(true);
-  const [alertBrowserEnabled, setAlertBrowserEnabled] = useState<boolean>(true);
-  const [loadedInvestment, setLoadedInvestment] = useState<any>(null);
+  const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
+  const [loadedInvestment, setLoadedInvestment] = useState<Investment | null>(null);
 
   useEffect(() => {
     setInvestmentInput(initialInvestment === 0 ? "" : initialInvestment.toString());
   }, [initialInvestment]);
 
   const loadUserData = useCallback(async () => {
-    // Guard: only load data if user is authenticated
     if (!isAuthenticated || !currentUser) {
-      console.log('User not authenticated, skipping data load');
       setInvestments([]);
       setPriceAlerts([]);
       return;
@@ -102,8 +83,8 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
       const userPriceAlerts = await getUserPriceAlerts();
       setPriceAlerts(userPriceAlerts);
     } catch (alertErr) {
-      console.error('Failed to load price alerts (continuing without them):', alertErr);
-      setPriceAlerts([]); // Set empty array if alerts fail to load
+      console.error('Failed to load price alerts:', alertErr);
+      setPriceAlerts([]);
     }
   }, [getUserInvestments, getUserPriceAlerts, isAuthenticated, currentUser]);
 
@@ -114,34 +95,22 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
   // Reset form values when coin changes
   useEffect(() => {
     if (coin) {
-      // Reset form inputs when switching to a different coin
       setInvestmentInput("");
       setPriceInput("");
       setDateInput("");
       setInitialInvestment(0);
       setInitialPrice(0);
-      setLoadedInvestment(null); // Clear loaded investment when switching coins
-      
-      // Also reset price alert modal state when switching coins
+      setLoadedInvestment(null);
       setSelectedInvestment(null);
       setShowCreateAlert(false);
-      
-      // Switch to single investment tab when coin changes
       setActiveTab('single');
     }
-  }, [coin?.id, setInitialInvestment, setInitialPrice]); // Reset when coin ID changes
+  }, [coin?.id, setInitialInvestment, setInitialPrice]);
 
-  // Auto-select first investment when modal opens and investments are available
-  useEffect(() => {
-    if (showCreateAlert && investments.length > 0 && !selectedInvestment) {
-      setSelectedInvestment(investments[0]);
-    }
-  }, [showCreateAlert, investments, selectedInvestment]);
-
-  // Load user's investments and scenarios from Firestore
+  // Load user's investments and price alerts
   useEffect(() => {
     loadUserData();
-  }, [isAuthenticated, currentUser]); // Removed loadUserData from dependencies to prevent unnecessary reruns
+  }, [isAuthenticated, currentUser]);
 
   const toNum = (v: string | number | undefined | null): number => {
     const n = typeof v === "string" ? parseFloat(v) : v ?? 0;
@@ -151,7 +120,6 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
   const investment = toNum(investmentInput);
   const paidPrice = toNum(priceInput);
   
-  // Use loaded investment's market price if available, otherwise use current coin's price
   const currentPrice = loadedInvestment 
     ? toNum(loadedInvestment.calculatedResults?.finalPrice) 
     : toNum(coin?.price_usd);
@@ -176,7 +144,6 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     [currentPrice, paidPrice]
   );
 
-
   const handleInvestmentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInvestmentInput(value);
@@ -200,13 +167,11 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
       return;
     }
 
-    // Validate that we have the current market price
     if (!currentPrice || currentPrice <= 0) {
       alert('Unable to get current market price. Please try again.');
       return;
     }
 
-    // Validate that the initial coin price is reasonable (not 0)
     if (paidPrice <= 0) {
       alert('Please enter a valid initial coin price');
       return;
@@ -214,14 +179,6 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
 
     try {
       clearError();
-      console.log('Saving investment:', {
-        coinSymbol: coin.symbol,
-        coinName: coin.name,
-        initialInvestment: investment,
-        initialCoinPrice: paidPrice,
-        currentMarketPrice: currentPrice,
-        investmentDate: dateInput
-      });
 
       await createInvestment({
         coinSymbol: coin.symbol,
@@ -230,28 +187,33 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
         initialCoinPrice: paidPrice,
         investmentDate: dateInput || undefined,
         monthlyContribution: 0,
-        investmentPeriod: 1, // Single investment
-        expectedReturn: 10, // Default expected return
-        currentMarketPrice: currentPrice, // Pass the current market price
+        investmentPeriod: 1,
+        expectedReturn: 10,
+        currentMarketPrice: currentPrice,
       });
       
       alert('Investment saved successfully!');
-      setLoadedInvestment(null); // Clear loaded investment after saving
-      await loadUserData(); // Refresh the data
+      setLoadedInvestment(null);
+      await loadUserData();
     } catch (err) {
       console.error('Failed to save investment:', err);
       alert('Failed to save investment. Please try again.');
     }
   };
 
-
-  const handleCreatePriceAlert = async () => {
+  const handleCreatePriceAlert = async (settings: {
+    investment: Investment;
+    priceDropThreshold: number;
+    priceIncreaseThreshold: number;
+    emailEnabled: boolean;
+    browserEnabled: boolean;
+  }) => {
     if (!isAuthenticated) {
       alert('Please log in to create price alerts');
       return;
     }
 
-    if (!selectedInvestment) {
+    if (!settings.investment) {
       alert('Please select an investment to create a price alert for');
       return;
     }
@@ -259,50 +221,43 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     try {
       clearAlertError();
       
-      // Calculate sell price based on investment's current market price
-      const investmentCurrentPrice = getCurrentPriceForCoin(selectedInvestment.coinSymbol) || 
-        selectedInvestment.calculatedResults?.finalPrice || 
+      const investmentCurrentPrice = getCurrentPriceForCoin(settings.investment.coinSymbol) || 
+        settings.investment.calculatedResults?.finalPrice || 
         currentPrice;
       const sellPrice = investmentCurrentPrice;
-      const sellAmount = selectedInvestment.initialInvestment;
-      const profitEarned = sellPrice > selectedInvestment.initialCoinPrice ? 
-        ((sellPrice - selectedInvestment.initialCoinPrice) / selectedInvestment.initialCoinPrice) * sellAmount : 0;
+      const sellAmount = settings.investment.initialInvestment;
+      const profitEarned = sellPrice > settings.investment.initialCoinPrice ? 
+        ((sellPrice - settings.investment.initialCoinPrice) / settings.investment.initialCoinPrice) * sellAmount : 0;
       
       await createPriceAlert({
-        investmentId: selectedInvestment.id,
-        coinSymbol: selectedInvestment.coinSymbol,
-        coinName: selectedInvestment.coinName,
+        investmentId: settings.investment.id,
+        coinSymbol: settings.investment.coinSymbol,
+        coinName: settings.investment.coinName,
         sellPrice: sellPrice,
         sellAmount: sellAmount,
         sellDate: new Date().toISOString(),
         profitEarned: profitEarned,
         currentPrice: investmentCurrentPrice,
-        priceDropThreshold: alertPriceDropThreshold,
-        priceIncreaseThreshold: alertPriceIncreaseThreshold,
+        priceDropThreshold: settings.priceDropThreshold,
+        priceIncreaseThreshold: settings.priceIncreaseThreshold,
         cooldownPeriod: 24,
-        emailEnabled: alertEmailEnabled,
-        browserEnabled: alertBrowserEnabled,
+        emailEnabled: settings.emailEnabled,
+        browserEnabled: settings.browserEnabled,
       });
       
-      alert(`Price alert created successfully! You will be notified when price drops ${alertPriceDropThreshold}% (buy back opportunity) or increases ${alertPriceIncreaseThreshold}% (don't buy now).`);
+      alert(`Price alert created successfully! You will be notified when price drops ${settings.priceDropThreshold}% (buy back opportunity) or increases ${settings.priceIncreaseThreshold}% (don't buy now).`);
       
-      // Reset form
       setSelectedInvestment(null);
-      setAlertPriceDropThreshold(10);
-      setAlertPriceIncreaseThreshold(5);
-      setAlertEmailEnabled(true);
-      setAlertBrowserEnabled(true);
       setShowCreateAlert(false);
       
-      await loadUserData(); // Refresh the data
+      await loadUserData();
     } catch (err) {
       console.error('Failed to create price alert:', err);
       alert('Failed to create price alert. Please try again.');
     }
   };
 
-  const loadInvestment = (investment: any) => {
-    // Clear any existing form state first
+  const loadInvestment = (investment: Investment) => {
     setInvestmentInput("");
     setPriceInput("");
     setDateInput("");
@@ -310,60 +265,25 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     setInitialPrice(0);
     setLoadedInvestment(null);
     
-    // Then set the loaded investment values
     setInvestmentInput(investment.initialInvestment.toString());
     setPriceInput(investment.initialCoinPrice.toString());
     setDateInput(investment.investmentDate || "");
     setInitialInvestment(investment.initialInvestment);
     setInitialPrice(investment.initialCoinPrice);
-    
-    // Store the loaded investment so calculations use its market price
     setLoadedInvestment(investment);
-    
-    // Switch to single investment tab to show the loaded investment
     setActiveTab('single');
   };
 
-  const loadScenario = (scenario: any) => {
-    if (scenario.investments && scenario.investments.length > 0) {
-      const firstInvestment = scenario.investments[0];
-      loadInvestment(firstInvestment);
-    }
-  };
-
-  const trendClass = (n: number): string => 
-    n > 0 ? "profit" : n < 0 ? "loss" : "neutral";
-
-  const fmtCurrency = (n: number): string =>
-    new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 2,
-    }).format(n);
-
-  const fmtNumber = (n: number, max = 8): string =>
-    new Intl.NumberFormat("en-US", { maximumFractionDigits: max }).format(n);
-
-  const fmtPercent = (n: number): string =>
-    `${new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 }).format(n)}%`;
-
-  // Calculate real-time values for saved investments
-  const calculateCurrentInvestmentValue = (investment: any) => {
+  const calculateCurrentInvestmentValue = (investment: Investment) => {
     if (investment.monthlyContribution === 0 && investment.investmentPeriod === 1) {
-      // Single investment - calculate based on the saved final price (market price when saved)
       const savedCurrentPrice = investment.calculatedResults.finalPrice;
       const numberOfCoins = investment.initialInvestment / investment.initialCoinPrice;
       const currentValue = numberOfCoins * savedCurrentPrice;
       const profitLoss = currentValue - investment.initialInvestment;
       const percentageChange = ((savedCurrentPrice / investment.initialCoinPrice) - 1) * 100;
       
-      return {
-        currentValue,
-        profitLoss,
-        percentageChange
-      };
+      return { currentValue, profitLoss, percentageChange };
     } else {
-      // DCA investment - use saved calculated results
       return {
         currentValue: investment.calculatedResults.totalValue,
         profitLoss: investment.calculatedResults.totalGain,
@@ -372,26 +292,25 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     }
   };
 
-  // Get current market price for a specific coin symbol
   const getCurrentPriceForCoin = useCallback((coinSymbol: string) => {
-    // If the investment's coin matches the currently selected coin, use current price
     if (coin && coin.symbol === coinSymbol) {
       return toNum(coin.price_usd);
     }
-    
-    // For now, fall back to the saved price from the investment
-    // In a real app, you'd fetch the current price from an API
-    return null;
+    return 0;
   }, [coin]);
+
+  const handleCreateAlertClick = () => {
+    if (investments.length === 0) {
+      alert('Please save an investment first to create price alerts');
+      return;
+    }
+    setShowCreateAlert(true);
+  };
 
   if (!isAuthenticated) {
     return (
       <div className="investment-calculator">
-        <div className="auth-required">
-          <div className="auth-icon">🔒</div>
-          <h3>Authentication Required</h3>
-          <p>Please log in to access investment features and save your calculations.</p>
-        </div>
+        <AuthRequired />
       </div>
     );
   }
@@ -414,897 +333,92 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
             <span className="price-label">Current Price</span>
             <span className="price-value">
               ${loadedInvestment 
-                ? fmtNumber(loadedInvestment.calculatedResults?.finalPrice || 0, 8)
+                ? new Intl.NumberFormat("en-US", { maximumFractionDigits: 8 }).format(loadedInvestment.calculatedResults?.finalPrice || 0)
                 : price
               }
             </span>
           </div>
         </div>
         
-        <div className="tabs">
-          <button 
-            className={`tab ${activeTab === 'single' ? 'active' : ''}`}
-            onClick={() => setActiveTab('single')}
-          >
-            <span>💰 Single Investment</span>
-          </button>
-          <button 
-            className={`tab ${activeTab === 'investments' ? 'active' : ''}`}
-            onClick={() => setActiveTab('investments')}
-          >
-            <span>📊 My Investments</span>
-          </button>
-          <button 
-            className={`tab ${activeTab === 'price-alerts' ? 'active' : ''}`}
-            onClick={() => setActiveTab('price-alerts')}
-          >
-            <span>🔔 Price Alerts</span>
-          </button>
-        </div>
+        <InvestmentTabs 
+          activeTab={activeTab} 
+          onTabChange={setActiveTab}
+        />
       </div>
 
       {activeTab === 'single' && (
         <div className="calculator-content">
-          <div className="calculator-inputs">
-            <div className="input-group">
-              <label className="input-label">Initial Investment</label>
-              <div className="input-wrapper">
-                <span className="currency-symbol">$</span>
-                <input
-                  type="number"
-                  inputMode="decimal"
-                  step="any"
-                  min="0"
-                  value={investmentInput}
-                  onChange={handleInvestmentChange}
-                  placeholder="0.00"
-                  aria-label="Initial amount invested in dollars"
-                  className="modern-input"
-                />
-              </div>
-            </div>
-
-            <div className="input-group">
-              <label className="input-label">Initial Coin Price</label>
-              <div className="input-wrapper">
-                <span className="currency-symbol">$</span>
-                <input
-                  type="number"
-                  inputMode="decimal"
-                  step="any"
-                  min="0"
-                  value={priceInput}
-                  onChange={handlePriceChange}
-                  placeholder="0.00"
-                  aria-label="Initial coin price in dollars"
-                  className="modern-input"
-                />
-              </div>
-            </div>
-
-            <div className="input-group">
-              <label className="input-label">Investment Date (Optional)</label>
-              <div className="input-wrapper">
-                <input
-                  type="date"
-                  value={dateInput}
-                  onChange={(e) => setDateInput(e.target.value)}
-                  className="modern-input"
-                />
-              </div>
-            </div>
-
-            {investment > 0 && paidPrice > 0 && (
-              <div className="coins-owned">
-                <div className="coins-icon">🪙</div>
-                <span className="coins-text">
-                  You own <strong>{fmtNumber(numberOfCoins)}</strong> {loadedInvestment ? loadedInvestment.coinName : name}
-                </span>
-              </div>
-            )}
-          </div>
-
-          <div className="results-section">
-            <div className="result-card">
-              <div className="result-header">
-                <h3>Current Value</h3>
-                <div className="result-value">{fmtCurrency(currentValue)}</div>
-              </div>
-            </div>
-
-            <div className="result-card profit-loss">
-              <div className="result-header">
-                <h3>Profit / Loss</h3>
-                <div className={`result-value ${trendClass(profitLoss)}`}>
-                  {fmtCurrency(profitLoss)}
-                </div>
-              </div>
-              <div className={`percentage-change ${trendClass(percentageChange)}`}>
-                {fmtPercent(percentageChange)}
-              </div>
-            </div>
-
-            <div className="result-card">
-              <div className="result-header">
-                <h3>Investment</h3>
-                <div className="result-value">{fmtCurrency(investment)}</div>
-              </div>
-            </div>
-          </div>
+          <InvestmentForm
+            investmentInput={investmentInput}
+            priceInput={priceInput}
+            dateInput={dateInput}
+            coinName={loadedInvestment ? loadedInvestment.coinName : name}
+            numberOfCoins={numberOfCoins}
+            profitLoss={profitLoss}
+            loading={loading}
+            investmentsCount={investments.length}
+            onInvestmentChange={handleInvestmentChange}
+            onPriceChange={handlePriceChange}
+            onDateChange={(e) => setDateInput(e.target.value)}
+            onSaveInvestment={handleSaveInvestment}
+            onCreateAlert={handleCreateAlertClick}
+          />
 
           {investment > 0 && paidPrice > 0 && (
-            <>
-              <div className="performance-indicator">
-                <div className={`indicator ${trendClass(profitLoss)}`}>
-                  {profitLoss > 0 ? "📈" : profitLoss < 0 ? "📉" : "➖"}
-                </div>
-                <span className="performance-text">
-                  {profitLoss > 0 
-                    ? "Your investment is performing well!" 
-                    : profitLoss < 0 
-                      ? "Your investment is currently down"
-                      : "No change in value"}
-                </span>
-              </div>
-              
-              <div className="action-buttons">
-                <div className="primary-actions">
-                <button 
-                  className="save-investment-btn"
-                  onClick={handleSaveInvestment}
-                  disabled={loading}
-                  type="button"
-                >
-                    <span className="btn-icon">💰</span>
-                  {loading ? 'Saving...' : 'Save Investment'}
-                </button>
-                  <div className="investment-hint">
-                    <span className="hint-icon">💡</span>
-                    <span className="hint-text">Track your actual cryptocurrency investment</span>
-                  </div>
-                </div>
-                
-                <div className="secondary-actions">
-                <button 
-                    className="create-alert-btn"
-                    onClick={() => {
-                      if (investments.length === 0) {
-                        alert('Please save an investment first to create price alerts');
-                        return;
-                      }
-                      setShowCreateAlert(true);
-                    }}
-                  type="button"
-                    disabled={investments.length === 0}
-                >
-                    <span className="btn-icon">🔔</span>
-                    Create Price Alert
-                </button>
-                  <div className="alert-hint">
-                    <span className="hint-icon">⚡</span>
-                    <span className="hint-text">
-                      {investments.length === 0 
-                        ? 'Save an investment first to create price alerts'
-                        : 'Get notified when it\'s safe to buy back after selling'
-                      }
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </>
+            <InvestmentResults
+              currentValue={currentValue}
+              profitLoss={profitLoss}
+              percentageChange={percentageChange}
+              investment={investment}
+            />
           )}
         </div>
       )}
 
-      {/* My Investments Tab Content */}
       {activeTab === 'investments' && (
         <div className="calculator-content">
-          <div className="portfolio-header">
-            <div className="header-content">
-              <h3>📊 My Investment Portfolio</h3>
-              <p className="header-description">
-                Track and manage your cryptocurrency investments with real-time performance data.
-              </p>
-              </div>
-            <div className="portfolio-stats">
-              <div className="stat-card">
-                <span className="stat-icon">💰</span>
-                <div className="stat-content">
-                  <span className="stat-label">Total Invested</span>
-                  <span className="stat-value">
-                    {fmtCurrency(investments.reduce((sum, inv) => sum + inv.initialInvestment, 0))}
-                  </span>
-            </div>
-              </div>
-              <div className="stat-card">
-                <span className="stat-icon">📈</span>
-                <div className="stat-content">
-                  <span className="stat-label">Total Value</span>
-                  <span className="stat-value">
-                    {fmtCurrency(investments.reduce((sum, inv) => sum + calculateCurrentInvestmentValue(inv).currentValue, 0))}
-                  </span>
-            </div>
-              </div>
-              <div className="stat-card">
-                <span className="stat-icon">🎯</span>
-                <div className="stat-content">
-                  <span className="stat-label">Total P&L</span>
-                  <span className={`stat-value ${trendClass(investments.reduce((sum, inv) => sum + calculateCurrentInvestmentValue(inv).profitLoss, 0))}`}>
-                    {fmtCurrency(investments.reduce((sum, inv) => sum + calculateCurrentInvestmentValue(inv).profitLoss, 0))}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="investments-section">
-            {investments.length > 0 ? (
-              <div className="investments-grid">
-                {investments.map((investment) => {
-                  const realTimeValues = calculateCurrentInvestmentValue(investment);
-                  return (
-                    <div key={investment.id} className="investment-card">
-                      <div className="card-header">
-                        <div className="coin-info">
-                          <h5>{investment.coinName}</h5>
-                          <span className="coin-symbol">{investment.coinSymbol}</span>
-                        </div>
-                        <div className="card-date">
-                          {new Date(investment.createdAt).toLocaleDateString()}
-              </div>
-            </div>
-
-                      <div className="card-content">
-                        <div className="performance-summary">
-                          <div className="main-metric">
-                            <span className="metric-label">Current Value</span>
-                            <span className="metric-value">{fmtCurrency(realTimeValues.currentValue)}</span>
-                          </div>
-                          <div className="performance-indicator">
-                            <span className={`profit-loss ${trendClass(realTimeValues.profitLoss)}`}>
-                              {fmtCurrency(realTimeValues.profitLoss)} ({fmtPercent(realTimeValues.percentageChange)})
-                            </span>
-              </div>
-            </div>
-
-                        <div className="investment-details">
-                          <div className="detail-row">
-                            <span className="detail-label">Invested:</span>
-                            <span className="detail-value">{fmtCurrency(investment.initialInvestment)}</span>
-                </div>
-                          <div className="detail-row">
-                            <span className="detail-label">Initial Price:</span>
-                            <span className="detail-value">{fmtNumber(investment.initialCoinPrice, 8)}</span>
-              </div>
-                          <div className="detail-row">
-                            <span className="detail-label">Current Price:</span>
-                            <span className="detail-value">{fmtNumber(currentPrice, 8)}</span>
-              </div>
-            </div>
-          </div>
-
-                      <div className="card-actions">
-                        <button 
-                          className="action-btn primary"
-                          onClick={() => loadInvestment(investment)}
-                          type="button"
-                        >
-                          <span className="btn-icon">📥</span>
-                          Load
-                        </button>
-                        <button 
-                          className="action-btn secondary"
-                          onClick={() => {
-                            setSelectedInvestment(investment);
-                            setShowCreateAlert(true);
-                          }}
-                          type="button"
-                        >
-                          <span className="btn-icon">🔔</span>
-                          Alert
-                        </button>
-          </div>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="empty-state">
-                <div className="empty-icon">📊</div>
-                <h4>No investments yet</h4>
-                <p>Create your first investment to start tracking your portfolio performance.</p>
-            <button 
-                  className="cta-button"
-                  onClick={() => setActiveTab('single')}
-              type="button"
-            >
-                  <span className="btn-icon">➕</span>
-                  Create First Investment
-            </button>
-              </div>
-          )}
-          </div>
+          <InvestmentPortfolio
+            investments={investments}
+            calculateCurrentInvestmentValue={calculateCurrentInvestmentValue}
+            getCurrentPrice={getCurrentPriceForCoin}
+            onLoadInvestment={loadInvestment}
+            onCreateAlert={(investment) => {
+              setSelectedInvestment(investment);
+              setShowCreateAlert(true);
+            }}
+            onSwitchToSingle={() => setActiveTab('single')}
+          />
         </div>
       )}
 
       {activeTab === 'price-alerts' && (
         <div className="calculator-content">
-          <div className="alerts-header">
-            <div className="header-content">
-              <h3>🔔 Smart Price Alerts</h3>
-              <p className="header-description">
-                Create intelligent price alerts based on your investments. Get notified when it&apos;s safe to buy back or when prices are too high.
-              </p>
-          </div>
-
-            <div className="alert-features">
-              <div className="feature-card">
-                <div className="feature-icon">🔻</div>
-                <div className="feature-content">
-                  <h4>Price Drop Alerts</h4>
-                  <p>Get notified when price drops by your specified percentage - &quot;Safe to buy back&quot; opportunity.</p>
-                  <div className="feature-badge">Buy Back</div>
-                    </div>
-                      </div>
-              <div className="feature-card">
-                <div className="feature-icon">🔺</div>
-                <div className="feature-content">
-                  <h4>Price Increase Alerts</h4>
-                  <p>Get notified when price increases by your specified percentage - &quot;Don&apos;t buy now&quot; warning.</p>
-                  <div className="feature-badge">Avoid High</div>
-                        </div>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">📧</div>
-                <div className="feature-content">
-                  <h4>Dual Notifications</h4>
-                  <p>Receive alerts via email and browser notifications for maximum coverage.</p>
-                  <div className="feature-badge">Email + Browser</div>
-                </div>
-              </div>
-                        </div>
-                      </div>
-                      
-          <div className="create-alerts-section">
-            <div className="section-header">
-              <h4>📈 Create New Price Alert</h4>
-              <p className="section-description">
-                Create intelligent price alerts for your saved investments. Choose from your portfolio to set up smart notifications.
-              </p>
-            </div>
-            
-            {investments.length > 0 ? (
-              <div className="create-alert-card">
-                <div className="card-content">
-                  <div className="alert-info">
-                    <div className="info-icon">🔔</div>
-                    <div className="info-content">
-                      <h5>Ready to create alerts?</h5>
-                      <p>You have {investments.length} saved investment{investments.length !== 1 ? 's' : ''} available for price alerts.</p>
-                    </div>
-                  </div>
-                      <button 
-                    className="create-alert-btn"
-                    onClick={() => {
-                      setShowCreateAlert(true);
-                    }}
-                        type="button"
-                      >
-                    <span className="btn-icon">🔔</span>
-                    Create New Alert
-                      </button>
-                    </div>
-                <div className="card-footer">
-                  <span className="hint-text">
-                    💡 Select from your investments to configure drop/increase thresholds
-                  </span>
-                  </div>
-              </div>
-            ) : (
-              <div className="no-investments-card">
-                <div className="card-content">
-                  <div className="empty-icon">📊</div>
-                  <h4>No investments available</h4>
-                  <p>You need at least one saved investment to create price alerts.</p>
-                  <button 
-                    className="cta-button"
-                    onClick={() => setActiveTab('single')}
-                    type="button"
-                  >
-                    <span className="btn-icon">📥</span>
-                    Create First Investment
-                  </button>
-              </div>
-            </div>
-          )}
-          </div>
-
-          {priceAlerts.length > 0 && (
-            <div className="section">
-              <h4>Active Price Alerts ({priceAlerts.length})</h4>
-              <div className="alerts-list">
-                {priceAlerts.map((alert) => {
-                  const priceChange = currentPrice - alert.sellPrice;
-                  const priceChangePercent = (priceChange / alert.sellPrice) * 100;
-                  const buyBackPrice = alert.buyBackPrice;
-                  const isSafeToBuy = currentPrice <= buyBackPrice;
-                  
-                  return (
-                    <div key={alert.id} className="alert-card">
-                      <div className="alert-header">
-                        <h5>{alert.coinName} ({alert.coinSymbol})</h5>
-                        <span className={`alert-status ${alert.alertStatus}`}>
-                          {alert.alertStatus}
-                        </span>
-                      </div>
-                      
-                      <div className="alert-details">
-                        <div className="alert-meta">
-                          <div className="meta-item">
-                            <span className="meta-label">Sold At:</span>
-                            <span className="meta-value">${fmtNumber(alert.sellPrice, 8)}</span>
-                          </div>
-                          <div className="meta-item">
-                            <span className="meta-label">Profit Earned:</span>
-                            <span className="meta-value profit">+${fmtNumber(alert.profitEarned, 2)}</span>
-                          </div>
-                          <div className="meta-item">
-                            <span className="meta-label">Buy Back Target:</span>
-                            <span className="meta-value">
-                              {buyBackPrice && !isNaN(buyBackPrice) 
-                                ? `$${fmtNumber(buyBackPrice, 8)}` 
-                                : 'Not set'
-                              }
-                            </span>
-                          </div>
-                          <div className="meta-item">
-                            <span className="meta-label">Current Price:</span>
-                            <span className={`meta-value ${trendClass(priceChange)}`}>
-                              ${fmtNumber(currentPrice, 8)} ({fmtPercent(priceChangePercent)})
-                            </span>
-                          </div>
-                        </div>
-                        
-                        <div className="alert-status">
-                          {isSafeToBuy ? (
-                            <div className="buy-alert">
-                              <span className="alert-icon">🟢</span>
-                              <span className="alert-text">SAFE TO BUY BACK</span>
-                            </div>
-                          ) : (
-                            <div className="monitor-alert">
-                              <span className="alert-icon">⏳</span>
-                              <span className="alert-text">Waiting for price drop</span>
-                            </div>
-                          )}
-                        </div>
-                        
-                        <div className="alert-notifications">
-                          <div className="notification-item">
-                            <span className="notification-icon">📧</span>
-                            <span className="notification-text">
-                              Email: {alert.notifications.emailEnabled ? 'Enabled' : 'Disabled'}
-                            </span>
-                          </div>
-                          <div className="notification-item">
-                            <span className="notification-icon">🔔</span>
-                            <span className="notification-text">
-                              Browser: {alert.notifications.browserEnabled ? 'Enabled' : 'Disabled'}
-                            </span>
-                          </div>
-                          {alert.notifications.notificationCount > 0 && (
-                            <div className="notification-item">
-                              <span className="notification-icon">📊</span>
-                              <span className="notification-text">
-                                Notifications sent: {alert.notifications.notificationCount}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                        
-                        <div className="alert-actions">
-                          <button 
-                            className="action-btn secondary"
-                            onClick={() => updatePriceAlert(alert.id, { alertStatus: 'paused' })}
-                            type="button"
-                          >
-                            <span className="btn-icon">
-                              {alert.alertStatus === 'paused' ? '▶️' : '⏸️'}
-                            </span>
-                            {alert.alertStatus === 'paused' ? 'Resume' : 'Pause'}
-                          </button>
-                          <button 
-                            className="action-btn danger"
-                            onClick={() => deletePriceAlert(alert.id)}
-                            type="button"
-                          >
-                            <span className="btn-icon">🗑️</span>
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {investments.length === 0 && priceAlerts.length === 0 && (
-            <div className="no-data">
-              <div className="no-data-icon">📊</div>
-              <h4>No investments or price alerts yet</h4>
-              <p>Create your first investment or price alert to get started with portfolio tracking.</p>
-              
-              <div className="getting-started">
-                <h5>🚀 Getting Started:</h5>
-                <div className="getting-started-tips">
-                  <div className="tip-item">
-                    <span className="tip-icon">1️⃣</span>
-                    <span className="tip-text"><strong>Track Real Investments:</strong> Save your actual crypto purchases to monitor performance</span>
-                  </div>
-                  <div className="tip-item">
-                    <span className="tip-icon">2️⃣</span>
-                    <span className="tip-text"><strong>Create Price Alerts:</strong> Get notified when it&apos;s safe to buy back after selling</span>
-                  </div>
-                  <div className="tip-item">
-                    <span className="tip-icon">3️⃣</span>
-                    <span className="tip-text"><strong>Smart Notifications:</strong> Receive email and browser alerts for optimal timing</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+          <PriceAlerts
+            investments={investments}
+            priceAlerts={priceAlerts}
+            currentPrice={currentPrice}
+            onShowCreateAlert={() => setShowCreateAlert(true)}
+            onUpdateAlert={(id, updates) => updatePriceAlert(id, updates)}
+            onDeleteAlert={(id) => deletePriceAlert(id)}
+            onSwitchToSingle={() => setActiveTab('single')}
+          />
         </div>
       )}
 
-      {/* Create Price Alert Modal */}
-      {showCreateAlert && (
-        <div className="alert-modal-overlay" onClick={() => setShowCreateAlert(false)}>
-          <div className="alert-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <div className="header-content">
-                <div className="header-title">
-                  <span className="header-icon">🔔</span>
-                  <h2>Create Smart Price Alert</h2>
-                </div>
-              <button 
-                  className="close-btn"
-                  onClick={() => setShowCreateAlert(false)}
-              >
-                ×
-              </button>
-              </div>
-              <div className="modal-description">
-                Create percentage-based alerts for your saved investment to get notified when it&apos;s safe to buy back or when prices are too high.
-              </div>
-            </div>
-            
-            <div className="modal-content">
-              <div className="smart-alert-section">
-                <div className="section-header">
-                  <span className="section-icon">🔔</span>
-                  <h3>Smart Price Alert</h3>
-                </div>
-                <div className="alert-types">
-                  <div className="alert-type">
-                    <div className="type-header">
-                      <span className="type-icon drop">🔻</span>
-                      <h4>Price Drop Alert</h4>
-                    </div>
-                    <p>Get notified when it&apos;s <span className="highlight">&quot;safe to buy back&quot;</span> at a lower price</p>
-                  </div>
-                  <div className="alert-type">
-                    <div className="type-header">
-                      <span className="type-icon increase">🔺</span>
-                      <h4>Price Increase Alert</h4>
-                    </div>
-                    <p>Get notified when price is too high - <span className="highlight">&quot;don&apos;t buy now&quot;</span></p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="select-investment-section">
-                <div className="section-header">
-                  <span className="section-icon">📊</span>
-                  <h3>Select Investment</h3>
-                </div>
-                <div className="investment-options">
-                  {investments.map((investment) => {
-                    const realTimeValues = calculateCurrentInvestmentValue(investment);
-                    const isSelected = selectedInvestment?.id === investment.id;
-                    
-                    return (
-                      <div 
-                        key={investment.id} 
-                        className={`investment-option ${isSelected ? 'selected' : ''}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setSelectedInvestment(investment);
-                        }}
-                      >
-                        <div className="option-header">
-                          <div className="coin-info">
-                            <h5>{investment.coinName}</h5>
-                            <span className="coin-symbol">{investment.coinSymbol}</span>
-                          </div>
-                          <div className="investment-meta">
-                            <span className="meta-label">Invested</span>
-                            <span className="meta-value">${fmtNumber(investment.initialInvestment, 2)}</span>
-                          </div>
-                        </div>
-                        
-                        <div className="option-details">
-                          <div className="detail-item">
-                            <span className="detail-label">Initial Price</span>
-                            <span className="detail-value">${fmtNumber(investment.initialCoinPrice, 8)}</span>
-                          </div>
-                          <div className="detail-item">
-                            <span className="detail-label">Current Value</span>
-                            <span className="detail-value">${fmtNumber(realTimeValues.currentValue, 2)}</span>
-                          </div>
-                          <div className="detail-item">
-                            <span className="detail-label">Profit/Loss</span>
-                            <span className={`detail-value ${trendClass(realTimeValues.profitLoss) === 'positive' ? 'profit' : ''}`}>
-                              {fmtCurrency(realTimeValues.profitLoss)} ({fmtPercent(realTimeValues.percentageChange)})
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {selectedInvestment && (
-                <div className="alert-settings-section">
-                  <div className="section-header">
-                    <span className="section-icon">⚙️</span>
-                    <h3>Alert Settings</h3>
-                  </div>
-                  
-                  <div className="selected-investment-summary">
-                    <h4>Selected Investment</h4>
-                    <div className="investment-details-grid">
-                      <div className="detail-item">
-                        <span className="detail-label">Investment</span>
-                        <span className="detail-value">${fmtNumber(selectedInvestment.initialInvestment, 2)}</span>
-                      </div>
-                      <div className="detail-item">
-                        <span className="detail-label">Initial Price</span>
-                        <span className="detail-value">${fmtNumber(selectedInvestment.initialCoinPrice, 8)}</span>
-                      </div>
-                      <div className="detail-item">
-                        <span className="detail-label">Current Price</span>
-                        <span className="detail-value">
-                          ${fmtNumber(
-                            getCurrentPriceForCoin(selectedInvestment.coinSymbol) || 
-                            selectedInvestment.calculatedResults?.finalPrice || 
-                            currentPrice, 8
-                          )}
-                        </span>
-                      </div>
-                      <div className="detail-item">
-                        <span className="detail-label">Current Value</span>
-                        <span className="detail-value">${fmtNumber(calculateCurrentInvestmentValue(selectedInvestment).currentValue, 2)}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="threshold-settings">
-                    <div className="threshold-group">
-                      <div className="threshold-header">
-                        <span className="threshold-icon drop">🔻</span>
-                        <h4>Price Drop Threshold</h4>
-                      </div>
-                      <div className="threshold-input">
-                <input
-                          type="number"
-                          value={alertPriceDropThreshold}
-                          onChange={(e) => setAlertPriceDropThreshold(Number(e.target.value))}
-                          min="0.0001"
-                          max="50"
-                          step="0.0001"
-                          placeholder="10"
-                />
-              </div>
-                      <div className="threshold-description">
-                        Get notified when price drops this much - <span className="highlight">&quot;Safe to buy back&quot;</span>
-                      </div>
-                      <div className="preset-options">
-                        <span className="preset-label">Preset options:</span>
-                        <select 
-                          onChange={(e) => {
-                            if (e.target.value) {
-                              setAlertPriceDropThreshold(Number(e.target.value));
-                            }
-                          }}
-                        >
-                          <option value="">Select preset...</option>
-                          <option value="0.0001">0.0001% (Ultra Sensitive)</option>
-                          <option value="0.001">0.001% (Very Sensitive)</option>
-                          <option value="0.01">0.01% (Sensitive)</option>
-                          <option value="0.1">0.1% (Low Sensitivity)</option>
-                          <option value="1">1% (Moderate)</option>
-                          <option value="5">5% (Standard)</option>
-                          <option value="10">10% (Default)</option>
-                          <option value="20">20% (High Threshold)</option>
-                        </select>
-              </div>
-            </div>
-            
-                    <div className="threshold-group">
-                      <div className="threshold-header">
-                        <span className="threshold-icon increase">🔺</span>
-                        <h4>Price Increase Threshold</h4>
-                      </div>
-                      <div className="threshold-input">
-                        <input
-                          type="number"
-                          value={alertPriceIncreaseThreshold}
-                          onChange={(e) => setAlertPriceIncreaseThreshold(Number(e.target.value))}
-                          min="0.0001"
-                          max="50"
-                          step="0.0001"
-                          placeholder="5"
-                        />
-                      </div>
-                      <div className="threshold-description">
-                        Get notified when price increases this much - <span className="highlight">&quot;Don&apos;t buy now&quot;</span>
-                      </div>
-                      <div className="preset-options">
-                        <span className="preset-label">Preset options:</span>
-                        <select 
-                          onChange={(e) => {
-                            if (e.target.value) {
-                              setAlertPriceIncreaseThreshold(Number(e.target.value));
-                            }
-                          }}
-                        >
-                          <option value="">Select preset...</option>
-                          <option value="0.0001">0.0001% (Ultra Sensitive)</option>
-                          <option value="0.001">0.001% (Very Sensitive)</option>
-                          <option value="0.01">0.01% (Sensitive)</option>
-                          <option value="0.1">0.1% (Low Sensitivity)</option>
-                          <option value="1">1% (Moderate)</option>
-                          <option value="5">5% (Standard)</option>
-                          <option value="10">10% (Default)</option>
-                          <option value="20">20% (High Threshold)</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div className="notification-preferences-section">
-                <div className="section-header">
-                  <span className="section-icon">🔔</span>
-                  <h3>Notification Preferences</h3>
-                </div>
-                <div className="notification-options">
-                  <div className="notification-option">
-                    <div className="option-content">
-                      <div className="option-info">
-                        <div className="option-icon">📧</div>
-                        <div className="option-text">
-                          <h4>Email Notifications</h4>
-                          <p>Receive alerts via email</p>
-                        </div>
-                      </div>
-                      <div className="toggle-switch">
-                        <input
-                          type="checkbox"
-                          checked={alertEmailEnabled}
-                          onChange={(e) => setAlertEmailEnabled(e.target.checked)}
-                        />
-                        <span className="slider"></span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="notification-option">
-                    <div className="option-content">
-                      <div className="option-info">
-                        <div className="option-icon">🔔</div>
-                        <div className="option-text">
-                          <h4>Browser Notifications</h4>
-                          <p>Receive alerts in your browser</p>
-                        </div>
-                      </div>
-                      <div className="toggle-switch">
-                        <input
-                          type="checkbox"
-                          checked={alertBrowserEnabled}
-                          onChange={(e) => setAlertBrowserEnabled(e.target.checked)}
-                        />
-                        <span className="slider"></span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {selectedInvestment && (
-                <div className="alert-preview-section">
-                  <div className="section-header">
-                    <span className="section-icon">🎯</span>
-                    <h3>Alert Preview</h3>
-                  </div>
-                  <div className="preview-card">
-                    <div className="preview-content">
-                      <div className="preview-alerts">
-                        {(() => {
-                          const investmentCurrentPrice = getCurrentPriceForCoin(selectedInvestment.coinSymbol) || 
-                            selectedInvestment.calculatedResults?.finalPrice || 
-                            currentPrice;
-                          const buyBackPrice = investmentCurrentPrice * (1 - alertPriceDropThreshold / 100);
-                          const dontBuyAbovePrice = investmentCurrentPrice * (1 + alertPriceIncreaseThreshold / 100);
-                          const isSafeToBuy = investmentCurrentPrice <= buyBackPrice;
-                          const isTooHigh = investmentCurrentPrice >= dontBuyAbovePrice;
-                          
-                          return (
-                            <>
-                              <div className="preview-alert drop-alert">
-                                <div className="alert-header">
-                                  <span className="alert-icon">🔻</span>
-                                  <span className="alert-title">Price Drop Alert</span>
-                                </div>
-                                <div className="alert-description">
-                                  Buy back target: <strong>${buyBackPrice.toFixed(8)}</strong> 
-                                  (when price drops {alertPriceDropThreshold}%)
-                                  {isSafeToBuy && <span className="alert-text"> - Triggered! Safe to buy back now.</span>}
-                                </div>
-                              </div>
-                              
-                              <div className="preview-alert increase-alert">
-                                <div className="alert-header">
-                                  <span className="alert-icon">🔺</span>
-                                  <span className="alert-title">Price Increase Alert</span>
-                                </div>
-                                <div className="alert-description">
-                                  Don&apos;t buy above: <strong>${dontBuyAbovePrice.toFixed(8)}</strong> 
-                                  (when price increases {alertPriceIncreaseThreshold}%)
-                                  {isTooHigh && <span className="alert-text"> - Triggered! Avoid buying at this high price.</span>}
-                                </div>
-                              </div>
-                            </>
-                          );
-                        })()}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div className="alert-disclaimer">
-                <div className="disclaimer-icon">⚠️</div>
-                <div className="disclaimer-text">
-                  <strong>Remember:</strong> Price alerts are <strong>notifications only</strong>. Always do your own research before making investment decisions.
-                </div>
-              </div>
-            </div>
-            
-            <div className="modal-actions">
-              <button 
-                className="action-btn secondary"
-                onClick={() => setShowCreateAlert(false)}
-              >
-                Cancel
-              </button>
-              <button 
-                className="action-btn primary"
-                onClick={handleCreatePriceAlert}
-                disabled={alertLoading || !selectedInvestment}
-              >
-                <span className="btn-icon">🔔</span>
-                {alertLoading ? 'Creating...' : 'Create Alert'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <PriceAlertModal
+        isOpen={showCreateAlert}
+        investments={investments}
+        selectedInvestment={selectedInvestment}
+        onClose={() => {
+          setShowCreateAlert(false);
+          setSelectedInvestment(null);
+        }}
+        onSelectInvestment={setSelectedInvestment}
+        onCreateAlert={handleCreatePriceAlert}
+        getCurrentPriceForCoin={getCurrentPriceForCoin}
+        currentPrice={currentPrice}
+        loading={alertLoading}
+      />
     </div>
   );
 };

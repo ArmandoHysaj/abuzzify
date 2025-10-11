@@ -1,0 +1,176 @@
+.investment-portfolio {
+  .portfolio-header {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 20px rgba(45, 90, 61, 0.08);
+    border: 1px solid rgba(55, 65, 81, 0.1);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(135deg, #2d5a3d 0%, #374151 100%);
+    }
+    
+    .header-content {
+      margin-bottom: 24px;
+      
+      h3 {
+        font-size: 28px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #2d5a3d 0%, #374151 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 8px;
+        font-family: "Montserrat-Bold", sans-serif;
+      }
+      
+      .header-description {
+        color: var(--text-muted);
+        font-size: 15px;
+        line-height: 1.6;
+        font-family: "Montserrat-Regular", sans-serif;
+      }
+    }
+  }
+
+  .investments-section {
+    .investments-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 20px;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 80px 24px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      border: 1px solid rgba(55, 65, 81, 0.1);
+      box-shadow: 0 4px 20px rgba(45, 90, 61, 0.08);
+
+      .empty-icon {
+        font-size: 80px;
+        margin-bottom: 24px;
+        opacity: 0.5;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      h4 {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 12px;
+        font-family: "Montserrat-Bold", sans-serif;
+      }
+
+      p {
+        color: var(--text-muted);
+        font-size: 16px;
+        margin-bottom: 32px;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        font-family: "Montserrat-Regular", sans-serif;
+      }
+
+      .cta-button {
+        background: linear-gradient(135deg, #2d5a3d 0%, #374151 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 16px 32px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: "Montserrat-SemiBold", sans-serif;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 16px rgba(45, 90, 61, 0.2);
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(45, 90, 61, 0.3);
+        }
+        
+        &:active {
+          transform: translateY(0);
+        }
+        
+        .btn-icon {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .investment-portfolio {
+    .investments-section {
+      .investments-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 16px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .investment-portfolio {
+    .portfolio-header {
+      padding: 24px;
+      
+      .header-content {
+        h3 {
+          font-size: 24px;
+        }
+      }
+    }
+    
+    .investments-section {
+      .investments-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .empty-state {
+        padding: 60px 20px;
+        
+        .empty-icon {
+          font-size: 64px;
+        }
+        
+        h4 {
+          font-size: 20px;
+        }
+        
+        p {
+          font-size: 15px;
+        }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,118 @@
+.investment-results-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+
+  .result-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgba(55, 65, 81, 0.1);
+    box-shadow: 0 4px 20px rgba(45, 90, 61, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(135deg, #2d5a3d 0%, #374151 100%);
+    }
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(45, 90, 61, 0.12);
+    }
+    
+    &.profit-loss-card {
+      .percentage-change {
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 12px;
+        padding: 6px 14px;
+        border-radius: 10px;
+        display: inline-block;
+        font-family: "Montserrat-SemiBold", sans-serif;
+        
+        &.profit {
+          background: rgba(5, 150, 105, 0.1);
+          color: #059669;
+        }
+        
+        &.loss {
+          background: rgba(220, 38, 38, 0.1);
+          color: #dc2626;
+        }
+        
+        &.neutral {
+          background: rgba(107, 114, 128, 0.1);
+          color: #6b7280;
+        }
+      }
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      
+      .result-icon {
+        font-size: 24px;
+        opacity: 0.8;
+      }
+
+      h3 {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-family: "Montserrat-SemiBold", sans-serif;
+      }
+    }
+
+    .result-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-family: "Montserrat-Bold", sans-serif;
+      line-height: 1.2;
+      
+      &.profit {
+        color: #059669;
+      }
+      
+      &.loss {
+        color: #dc2626;
+      }
+      
+      &.neutral {
+        color: var(--text-muted);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .investment-results-section {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    
+    .result-card {
+      padding: 20px;
+      
+      .result-value {
+        font-size: 24px;
+      }
+    }
+  }
+}
+

@@ -1,0 +1,237 @@
+.investment-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(55, 65, 81, 0.1);
+  box-shadow: 0 4px 20px rgba(45, 90, 61, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  }
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(45, 90, 61, 0.12);
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    
+    .coin-info {
+      h5 {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+        font-family: "Montserrat-Bold", sans-serif;
+      }
+      
+      .coin-symbol {
+        background: linear-gradient(135deg, #2d5a3d 0%, #374151 100%);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-family: "Montserrat-SemiBold", sans-serif;
+      }
+    }
+    
+    .card-date {
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      font-family: "Montserrat-Medium", sans-serif;
+      background: rgba(107, 114, 128, 0.1);
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+  }
+  
+  .card-content {
+    .performance-summary {
+      margin-bottom: 20px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(45, 90, 61, 0.05) 0%, rgba(55, 65, 81, 0.05) 100%);
+      border-radius: 12px;
+      
+      .main-metric {
+        margin-bottom: 12px;
+        
+        .metric-label {
+          display: block;
+          font-size: 13px;
+          color: var(--text-muted);
+          font-weight: 600;
+          margin-bottom: 6px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          font-family: "Montserrat-SemiBold", sans-serif;
+        }
+        
+        .metric-value {
+          font-size: 26px;
+          font-weight: 700;
+          color: var(--text-primary);
+          font-family: "Montserrat-Bold", sans-serif;
+        }
+      }
+      
+      .performance-indicator {
+        .profit-loss {
+          font-size: 15px;
+          font-weight: 600;
+          padding: 8px 16px;
+          border-radius: 10px;
+          display: inline-block;
+          font-family: "Montserrat-SemiBold", sans-serif;
+          
+          &.profit {
+            background: rgba(5, 150, 105, 0.1);
+            color: #059669;
+          }
+          
+          &.loss {
+            background: rgba(220, 38, 38, 0.1);
+            color: #dc2626;
+          }
+          
+          &.neutral {
+            background: rgba(107, 114, 128, 0.1);
+            color: #6b7280;
+          }
+        }
+      }
+    }
+    
+    .investment-details {
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(100, 116, 139, 0.1);
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        .detail-label {
+          font-size: 14px;
+          color: var(--text-muted);
+          font-weight: 500;
+          font-family: "Montserrat-Medium", sans-serif;
+        }
+        
+        .detail-value {
+          font-size: 14px;
+          color: var(--text-primary);
+          font-weight: 600;
+          font-family: "Montserrat-SemiBold", sans-serif;
+        }
+      }
+    }
+  }
+  
+  .card-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    
+    .action-btn {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      font-family: "Montserrat-SemiBold", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      
+      &.primary {
+        background: linear-gradient(135deg, #2d5a3d 0%, #374151 100%);
+        color: white;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 16px rgba(45, 90, 61, 0.25);
+        }
+      }
+      
+      &.secondary {
+        background: rgba(107, 114, 128, 0.1);
+        color: var(--text-muted);
+        border: 1px solid rgba(107, 114, 128, 0.2);
+        
+        &:hover {
+          background: rgba(107, 114, 128, 0.15);
+          transform: translateY(-2px);
+          color: var(--text-secondary);
+        }
+      }
+      
+      .btn-icon {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .investment-card {
+    padding: 20px;
+    
+    .card-header {
+      margin-bottom: 16px;
+      
+      .coin-info {
+        h5 {
+          font-size: 18px;
+        }
+      }
+    }
+    
+    .card-content {
+      .performance-summary {
+        padding: 14px;
+        
+        .main-metric {
+          .metric-value {
+            font-size: 22px;
+          }
+        }
+      }
+    }
+    
+    .card-actions {
+      gap: 10px;
+      
+      .action-btn {
+        padding: 10px 14px;
+        font-size: 13px;
+      }
+    }
+  }
+}
+

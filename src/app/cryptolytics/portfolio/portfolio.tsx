@@ -251,7 +251,13 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       setLoadingNews(false);
     } catch (error) {
       if (!axios.isCancel(error)) {
-        console.error("Error fetching news", error);
+        // Silently fail for news - it's not critical
+        if (axios.isAxiosError(error) && error.response?.status === 401) {
+          console.warn("News API: Authentication issue. News feature temporarily unavailable.");
+        } else {
+          console.warn("Unable to fetch news:", error);
+        }
+        setNews([]); // Set empty array instead of leaving it undefined
         setLoadingNews(false);
       }
     }
@@ -374,6 +380,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
             className="investment-calculator-modal custom-scrollbar"
             overlayClassName="investment-calculator-overlay"
             bodyOpenClassName="body-lock"
+            ariaHideApp={false}
           >
             <h3>
               Crypto Coin Calculator: Calculate Your{" "}
@@ -417,6 +424,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
             className="investment-calculator-modal custom-scrollbar"
             overlayClassName="investment-calculator-overlay"
             bodyOpenClassName="body-lock"
+            ariaHideApp={false}
           >
             <h3>
               Crypto Coin Calculator: Calculate Your{" "}
