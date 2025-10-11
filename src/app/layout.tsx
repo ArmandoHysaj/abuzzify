@@ -72,6 +72,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   <a href="/terms" aria-label="Read our terms of service">Terms of Service</a>
                 </li>
                 <li>
+                  <a href="/cookies" aria-label="Read our cookie policy">Cookie Policy</a>
+                </li>
+                <li>
+                  <a href="/disclaimer" aria-label="Read our disclaimer">Disclaimer</a>
+                </li>
+                <li>
                   <a href="/contact" aria-label="Contact us for support">Contact Us</a>
                 </li>
               </ul>

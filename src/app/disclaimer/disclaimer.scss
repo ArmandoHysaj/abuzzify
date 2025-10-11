@@ -1,0 +1,115 @@
+@import "../globals.scss";
+
+.disclaimer-page {
+  padding: 2rem 0;
+  line-height: 1.8;
+
+  h3 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+  }
+
+  h4 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  h5 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    font-size: 1rem;
+
+    strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+  }
+
+  ul, ol {
+    margin: 1rem 0 1.5rem 1.5rem;
+    padding-left: 1rem;
+    color: var(--text-secondary);
+
+    li {
+      margin-bottom: 0.75rem;
+      line-height: 1.7;
+
+      strong {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+    }
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    word-break: break-word;
+
+    &:hover {
+      color: var(--primary-hover);
+      text-decoration: underline;
+    }
+  }
+
+  strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .warning-box {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    margin: 2rem 0;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    border: 2px solid #ff5252;
+
+    strong {
+      color: white;
+      font-size: 1.3rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .policy-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border-color);
+    text-align: center;
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .disclaimer-page {
+    .warning-box {
+      background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
+      box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+    }
+  }
+}
+
