@@ -10,27 +10,27 @@
   justify-content: center;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--bg-secondary);
   }
 
   .toggle-track {
     width: 50px;
     height: 26px;
-    background: #e5e7eb;
+    background: var(--border-color);
     border-radius: 13px;
     position: relative;
     transition: all 0.3s ease;
     border: 2px solid transparent;
 
     &:hover {
-      background: #d1d5db;
+      background: var(--border-accent);
     }
   }
 
   .toggle-thumb {
     width: 22px;
     height: 22px;
-    background: white;
+    background: var(--bg-primary);
     border-radius: 50%;
     position: absolute;
     top: 2px;
@@ -39,8 +39,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color: #6b7280;
+    box-shadow: var(--shadow-sm);
+    color: var(--text-muted);
 
     svg {
       width: 14px;
@@ -50,17 +50,17 @@
 
   &.dark {
     .toggle-track {
-      background: #4f46e5;
-      border-color: #4f46e5;
+      background: var(--accent-primary);
+      border-color: var(--accent-primary);
 
       &:hover {
-        background: #4338ca;
+        background: var(--accent-hover);
       }
     }
 
     .toggle-thumb {
       transform: translateX(24px);
-      color: #fbbf24;
+      color: var(--warning-color);
     }
   }
 }
@@ -69,21 +69,21 @@
 :root.dark {
   .theme-toggle {
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--bg-tertiary);
     }
 
     .toggle-track {
-      background: #374151;
-      border-color: #374151;
+      background: var(--border-color);
+      border-color: var(--border-color);
 
       &:hover {
-        background: #4b5563;
+        background: var(--border-accent);
       }
     }
 
     .toggle-thumb {
-      background: #1f2937;
-      color: #fbbf24;
+      background: var(--bg-primary);
+      color: var(--warning-color);
     }
   }
 }

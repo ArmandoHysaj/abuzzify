@@ -1,40 +1,41 @@
-/* Modern Professional Investment Calculator Styles */
+/* Professional Natural Investment Calculator Styles */
 .investment-calculator {
-  // Modern CSS Variables
-  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-  --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  --card-shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.15);
-  --glass-bg: rgba(255, 255, 255, 0.95);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --text-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  // Professional Natural CSS Variables
+  --primary-gradient: linear-gradient(135deg, #2d5a3d 0%, #374151 100%);
+  --success-gradient: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  --warning-gradient: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+  --card-shadow: 0 4px 20px rgba(45, 90, 61, 0.08);
+  --card-shadow-hover: 0 8px 32px rgba(45, 90, 61, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.98);
+  --glass-border: rgba(55, 65, 81, 0.1);
+  --text-gradient: linear-gradient(135deg, #2d5a3d 0%, #374151 100%);
   
-  // Modern Tab Navigation
+  // Professional Tab Navigation
   .tabs {
     display: flex;
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
-    border-radius: 16px;
-    padding: 8px;
-    margin-bottom: 32px;
+    border-radius: 12px;
+    padding: 6px;
+    margin-bottom: 28px;
     box-shadow: var(--card-shadow);
     border: 1px solid var(--glass-border);
-    gap: 4px;
+    gap: 3px;
     
     .tab {
       flex: 1;
-      padding: 16px 24px;
+      padding: 14px 20px;
       border: none;
       background: transparent;
-      border-radius: 12px;
-      font-size: 15px;
+      border-radius: 10px;
+      font-size: 14px;
       font-weight: 600;
-      color: #64748b;
+      color: var(--text-muted);
       cursor: pointer;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
+      font-family: "Montserrat-SemiBold", sans-serif;
       
       &::before {
         content: '';
@@ -55,19 +56,19 @@
       }
       
       &:hover {
-        color: #475569;
-        transform: translateY(-2px);
+        color: var(--text-secondary);
+        transform: translateY(-1px);
         
         &::before {
-          opacity: 0.1;
+          opacity: 0.08;
         }
       }
       
       &.active {
         background: var(--primary-gradient);
         color: white;
-        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(45, 90, 61, 0.2);
+        transform: translateY(-1px);
         
         &::before {
           opacity: 1;
@@ -76,13 +77,13 @@
     }
   }
 
-  // Modern Portfolio Header
+  // Professional Portfolio Header
   .portfolio-header {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 32px;
-    margin-bottom: 32px;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 28px;
     box-shadow: var(--card-shadow);
     border: 1px solid var(--glass-border);
     position: relative;
@@ -99,41 +100,43 @@
     }
     
     .header-content {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       
       h3 {
-        font-size: 28px;
+        font-size: 24px;
         font-weight: 700;
         background: var(--text-gradient);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
+        font-family: "Montserrat-Bold", sans-serif;
       }
       
       .header-description {
-        color: #64748b;
-        font-size: 16px;
+        color: var(--text-muted);
+        font-size: 15px;
         line-height: 1.6;
+        font-family: "Montserrat-Regular", sans-serif;
       }
     }
     
     .portfolio-stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
       
       .stat-card {
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(10px);
-        border-radius: 16px;
-        padding: 24px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid var(--glass-border);
         transition: all 0.3s ease;
         
         &:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+          transform: translateY(-2px);
+          box-shadow: var(--card-shadow-hover);
         }
         
         .stat-icon {
@@ -145,33 +148,35 @@
         .stat-content {
           .stat-label {
             display: block;
-            font-size: 14px;
-            color: #64748b;
+            font-size: 13px;
+            color: var(--text-muted);
             font-weight: 500;
             margin-bottom: 4px;
+            font-family: "Montserrat-Medium", sans-serif;
           }
           
           .stat-value {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
-            color: #1e293b;
+            color: var(--text-primary);
+            font-family: "Montserrat-Bold", sans-serif;
           }
         }
       }
     }
   }
 
-  // Modern Investment Cards
+  // Professional Investment Cards
   .investments-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 20px;
     
     .investment-card {
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 24px;
+      border-radius: 16px;
+      padding: 22px;
       border: 1px solid var(--glass-border);
       box-shadow: var(--card-shadow);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -189,7 +194,7 @@
       }
       
       &:hover {
-        transform: translateY(-8px);
+        transform: translateY(-4px);
         box-shadow: var(--card-shadow-hover);
       }
       
@@ -197,31 +202,34 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 20px;
+        margin-bottom: 18px;
         
         .coin-info {
           h5 {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            color: #1e293b;
+            color: var(--text-primary);
             margin-bottom: 4px;
+            font-family: "Montserrat-Bold", sans-serif;
           }
           
           .coin-symbol {
             background: var(--primary-gradient);
             color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
+            font-family: "Montserrat-SemiBold", sans-serif;
           }
         }
         
         .card-date {
-          color: #64748b;
-          font-size: 14px;
+          color: var(--text-muted);
+          font-size: 13px;
           font-weight: 500;
+          font-family: "Montserrat-Medium", sans-serif;
         }
       }
       
@@ -234,35 +242,38 @@
             
             .metric-label {
               display: block;
-              font-size: 14px;
-              color: #64748b;
+              font-size: 13px;
+              color: var(--text-muted);
               font-weight: 500;
               margin-bottom: 4px;
+              font-family: "Montserrat-Medium", sans-serif;
             }
             
             .metric-value {
-              font-size: 24px;
+              font-size: 22px;
               font-weight: 700;
-              color: #1e293b;
+              color: var(--text-primary);
+              font-family: "Montserrat-Bold", sans-serif;
             }
           }
           
           .performance-indicator {
             .profit-loss {
-              font-size: 18px;
+              font-size: 16px;
               font-weight: 600;
-              padding: 8px 16px;
-              border-radius: 12px;
+              padding: 6px 14px;
+              border-radius: 10px;
               display: inline-block;
+              font-family: "Montserrat-SemiBold", sans-serif;
               
               &.positive {
-                background: rgba(17, 153, 142, 0.1);
-                color: #11998e;
+                background: rgba(5, 150, 105, 0.1);
+                color: var(--success-color);
               }
               
               &.negative {
-                background: rgba(245, 87, 108, 0.1);
-                color: #f5576c;
+                background: rgba(220, 38, 38, 0.1);
+                color: var(--error-color);
               }
             }
           }
@@ -281,15 +292,17 @@
             }
             
             .detail-label {
-              font-size: 14px;
-              color: #64748b;
+              font-size: 13px;
+              color: var(--text-muted);
               font-weight: 500;
+              font-family: "Montserrat-Medium", sans-serif;
             }
             
             .detail-value {
-              font-size: 14px;
-              color: #1e293b;
+              font-size: 13px;
+              color: var(--text-primary);
               font-weight: 600;
+              font-family: "Montserrat-SemiBold", sans-serif;
             }
           }
         }
@@ -297,39 +310,41 @@
       
       .card-actions {
         display: flex;
-        gap: 12px;
-        margin-top: 24px;
+        gap: 10px;
+        margin-top: 20px;
         
         .action-btn {
           flex: 1;
-          padding: 12px 20px;
+          padding: 10px 16px;
           border: none;
-          border-radius: 12px;
-          font-size: 14px;
+          border-radius: 10px;
+          font-size: 13px;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.3s ease;
           position: relative;
           overflow: hidden;
+          font-family: "Montserrat-SemiBold", sans-serif;
           
           &.primary {
             background: var(--primary-gradient);
             color: white;
             
             &:hover {
-              transform: translateY(-2px);
-              box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+              transform: translateY(-1px);
+              box-shadow: 0 4px 16px rgba(45, 90, 61, 0.25);
             }
           }
           
           &.secondary {
-            background: rgba(100, 116, 139, 0.1);
-            color: #64748b;
-            border: 1px solid rgba(100, 116, 139, 0.2);
+            background: rgba(107, 114, 128, 0.1);
+            color: var(--text-muted);
+            border: 1px solid rgba(107, 114, 128, 0.2);
             
             &:hover {
-              background: rgba(100, 116, 139, 0.15);
-              transform: translateY(-2px);
+              background: rgba(107, 114, 128, 0.15);
+              transform: translateY(-1px);
+              color: var(--text-secondary);
             }
           }
           
@@ -438,6 +453,7 @@
 
   // Modern Create Alert Section
   .create-alerts-section {
+    margin-bottom: 32px;
     .section-header {
       margin-bottom: 24px;
       
@@ -1763,28 +1779,28 @@
 
   .action-buttons {
     display: flex;
-    gap: 12px;
-    margin-top: 20px;
+    gap: 10px;
+    margin-top: 18px;
 
     .save-investment-btn,
     .save-scenario-btn {
       flex: 1;
-      padding: 12px 24px;
+      padding: 10px 20px;
       border: none;
       border-radius: 8px;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
       transition: all 0.3s ease;
       font-family: "Montserrat-SemiBold", sans-serif;
 
       &.save-investment-btn {
-        background: var(--gradient-primary);
-        color: var(--text-inverse);
+        background: var(--primary-gradient);
+        color: white;
 
         &:hover:not(:disabled) {
           transform: translateY(-1px);
-          box-shadow: var(--shadow-md);
+          box-shadow: 0 4px 16px rgba(45, 90, 61, 0.2);
         }
 
         &:disabled {
@@ -1801,6 +1817,7 @@
         &:hover {
           background: var(--bg-tertiary);
           border-color: var(--border-accent);
+          transform: translateY(-1px);
         }
       }
     }
@@ -2130,30 +2147,31 @@
   }
 
   .calculator-header {
-    padding: 24px 24px 0 24px;
+    padding: 22px 22px 0 22px;
     border-bottom: 1px solid var(--border-color);
 
     .coin-info {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
 
       .coin-name {
-        font-size: 24px;
+        font-size: 22px;
         font-weight: 600;
         color: var(--text-primary);
-        margin-bottom: 8px;
+        margin-bottom: 6px;
         font-family: "Montserrat-SemiBold", sans-serif;
       }
 
       .current-price {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 8px 16px;
-        background: var(--bg-tertiary);
+        gap: 6px;
+        padding: 6px 14px;
+        background: var(--bg-secondary);
         border: 1px solid var(--border-color);
         border-radius: 8px;
-        font-size: 14px;
+        font-size: 13px;
         color: var(--text-muted);
+        font-family: "Montserrat-Medium", sans-serif;
 
         .price-label {
           font-weight: 500;
@@ -2162,6 +2180,7 @@
         .price-value {
           font-weight: 600;
           color: var(--text-primary);
+          font-family: "Montserrat-SemiBold", sans-serif;
         }
       }
     }
@@ -2196,20 +2215,23 @@
           background: var(--bg-primary);
           color: var(--accent-primary);
           box-shadow: var(--shadow-sm);
+          span{
+            color: white;
+          }
         }
       }
     }
   }
 
   .calculator-content {
-    padding: 24px;
+    padding: 22px;
   }
 
   .calculator-inputs {
-    margin-bottom: 24px;
+    margin-bottom: 22px;
 
     .input-group {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
 
         .input-label {
           display: block;
@@ -2304,21 +2326,22 @@
 
   .results-section {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    margin-bottom: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
 
     .result-card {
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      padding: 20px;
+      padding: 18px;
       transition: all 0.2s ease;
       text-align: center;
 
       &:hover {
         background: var(--bg-tertiary);
         border-color: var(--border-accent);
+        transform: translateY(-1px);
       }
 
       &.profit-loss {
