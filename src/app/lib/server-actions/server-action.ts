@@ -111,7 +111,8 @@ class ServerAction<
         name: user.name,
         role: user.role
       };
-    } catch {
+    } catch (error) {
+      console.error('Error in getUser():', error);
       throw new ServerError(SERVER_ERROR_CODES.NOT_AUTHORIZED, '');
     }
   }

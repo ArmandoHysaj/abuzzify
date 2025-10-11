@@ -77,11 +77,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     // Create session cookie after successful login
     const idToken = await result.user.getIdToken();
-    await fetch('/api/auth/session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ idToken }),
-    });
+    try {
+      const sessionResponse = await fetch('/api/auth/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      });
+      
+      if (!sessionResponse.ok) {
+        console.error('Failed to create session cookie:', await sessionResponse.text());
+      } else {
+        console.log('Session cookie created successfully');
+      }
+    } catch (sessionError) {
+      console.error('Error creating session cookie:', sessionError);
+    }
     
     return result;
   };
@@ -120,11 +130,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     // Create session cookie after successful Google login
     const idToken = await result.user.getIdToken();
-    await fetch('/api/auth/session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ idToken }),
-    });
+    try {
+      const sessionResponse = await fetch('/api/auth/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      });
+      
+      if (!sessionResponse.ok) {
+        console.error('Failed to create session cookie:', await sessionResponse.text());
+      } else {
+        console.log('Session cookie created successfully');
+      }
+    } catch (sessionError) {
+      console.error('Error creating session cookie:', sessionError);
+    }
     
     return result;
   };
@@ -147,8 +167,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return;
     }
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
+      
+      // If user is authenticated but we don't have a session cookie, create one
+      if (user) {
+        try {
+          const idToken = await user.getIdToken();
+          const response = await fetch('/api/auth/session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idToken }),
+          });
+          
+          if (response.ok) {
+            console.log('Session cookie recreated successfully');
+          } else {
+            console.error('Failed to recreate session cookie:', await response.text());
+          }
+        } catch (error) {
+          console.error('Error recreating session cookie:', error);
+        }
+      }
+      
       setLoading(false);
     });
 

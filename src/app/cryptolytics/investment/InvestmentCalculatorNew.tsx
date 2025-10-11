@@ -82,21 +82,30 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
   }, [initialInvestment]);
 
   const loadUserData = useCallback(async () => {
+    // Guard: only load data if user is authenticated
+    if (!isAuthenticated || !currentUser) {
+      console.log('User not authenticated, skipping data load');
+      setInvestments([]);
+      setPriceAlerts([]);
+      return;
+    }
+    
     try {
       const userInvestments = await getUserInvestments();
       setInvestments(userInvestments);
-      
-      try {
-        const userPriceAlerts = await getUserPriceAlerts();
-        setPriceAlerts(userPriceAlerts);
-      } catch (alertErr) {
-        console.error('Failed to load price alerts (continuing without them):', alertErr);
-        setPriceAlerts([]); // Set empty array if alerts fail to load
-      }
     } catch (err) {
-      console.error('Failed to load user data:', err);
+      console.error('Failed to load user investments:', err);
+      setInvestments([]);
     }
-  }, [getUserInvestments, getUserPriceAlerts]);
+    
+    try {
+      const userPriceAlerts = await getUserPriceAlerts();
+      setPriceAlerts(userPriceAlerts);
+    } catch (alertErr) {
+      console.error('Failed to load price alerts (continuing without them):', alertErr);
+      setPriceAlerts([]); // Set empty array if alerts fail to load
+    }
+  }, [getUserInvestments, getUserPriceAlerts, isAuthenticated, currentUser]);
 
   useEffect(() => {
     setPriceInput(initialPrice === 0 ? "" : initialPrice.toString());
@@ -131,10 +140,8 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
 
   // Load user's investments and scenarios from Firestore
   useEffect(() => {
-    if (isAuthenticated) {
-      loadUserData();
-    }
-  }, [isAuthenticated, loadUserData]);
+    loadUserData();
+  }, [isAuthenticated, currentUser]); // Removed loadUserData from dependencies to prevent unnecessary reruns
 
   const toNum = (v: string | number | undefined | null): number => {
     const n = typeof v === "string" ? parseFloat(v) : v ?? 0;
