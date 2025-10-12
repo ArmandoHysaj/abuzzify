@@ -305,11 +305,10 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
   };
 
   const CloseIcon = () => (
-    <button
+    <div
       className="close-button"
       onClick={closeModal}
       aria-label="Close modal"
-      type="button"
     >
       <svg
         width="24"
@@ -326,7 +325,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
           strokeLinejoin="round"
         />
       </svg>
-    </button>
+    </div>
   );
 
   const RemoveIcon = ({ onClick }: { onClick: () => void }) => (

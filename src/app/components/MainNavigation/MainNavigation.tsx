@@ -17,7 +17,7 @@ const MainNavigation = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const burgerRef = useRef<HTMLButtonElement>(null);
+  const burgerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const { currentUser } = useAuth();
 
@@ -153,7 +153,7 @@ const MainNavigation = () => {
               </div>
             </div>
 
-            <button
+            <div
               className="burger-menu"
               ref={burgerRef}
               onClick={toggleMenu}
@@ -198,7 +198,7 @@ const MainNavigation = () => {
                   </svg>
                 )}
               </div>
-            </button>
+            </div>
           </>
         ) : (
           <div className="desktop nav-items">
