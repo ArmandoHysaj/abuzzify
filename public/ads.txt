@@ -1,0 +1,49 @@
+# ads.txt file for abuzzify.com
+# This file authorizes digital sellers to sell advertising inventory on our website
+# Last updated: January 2025
+# Format: domain, publisher_account_id, relationship, certification_authority_id
+
+# Google AdSense - Primary ad network
+# IMPORTANT: Replace pub-0000000000000000 with your actual Google AdSense Publisher ID
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+
+# Google Ad Manager (for programmatic advertising)
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+
+# Google Ad Exchange (if using)
+google.com, pub-0000000000000000, RESELLER, f08c47fec0942fa0
+
+# Additional authorized sellers for programmatic advertising
+# These help maximize revenue by allowing multiple demand sources
+
+# Amazon A9/AAP (if using Amazon Associates or Amazon Ads)
+amazon-adsystem.com, 0000, DIRECT, f08c47fec0942fa0
+
+# Index Exchange (if using)
+indexexchange.com, 000000, DIRECT, 50b1c356f2c5c8fc
+
+# OpenX (if using)
+openx.com, 000000000, DIRECT, 6a698e2ec38604c6
+
+# Rubicon Project (if using)
+rubiconproject.com, 000000, DIRECT, 0bfd66d529a55807
+
+# Sovrn (if using)
+sovrn.com, 000000, DIRECT, f08c47fec0942fa0
+
+# TripleLift (if using)
+triplelift.com, 000000, DIRECT, 6c33edb13117f86c
+
+# Unruly (if using)
+unrulymedia.com, 000000, DIRECT, 781d2502465a46b9
+
+# YieldMo (if using)
+yieldmo.com, 000000, DIRECT, f08c47fec0942fa0
+
+# Instructions for setup:
+# 1. Replace all pub-0000000000000000 with your actual Google AdSense Publisher ID
+# 2. Replace all 000000 with actual publisher IDs from respective networks
+# 3. Only include networks you actually use to avoid authorization issues
+# 4. Find your Google AdSense Publisher ID: AdSense Account > Account > Account information
+# 5. File must be accessible at: https://abuzzify.com/ads.txt
+# 6. Update this file whenever you add/remove ad networks
