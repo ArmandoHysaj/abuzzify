@@ -4,7 +4,13 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useInvestment } from "@/app/hooks/useInvestment";
 import { usePriceAlert } from "@/app/hooks/usePriceAlert";
 import { useAuth } from "@/app/contexts/AuthContext";
-import { Coin, Investment, PriceAlert, InvestmentCalculatorProps, TabType } from "./types/investment.types";
+import {
+  Coin,
+  Investment,
+  PriceAlert,
+  InvestmentCalculatorProps,
+  TabType,
+} from "./types/investment.types";
 
 // Import components
 import InvestmentTabs from "./components/InvestmentTabs/InvestmentTabs";
@@ -36,7 +42,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     loading,
     error,
     isAuthenticated,
-    clearError
+    clearError,
   } = useInvestment();
 
   const {
@@ -46,23 +52,28 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     updatePriceAlert,
     loading: alertLoading,
     error: alertError,
-    clearError: clearAlertError
+    clearError: clearAlertError,
   } = usePriceAlert();
 
-  const [activeTab, setActiveTab] = useState<TabType>('single');
+  const [activeTab, setActiveTab] = useState<TabType>("single");
   const [investmentInput, setInvestmentInput] = useState<string>("");
   const [priceInput, setPriceInput] = useState<string>("");
   const [dateInput, setDateInput] = useState<string>("");
   const [investments, setInvestments] = useState<Investment[]>([]);
   const [priceAlerts, setPriceAlerts] = useState<PriceAlert[]>([]);
-  
+
   // Price Alert Settings
   const [showCreateAlert, setShowCreateAlert] = useState<boolean>(false);
-  const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
-  const [loadedInvestment, setLoadedInvestment] = useState<Investment | null>(null);
+  const [selectedInvestment, setSelectedInvestment] =
+    useState<Investment | null>(null);
+  const [loadedInvestment, setLoadedInvestment] = useState<Investment | null>(
+    null
+  );
 
   useEffect(() => {
-    setInvestmentInput(initialInvestment === 0 ? "" : initialInvestment.toString());
+    setInvestmentInput(
+      initialInvestment === 0 ? "" : initialInvestment.toString()
+    );
   }, [initialInvestment]);
 
   const loadUserData = useCallback(async () => {
@@ -71,20 +82,20 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
       setPriceAlerts([]);
       return;
     }
-    
+
     try {
       const userInvestments = await getUserInvestments();
       setInvestments(userInvestments);
     } catch (err) {
-      console.error('Failed to load user investments:', err);
+      console.error("Failed to load user investments:", err);
       setInvestments([]);
     }
-    
+
     try {
       const userPriceAlerts = await getUserPriceAlerts();
       setPriceAlerts(userPriceAlerts);
     } catch (alertErr) {
-      console.error('Failed to load price alerts:', alertErr);
+      console.error("Failed to load price alerts:", alertErr);
       setPriceAlerts([]);
     }
   }, [getUserInvestments, getUserPriceAlerts, isAuthenticated, currentUser]);
@@ -104,7 +115,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
       setLoadedInvestment(null);
       setSelectedInvestment(null);
       setShowCreateAlert(false);
-      setActiveTab('single');
+      setActiveTab("single");
     }
   }, [coin?.id, coin, setInitialInvestment, setInitialPrice]);
 
@@ -120,9 +131,9 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
 
   const investment = toNum(investmentInput);
   const paidPrice = toNum(priceInput);
-  
-  const currentPrice = loadedInvestment 
-    ? toNum(loadedInvestment.calculatedResults?.finalPrice) 
+
+  const currentPrice = loadedInvestment
+    ? toNum(loadedInvestment.calculatedResults?.finalPrice)
     : toNum(coin?.price_usd);
 
   const numberOfCoins = useMemo(
@@ -141,7 +152,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
   );
 
   const percentageChange = useMemo(
-    () => (paidPrice > 0 ? ((currentPrice / paidPrice) - 1) * 100 : 0),
+    () => (paidPrice > 0 ? (currentPrice / paidPrice - 1) * 100 : 0),
     [currentPrice, paidPrice]
   );
 
@@ -159,22 +170,22 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
 
   const handleSaveInvestment = async () => {
     if (!isAuthenticated) {
-      alert('Please log in to save investments');
+      alert("Please log in to save investments");
       return;
     }
 
     if (!coin || investment <= 0 || paidPrice <= 0) {
-      alert('Please enter valid investment details');
+      alert("Please enter valid investment details");
       return;
     }
 
     if (!currentPrice || currentPrice <= 0) {
-      alert('Unable to get current market price. Please try again.');
+      alert("Unable to get current market price. Please try again.");
       return;
     }
 
     if (paidPrice <= 0) {
-      alert('Please enter a valid initial coin price');
+      alert("Please enter a valid initial coin price");
       return;
     }
 
@@ -192,13 +203,13 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
         expectedReturn: 10,
         currentMarketPrice: currentPrice,
       });
-      
-      alert('Investment saved successfully!');
+
+      alert("Investment saved successfully!");
       setLoadedInvestment(null);
       await loadUserData();
     } catch (err) {
-      console.error('Failed to save investment:', err);
-      alert('Failed to save investment. Please try again.');
+      console.error("Failed to save investment:", err);
+      alert("Failed to save investment. Please try again.");
     }
   };
 
@@ -210,26 +221,31 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     browserEnabled: boolean;
   }) => {
     if (!isAuthenticated) {
-      alert('Please log in to create price alerts');
+      alert("Please log in to create price alerts");
       return;
     }
 
     if (!settings.investment) {
-      alert('Please select an investment to create a price alert for');
+      alert("Please select an investment to create a price alert for");
       return;
     }
 
     try {
       clearAlertError();
-      
-      const investmentCurrentPrice = getCurrentPriceForCoin(settings.investment.coinSymbol) || 
-        settings.investment.calculatedResults?.finalPrice || 
+
+      const investmentCurrentPrice =
+        getCurrentPriceForCoin(settings.investment.coinSymbol) ||
+        settings.investment.calculatedResults?.finalPrice ||
         currentPrice;
       const sellPrice = investmentCurrentPrice;
       const sellAmount = settings.investment.initialInvestment;
-      const profitEarned = sellPrice > settings.investment.initialCoinPrice ? 
-        ((sellPrice - settings.investment.initialCoinPrice) / settings.investment.initialCoinPrice) * sellAmount : 0;
-      
+      const profitEarned =
+        sellPrice > settings.investment.initialCoinPrice
+          ? ((sellPrice - settings.investment.initialCoinPrice) /
+              settings.investment.initialCoinPrice) *
+            sellAmount
+          : 0;
+
       await createPriceAlert({
         investmentId: settings.investment.id,
         coinSymbol: settings.investment.coinSymbol,
@@ -245,16 +261,18 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
         emailEnabled: settings.emailEnabled,
         browserEnabled: settings.browserEnabled,
       });
-      
-      alert(`Price alert created successfully! You will be notified when price drops ${settings.priceDropThreshold}% (buy back opportunity) or increases ${settings.priceIncreaseThreshold}% (don't buy now).`);
-      
+
+      alert(
+        `Price alert created successfully! You will be notified when price drops ${settings.priceDropThreshold}% (buy back opportunity) or increases ${settings.priceIncreaseThreshold}% (don't buy now).`
+      );
+
       setSelectedInvestment(null);
       setShowCreateAlert(false);
-      
+
       await loadUserData();
     } catch (err) {
-      console.error('Failed to create price alert:', err);
-      alert('Failed to create price alert. Please try again.');
+      console.error("Failed to create price alert:", err);
+      alert("Failed to create price alert. Please try again.");
     }
   };
 
@@ -265,58 +283,70 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
     setInitialInvestment(0);
     setInitialPrice(0);
     setLoadedInvestment(null);
-    
+
     setInvestmentInput(investment.initialInvestment.toString());
     setPriceInput(investment.initialCoinPrice.toString());
     setDateInput(investment.investmentDate || "");
     setInitialInvestment(investment.initialInvestment);
     setInitialPrice(investment.initialCoinPrice);
     setLoadedInvestment(investment);
-    setActiveTab('single');
+    setActiveTab("single");
   };
 
   const calculateCurrentInvestmentValue = (investment: Investment) => {
-    if (investment.monthlyContribution === 0 && investment.investmentPeriod === 1) {
+    if (
+      investment.monthlyContribution === 0 &&
+      investment.investmentPeriod === 1
+    ) {
       const savedCurrentPrice = investment.calculatedResults.finalPrice;
-      const numberOfCoins = investment.initialInvestment / investment.initialCoinPrice;
+      const numberOfCoins =
+        investment.initialInvestment / investment.initialCoinPrice;
       const currentValue = numberOfCoins * savedCurrentPrice;
       const profitLoss = currentValue - investment.initialInvestment;
-      const percentageChange = ((savedCurrentPrice / investment.initialCoinPrice) - 1) * 100;
-      
+      const percentageChange =
+        (savedCurrentPrice / investment.initialCoinPrice - 1) * 100;
+
       return { currentValue, profitLoss, percentageChange };
     } else {
       return {
         currentValue: investment.calculatedResults.totalValue,
         profitLoss: investment.calculatedResults.totalGain,
-        percentageChange: investment.calculatedResults.gainPercentage
+        percentageChange: investment.calculatedResults.gainPercentage,
       };
     }
   };
 
-  const getCurrentPriceForCoin = useCallback((coinSymbol: string) => {
-    // If the requested coin is the currently selected coin, return its live price
-    if (coin && coin.symbol === coinSymbol) {
-      return toNum(coin.price_usd);
-    }
-    
-    // Otherwise, try to get the price from saved investments for that coin
-    const investmentForCoin = investments.find(inv => inv.coinSymbol === coinSymbol);
-    if (investmentForCoin?.calculatedResults?.finalPrice) {
-      return investmentForCoin.calculatedResults.finalPrice;
-    }
-    
-    // If we have a price alert for this coin, use its stored current price as fallback
-    const alertForCoin = priceAlerts.find(alert => alert.coinSymbol === coinSymbol);
-    if (alertForCoin?.currentPrice) {
-      return alertForCoin.currentPrice;
-    }
-    
-    return 0;
-  }, [coin, investments, priceAlerts]);
+  const getCurrentPriceForCoin = useCallback(
+    (coinSymbol: string) => {
+      // If the requested coin is the currently selected coin, return its live price
+      if (coin && coin.symbol === coinSymbol) {
+        return toNum(coin.price_usd);
+      }
+
+      // Otherwise, try to get the price from saved investments for that coin
+      const investmentForCoin = investments.find(
+        (inv) => inv.coinSymbol === coinSymbol
+      );
+      if (investmentForCoin?.calculatedResults?.finalPrice) {
+        return investmentForCoin.calculatedResults.finalPrice;
+      }
+
+      // If we have a price alert for this coin, use its stored current price as fallback
+      const alertForCoin = priceAlerts.find(
+        (alert) => alert.coinSymbol === coinSymbol
+      );
+      if (alertForCoin?.currentPrice) {
+        return alertForCoin.currentPrice;
+      }
+
+      return 0;
+    },
+    [coin, investments, priceAlerts]
+  );
 
   const handleCreateAlertClick = () => {
     if (investments.length === 0) {
-      alert('Please save an investment first to create price alerts');
+      alert("Please save an investment first to create price alerts");
       return;
     }
     setShowCreateAlert(true);
@@ -347,21 +377,20 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
           <div className="current-price">
             <span className="price-label">Current Price</span>
             <span className="price-value">
-              ${loadedInvestment 
-                ? new Intl.NumberFormat("en-US", { maximumFractionDigits: 8 }).format(loadedInvestment.calculatedResults?.finalPrice || 0)
-                : price
-              }
+              $
+              {loadedInvestment
+                ? new Intl.NumberFormat("en-US", {
+                    maximumFractionDigits: 8,
+                  }).format(loadedInvestment.calculatedResults?.finalPrice || 0)
+                : price}
             </span>
           </div>
         </div>
-        
-        <InvestmentTabs 
-          activeTab={activeTab} 
-          onTabChange={setActiveTab}
-        />
+
+        <InvestmentTabs activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
 
-      {activeTab === 'single' && (
+      {activeTab === "single" && (
         <div className="calculator-content">
           <InvestmentForm
             investmentInput={investmentInput}
@@ -382,7 +411,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
                 percentageChange={percentageChange}
                 investment={investment}
               />
-              
+
               <InvestmentActions
                 profitLoss={profitLoss}
                 loading={loading}
@@ -395,7 +424,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
         </div>
       )}
 
-      {activeTab === 'investments' && (
+      {activeTab === "investments" && (
         <div className="calculator-content">
           <InvestmentPortfolio
             investments={investments}
@@ -408,12 +437,12 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
               setSelectedInvestment(investment);
               setShowCreateAlert(true);
             }}
-            onSwitchToSingle={() => setActiveTab('single')}
+            onSwitchToSingle={() => setActiveTab("single")}
           />
         </div>
       )}
 
-      {activeTab === 'price-alerts' && (
+      {activeTab === "price-alerts" && (
         <div className="calculator-content">
           <PriceAlerts
             investments={investments}
@@ -423,7 +452,7 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
             onShowCreateAlert={() => setShowCreateAlert(true)}
             onUpdateAlert={(id, updates) => updatePriceAlert(id, updates)}
             onDeleteAlert={(id) => deletePriceAlert(id)}
-            onSwitchToSingle={() => setActiveTab('single')}
+            onSwitchToSingle={() => setActiveTab("single")}
           />
         </div>
       )}

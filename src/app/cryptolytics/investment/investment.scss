@@ -249,15 +249,6 @@
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(45, 90, 61, 0.2);
     
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(45, 90, 61, 0.3);
-      
-      &::before {
-        opacity: 1;
-      }
-    }
-    
     &:active {
       transform: translateY(0);
       box-shadow: 0 4px 16px rgba(45, 90, 61, 0.2);

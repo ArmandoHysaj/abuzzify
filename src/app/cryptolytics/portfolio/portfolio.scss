@@ -23,6 +23,43 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
+    min-height: 600px; // Prevent layout shift during data load
+  }
+  
+  .no-coin-selected {
+    text-align: center;
+    padding: 80px 24px;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    
+    .no-coin-icon {
+      font-size: 80px;
+      margin-bottom: 24px;
+      opacity: 0.5;
+    }
+    
+    h3 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      font-family: "Montserrat-Bold", sans-serif;
+    }
+    
+    p {
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 500px;
+      font-family: "Montserrat-Regular", sans-serif;
+    }
   }
 
   .coin-header-card {
@@ -32,6 +69,7 @@
     padding: 24px;
     box-shadow: var(--shadow-sm);
     transition: all 0.3s ease;
+    min-height: 120px; // Reserve space for header
 
     &:hover {
       box-shadow: var(--shadow-md);
@@ -99,6 +137,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 20px;
+    min-height: 400px; // Reserve space to prevent layout shift
   }
 
   .stat-card {
@@ -108,6 +147,7 @@
     padding: 20px !important;
     box-shadow: var(--shadow-sm) !important;
     transition: all 0.2s ease !important;
+    min-height: 250px; // Reserve space to prevent content shift
 
     &:hover {
       box-shadow: var(--shadow-md) !important;
@@ -187,6 +227,7 @@
     &.similar-coins-card {
       .similar-coins-list {
         max-height: 320px;
+        min-height: 200px; // Reserve space to prevent shifting
         overflow: hidden;
 
         ul {
@@ -268,6 +309,7 @@
     margin-top: 32px;
     padding-top: 24px;
     border-top: 1px solid #e5e7eb;
+    min-height: 400px; // Reserve space for news content
 
     h3 {
       font-size: 20px;
@@ -353,6 +395,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 350px; // Reserve space for news list
   ul:not(.loading) {
     max-height: 510px;
     width: 100%;

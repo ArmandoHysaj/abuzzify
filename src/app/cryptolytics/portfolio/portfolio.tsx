@@ -6,7 +6,6 @@ import Modal from "react-modal";
 import InvestmentCalculator from "../investment/InvestmentCalculatorNew";
 import EducationalContent from "./EducationalContent";
 import PriceAlerts from "@/app/components/PriceAlerts/PriceAlerts";
-import { CoinCardSkeleton, NewsArticleSkeleton } from "@/app/components/Skeleton";
 import "./portfolio.scss";
 import SearchBar from "../search/search";
 import formatNumber from "@/app/helpers/formatNumbers";
@@ -252,13 +251,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
       setLoadingNews(false);
     } catch (error) {
       if (!axios.isCancel(error)) {
-        // Silently fail for news - it's not critical
-        if (axios.isAxiosError(error) && error.response?.status === 401) {
-          console.warn("News API: Authentication issue. News feature temporarily unavailable.");
-        } else {
-          console.warn("Unable to fetch news:", error);
-        }
-        setNews([]); // Set empty array instead of leaving it undefined
+        console.error("Error fetching news", error);
         setLoadingNews(false);
       }
     }
@@ -381,7 +374,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
             className="investment-calculator-modal custom-scrollbar"
             overlayClassName="investment-calculator-overlay"
             bodyOpenClassName="body-lock"
-            ariaHideApp={false}
           >
             <h3>
               Crypto Coin Calculator: Calculate Your{" "}
@@ -425,7 +417,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
             className="investment-calculator-modal custom-scrollbar"
             overlayClassName="investment-calculator-overlay"
             bodyOpenClassName="body-lock"
-            ariaHideApp={false}
           >
             <h3>
               Crypto Coin Calculator: Calculate Your{" "}
@@ -562,11 +553,8 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                     <h3>Similar Coins</h3>
                   </div>
                   <div className="similar-coins-list">
-                    {loadingCoins ? (
-                      <CoinCardSkeleton count={5} />
-                    ) : (
-                      <ul className="custom-scrollbar">
-                        {similarCoins.map((c) => (
+                    <ul className={`custom-scrollbar ${loadingCoins ? "loading" : ""}`}>
+                      {similarCoins.map((c) => (
                         <li key={c.id} className="similar-coin-item" onClick={() => selectSimilarCoin(c)}>
                           <div className="coin-info">
                             <span className="coin-name">{c.name}</span>
@@ -575,8 +563,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                           <span className="coin-price">${c.price_usd}</span>
                         </li>
                       ))}
-                      </ul>
-                    )}
+                    </ul>
                   </div>
                 </div>
 
@@ -597,12 +584,9 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
               <div className="news-container">
                 <h3>Latest News</h3>
                 <div className="portfolio-news-wrapper">
-                  {loadingNews ? (
-                    <NewsArticleSkeleton count={4} />
-                  ) : (
-                    <ul>
-                      {news.length > 0 ? (
-                        news.map((article, index) => (
+                  <ul className={`${loadingNews ? "loading" : ""}`}>
+                    {news.length > 0 ? (
+                      news.map((article, index) => (
                         <li key={index}>
                           <img
                             loading="lazy"
@@ -628,11 +612,10 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                           </div>
                         </li>
                       ))
-                      ) : (
-                        <p className="cp-text">No news available</p>
-                      )}
-                    </ul>
-                  )}
+                    ) : (
+                      <p className="cp-text">No news available</p>
+                    )}
+                  </ul>
                 </div>
               </div>
             )}
