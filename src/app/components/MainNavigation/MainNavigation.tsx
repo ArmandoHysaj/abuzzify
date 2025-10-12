@@ -103,13 +103,13 @@ const MainNavigation = () => {
                   <Link href="/">Home</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/cryptolytics">Crypto Analytics</Link>
+                  <Link href="/cryptolytics">Analytics</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/exchanges">Crypto Exchanges</Link>
+                  <Link href="/exchanges">Exchanges</Link>
                 </div>
                 <div className="hdl-4">
-                  <Link href="/articles">Crypto Articles</Link>
+                  <Link href="/articles">Articles</Link>
                 </div>
                 <div className="hdl-4">
                   <Link href="/about">About Us</Link>
@@ -120,7 +120,7 @@ const MainNavigation = () => {
                 </div>
                 {currentUser ? (
                   <div className="hdl-4 auth-user-mobile">
-                    <button 
+                    <button
                       className="user-button"
                       onClick={() => setIsProfileModalOpen(true)}
                     >
@@ -128,15 +128,21 @@ const MainNavigation = () => {
                         {currentUser.photoURL ? (
                           <img src={currentUser.photoURL} alt="Profile" />
                         ) : (
-                          <span>{currentUser.displayName?.charAt(0) || currentUser.email?.charAt(0) || 'U'}</span>
+                          <span>
+                            {currentUser.displayName?.charAt(0) ||
+                              currentUser.email?.charAt(0) ||
+                              "U"}
+                          </span>
                         )}
                       </div>
-                      <span className="user-name">{currentUser.displayName || 'User'}</span>
+                      <span className="user-name">
+                        {currentUser.displayName || "User"}
+                      </span>
                     </button>
                   </div>
                 ) : (
                   <div className="hdl-4 auth-buttons-mobile">
-                    <button 
+                    <button
                       className="auth-button"
                       onClick={() => setIsAuthModalOpen(true)}
                     >
@@ -147,11 +153,13 @@ const MainNavigation = () => {
               </div>
             </div>
 
-            <button 
-              className="burger-menu" 
-              ref={burgerRef} 
+            <button
+              className="burger-menu"
+              ref={burgerRef}
               onClick={toggleMenu}
-              aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-label={
+                isMenuOpen ? "Close navigation menu" : "Open navigation menu"
+              }
               aria-expanded={isMenuOpen}
             >
               <div className="burger-icon">
@@ -198,13 +206,13 @@ const MainNavigation = () => {
               <Link href="/">Home</Link>
             </div>
             <div className="hdl-4">
-              <Link href="/cryptolytics">Crypto Analytics</Link>
+              <Link href="/cryptolytics">Analytics</Link>
             </div>
             <div className="hdl-4">
-              <Link href="/exchanges">Crypto Exchanges</Link>
+              <Link href="/exchanges">Exchanges</Link>
             </div>
             <div className="hdl-4">
-              <Link href="/articles">Crypto Articles</Link>
+              <Link href="/articles">Articles</Link>
             </div>
             <div className="hdl-4 left-space">
               <Link href="/about">About Us</Link>
@@ -214,7 +222,7 @@ const MainNavigation = () => {
             </div>
             {currentUser ? (
               <div className="auth-user-desktop">
-                <button 
+                <button
                   className="user-button"
                   onClick={() => setIsProfileModalOpen(true)}
                 >
@@ -222,15 +230,21 @@ const MainNavigation = () => {
                     {currentUser.photoURL ? (
                       <img src={currentUser.photoURL} alt="Profile" />
                     ) : (
-                      <span>{currentUser.displayName?.charAt(0) || currentUser.email?.charAt(0) || 'U'}</span>
+                      <span>
+                        {currentUser.displayName?.charAt(0) ||
+                          currentUser.email?.charAt(0) ||
+                          "U"}
+                      </span>
                     )}
                   </div>
-                  <span className="user-name">{currentUser.displayName || 'User'}</span>
+                  <span className="user-name">
+                    {currentUser.displayName || "User"}
+                  </span>
                 </button>
               </div>
             ) : (
               <div className="auth-buttons-desktop">
-                <button 
+                <button
                   className="auth-button"
                   onClick={() => setIsAuthModalOpen(true)}
                 >
@@ -243,13 +257,13 @@ const MainNavigation = () => {
       </div>
 
       {/* Authentication Modals */}
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)} 
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
       />
-      <UserProfile 
-        isOpen={isProfileModalOpen} 
-        onClose={() => setIsProfileModalOpen(false)} 
+      <UserProfile
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
       />
     </nav>
   );

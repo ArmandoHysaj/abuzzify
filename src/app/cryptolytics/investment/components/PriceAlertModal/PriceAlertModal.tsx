@@ -109,12 +109,12 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
           </div>
           <div className="modal-description">
             <p className="description-main">
-              Create percentage-based alerts for your saved investment to get notified when it's safe to buy back or when prices are too high.
+              Create percentage-based alerts for your saved investment to get notified when it&apos;s safe to buy back or when prices are too high.
             </p>
             <div className="description-info">
               <div className="info-item">
                 <span className="info-icon">📊</span>
-                <span className="info-text">Scenario: You've sold your coins and want to know when to buy back</span>
+                <span className="info-text">Scenario: You&apos;ve sold your coins and want to know when to buy back</span>
               </div>
               <div className="info-item">
                 <span className="info-icon">💡</span>
@@ -136,14 +136,14 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
                   <span className="type-icon drop">🔻</span>
                   <h4>Price Drop Alert</h4>
                 </div>
-                <p>Get notified when it's <span className="highlight">"safe to buy back"</span> at a lower price</p>
+                <p>Get notified when it&apos;s <span className="highlight">&quot;safe to buy back&quot;</span> at a lower price</p>
               </div>
               <div className="alert-type">
                 <div className="type-header">
                   <span className="type-icon increase">🔺</span>
                   <h4>Price Increase Alert</h4>
                 </div>
-                <p>Get notified when price is too high - <span className="highlight">"don't buy now"</span></p>
+                <p>Get notified when price is too high - <span className="highlight">&quot;don&apos;t buy now&quot;</span></p>
               </div>
             </div>
           </div>
@@ -217,7 +217,7 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
                   </div>
                 </div>
                 <p className="summary-description">
-                  This alert simulates that you've sold this investment at the current market price. You'll be notified when it's safe to buy back at a lower price.
+                  This alert simulates that you&apos;ve sold this investment at the current market price. You&apos;ll be notified when it&apos;s safe to buy back at a lower price.
                 </p>
                 <div className="investment-details-grid">
                   <div className="detail-item">
@@ -263,7 +263,7 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
                     />
                   </div>
                   <div className="threshold-description">
-                    Get notified when price drops this much - <span className="highlight">"Safe to buy back"</span>
+                    Get notified when price drops this much - <span className="highlight">&quot;Safe to buy back&quot;</span>
                   </div>
                   <div className="preset-options">
                     <span className="preset-label">Preset options:</span>
@@ -305,7 +305,7 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
                     />
                   </div>
                   <div className="threshold-description">
-                    Get notified when price increases this much - <span className="highlight">"Don't buy now"</span>
+                    Get notified when price increases this much - <span className="highlight">&quot;Don&apos;t buy now&quot;</span>
                   </div>
                   <div className="preset-options">
                     <span className="preset-label">Preset options:</span>
@@ -416,7 +416,7 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
                               <span className="alert-title">Price Increase Alert</span>
                             </div>
                             <div className="alert-description">
-                              Don't buy above: <strong>${dontBuyAbovePrice.toFixed(8)}</strong> 
+                              Don&apos;t buy above: <strong>${dontBuyAbovePrice.toFixed(8)}</strong> 
                               (when price increases {alertPriceIncreaseThreshold}%)
                             </div>
                           </div>

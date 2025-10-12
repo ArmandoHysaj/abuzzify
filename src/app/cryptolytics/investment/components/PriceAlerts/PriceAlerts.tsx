@@ -31,7 +31,7 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
         <div className="header-content">
           <h3>🔔 Smart Price Alerts</h3>
           <p className="header-description">
-            Create intelligent price alerts based on your investments. Get notified when it's safe to buy back or when prices are too high.
+            Create intelligent price alerts based on your investments. Get notified when it&apos;s safe to buy back or when prices are too high.
           </p>
         </div>
 
@@ -40,7 +40,7 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
             <div className="feature-icon">🔻</div>
             <div className="feature-content">
               <h4>Price Drop Alerts</h4>
-              <p>Get notified when price drops by your specified percentage - "Safe to buy back" opportunity.</p>
+              <p>Get notified when price drops by your specified percentage - &quot;Safe to buy back&quot; opportunity.</p>
               <div className="feature-badge">Buy Back</div>
             </div>
           </div>
@@ -49,7 +49,7 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
             <div className="feature-icon">🔺</div>
             <div className="feature-content">
               <h4>Price Increase Alerts</h4>
-              <p>Get notified when price increases by your specified percentage - "Don't buy now" warning.</p>
+              <p>Get notified when price increases by your specified percentage - &quot;Don&apos;t buy now&quot; warning.</p>
               <div className="feature-badge">Avoid High</div>
             </div>
           </div>
@@ -158,7 +158,7 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
               </div>
               <div className="tip-item">
                 <span className="tip-icon">2️⃣</span>
-                <span className="tip-text"><strong>Create Price Alerts:</strong> Get notified when it's safe to buy back after selling</span>
+                <span className="tip-text"><strong>Create Price Alerts:</strong> Get notified when it&apos;s safe to buy back after selling</span>
               </div>
               <div className="tip-item">
                 <span className="tip-icon">3️⃣</span>

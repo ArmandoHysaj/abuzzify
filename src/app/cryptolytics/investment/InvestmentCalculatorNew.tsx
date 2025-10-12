@@ -106,12 +106,12 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
       setShowCreateAlert(false);
       setActiveTab('single');
     }
-  }, [coin?.id, setInitialInvestment, setInitialPrice]);
+  }, [coin?.id, coin, setInitialInvestment, setInitialPrice]);
 
   // Load user's investments and price alerts
   useEffect(() => {
     loadUserData();
-  }, [isAuthenticated, currentUser]);
+  }, [loadUserData, isAuthenticated, currentUser]);
 
   const toNum = (v: string | number | undefined | null): number => {
     const n = typeof v === "string" ? parseFloat(v) : v ?? 0;
