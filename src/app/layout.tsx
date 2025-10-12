@@ -94,6 +94,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                       </a>
                     </li>
                     <li>
+                      <a href="/cookie-preferences" aria-label="Manage your cookie preferences">
+                        Cookie Preferences
+                      </a>
+                    </li>
+                    <li>
                       <a href="/disclaimer" aria-label="Read our disclaimer">
                         Disclaimer
                       </a>

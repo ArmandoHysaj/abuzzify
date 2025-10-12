@@ -241,20 +241,57 @@ export default function CookiePolicy() {
           <li><strong>Android:</strong> Settings → Google → Ads → Opt out of Ads Personalization</li>
         </ul>
 
-        <h4>8. Cookie Consent</h4>
+        <h4>8. Cookie Consent and Management</h4>
         <p>
-          By using our website and accepting cookies, you consent to our use of cookies as described in this policy. When you first visit our website, you may see a cookie banner asking for your consent. You can:
+          By using our website and accepting cookies, you consent to our use of cookies as described in this policy. We use Google's certified Consent Management Platform (CMP) to provide you with transparent and easy-to-use consent controls.
+        </p>
+        
+        <h5>8.1 Consent Banner</h5>
+        <p>
+          When you first visit our website, you will see a consent banner powered by Google's CMP that provides you with three clear options:
         </p>
         <ul>
-          <li>Accept all cookies</li>
-          <li>Reject non-essential cookies</li>
-          <li>Customize your cookie preferences</li>
+          <li><strong>Consent:</strong> Accept all cookies for optimal website functionality and personalized experience</li>
+          <li><strong>Do not consent:</strong> Reject non-essential cookies while maintaining basic website functionality</li>
+          <li><strong>Manage options:</strong> Customize your cookie preferences by category (Essential, Analytics, Advertising, Functionality)</li>
+        </ul>
+        
+        <h5>8.2 Consent Management</h5>
+        <p>
+          You can change your cookie preferences at any time by:
+        </p>
+        <ul>
+          <li>Clicking on the "Manage options" button in the consent banner</li>
+          <li>Accessing cookie settings through our website footer</li>
+          <li>Using the "Manage Cookie Preferences" link in our privacy policy</li>
+        </ul>
+        
+        <h5>8.3 Essential Cookies</h5>
+        <p>
+          Essential cookies will be set regardless of your choice to ensure basic website functionality, including:
+        </p>
+        <ul>
+          <li>User authentication and session management</li>
+          <li>Security and fraud prevention</li>
+          <li>Basic website navigation and functionality</li>
+        </ul>
+
+        <h4>9. Google Consent Management Platform (CMP)</h4>
+        <p>
+          We have implemented Google's certified Consent Management Platform to ensure compliance with privacy regulations and provide you with better control over your data. This CMP:
+        </p>
+        <ul>
+          <li><strong>Ensures Compliance:</strong> Meets GDPR, CCPA, and other privacy regulation requirements</li>
+          <li><strong>Protects Ad Revenue:</strong> Helps maintain Google AdSense revenue by ensuring proper consent collection</li>
+          <li><strong>Provides Transparency:</strong> Clear information about what cookies are used and why</li>
+          <li><strong>Enables Control:</strong> Easy-to-use interface for managing your preferences</li>
+          <li><strong>Automatic Updates:</strong> Stays current with changing privacy laws and Google requirements</li>
         </ul>
         <p>
-          Essential cookies will be set regardless of your choice to ensure basic website functionality.
+          For more information about Google's CMP, visit: <a href="https://support.google.com/adsense/answer/10100331" target="_blank" rel="noopener noreferrer">Google AdSense Consent Management</a>
         </p>
 
-        <h4>9. Changes to This Cookie Policy</h4>
+        <h4>10. Changes to This Cookie Policy</h4>
         <p>
           We may update this Cookie Policy from time to time to reflect changes in technology, legislation, or our cookie practices. When we make significant changes, we will:
         </p>
@@ -267,7 +304,7 @@ export default function CookiePolicy() {
           We encourage you to review this Cookie Policy periodically to stay informed about how we use cookies.
         </p>
 
-        <h4>10. Legal Basis for Processing (GDPR)</h4>
+        <h4>11. Legal Basis for Processing (GDPR)</h4>
         <p>
           For users in the European Economic Area (EEA), our legal basis for using cookies includes:
         </p>
@@ -280,7 +317,7 @@ export default function CookiePolicy() {
           You have the right to withdraw your consent at any time by adjusting your cookie settings or contacting us.
         </p>
 
-        <h4>11. Contact Us</h4>
+        <h4>12. Contact Us</h4>
         <p>
           If you have questions about our use of cookies or this Cookie Policy, please contact us:
         </p>
@@ -292,7 +329,7 @@ export default function CookiePolicy() {
           For more information about how we handle your personal data, please review our <a href="/privacy">Privacy Policy</a>.
         </p>
 
-        <h4>12. Additional Resources</h4>
+        <h4>13. Additional Resources</h4>
         <p>
           To learn more about cookies and online privacy:
         </p>

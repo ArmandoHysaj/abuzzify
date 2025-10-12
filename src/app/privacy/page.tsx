@@ -128,7 +128,17 @@ export default function Privacy() {
 
         <h5>5.4 Managing Cookies</h5>
         <p>
-          You can control cookies through your browser settings. However, disabling essential cookies may affect the functionality of our services. Most browsers allow you to:
+          You can control cookies through our cookie preferences page or your browser settings. We use Google's certified Consent Management Platform (CMP) to provide you with easy-to-use consent controls. However, disabling essential cookies may affect the functionality of our services.
+        </p>
+        <p>
+          <strong>Cookie Preferences:</strong> You can manage your cookie preferences at any time by visiting our{' '}
+          <a href="/cookie-preferences" target="_blank" rel="noopener noreferrer">
+            Cookie Preferences page
+          </a>{' '}
+          or clicking the "Manage options" button in our consent banner.
+        </p>
+        <p>
+          <strong>Browser Settings:</strong> Most browsers also allow you to:
         </p>
         <ul>
           <li>View and delete cookies</li>
@@ -136,6 +146,12 @@ export default function Privacy() {
           <li>Block all cookies</li>
           <li>Delete all cookies when closing the browser</li>
         </ul>
+        <p>
+          For detailed information about our cookie practices, please review our{' '}
+          <a href="/cookies" target="_blank" rel="noopener noreferrer">
+            Cookie Policy
+          </a>.
+        </p>
 
         <h4>6. Data Sharing and Disclosure</h4>
         <p>We do not sell your personal information. We may share your data only in the following circumstances:</p>
