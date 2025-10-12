@@ -6,6 +6,8 @@ import Modal from "react-modal";
 import InvestmentCalculator from "../investment/InvestmentCalculatorNew";
 import EducationalContent from "./EducationalContent";
 import PriceAlerts from "@/app/components/PriceAlerts/PriceAlerts";
+import { CoinCardSkeleton, NewsArticleSkeleton, CoinDataSkeleton } from "@/app/components/Skeleton";
+import { CoinIcon } from "@/app/components/Icons/Icons";
 import "./portfolio.scss";
 import SearchBar from "../search/search";
 import formatNumber from "@/app/helpers/formatNumbers";
@@ -460,7 +462,9 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
             <div className="coin-container">
               <div className="coin-header-card">
                 <div className="coin-header">
-                  <div className="coin-icon">🪙</div>
+                  <div className="coin-icon">
+                    <CoinIcon size={48} />
+                  </div>
                   <div className="coin-title">
                     <h2 className="coin-name">{coin.name}</h2>
                     <span className="coin-symbol">{coin.symbol}</span>

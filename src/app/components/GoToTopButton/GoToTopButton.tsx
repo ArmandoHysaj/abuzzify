@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import backToTop from "../../images/backtotop.gif";
+import { ArrowUpCircleIcon } from "../Icons/Icons";
 import "../GoToTopButton/go-to-top.scss";
 
 const GoToTopButton = () => {
@@ -31,9 +31,13 @@ const GoToTopButton = () => {
   return (
     <div className="go-to-top">
       {isVisible && (
-        <div onClick={scrollToTop} className="go-to-top-button">
-          {/* <img src={backToTop.src} alt="" /> */}
-        </div>
+        <button 
+          onClick={scrollToTop} 
+          className="go-to-top-button"
+          aria-label="Scroll to top"
+          type="button"
+        >
+        </button>
       )}
     </div>
   );

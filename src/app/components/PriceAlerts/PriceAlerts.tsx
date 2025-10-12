@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { PauseIcon, PlayIcon, TrashIcon } from '../Icons/Icons';
 import './price-alerts.scss';
 
 interface PriceAlert {
@@ -216,14 +217,14 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
                     onClick={() => toggleAlert(alert.id)}
                     title={alert.isActive ? 'Disable' : 'Enable'}
                   >
-                    {alert.isActive ? '⏸️' : '▶️'}
+                    {alert.isActive ? <PauseIcon size={16} /> : <PlayIcon size={16} />}
                   </button>
                   <button 
                     className="delete-btn"
                     onClick={() => deleteAlert(alert.id)}
                     title="Delete"
                   >
-                    🗑️
+                    <TrashIcon size={16} />
                   </button>
                 </div>
               </div>
@@ -250,20 +251,20 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
                     </div>
                   </div>
                   <div className="alert-actions">
-                    <button 
-                      className="toggle-btn"
-                      onClick={() => toggleAlert(alert.id)}
-                      title={alert.isActive ? 'Disable' : 'Enable'}
-                    >
-                      {alert.isActive ? '⏸️' : '▶️'}
-                    </button>
-                    <button 
-                      className="delete-btn"
-                      onClick={() => deleteAlert(alert.id)}
-                      title="Delete"
-                    >
-                      🗑️
-                    </button>
+                  <button 
+                    className="toggle-btn"
+                    onClick={() => toggleAlert(alert.id)}
+                    title={alert.isActive ? 'Disable' : 'Enable'}
+                  >
+                    {alert.isActive ? <PauseIcon size={16} /> : <PlayIcon size={16} />}
+                  </button>
+                  <button 
+                    className="delete-btn"
+                    onClick={() => deleteAlert(alert.id)}
+                    title="Delete"
+                  >
+                    <TrashIcon size={16} />
+                  </button>
                   </div>
                 </div>
               ))

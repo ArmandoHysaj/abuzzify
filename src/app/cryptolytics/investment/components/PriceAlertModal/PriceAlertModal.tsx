@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Investment } from "../../types/investment.types";
+import { BellIcon, ArrowDownIcon, ArrowUpIcon, MailIcon, ChartIcon, SettingsIcon, TargetIcon, TrendingUpIcon, WarningIcon } from "@/app/components/Icons/Icons";
 import "./price-alert-modal.scss";
 
 interface PriceAlertModalProps {
@@ -105,7 +106,9 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
         <div className="modal-header">
           <div className="header-content">
             <div className="header-title">
-              <span className="header-icon">🔔</span>
+              <span className="header-icon">
+                <BellIcon size={24} />
+              </span>
               <h2>Create Smart Price Alert</h2>
             </div>
             <button className="close-btn" onClick={onClose} type="button">
@@ -120,14 +123,20 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
             </p>
             <div className="description-info">
               <div className="info-item">
-                <span className="info-icon">📊</span>
+                <span className="info-icon">
+                  <ChartIcon size={18} />
+                </span>
                 <span className="info-text">
                   Scenario: You&apos;ve sold your coins and want to know when to
                   buy back
                 </span>
               </div>
               <div className="info-item">
-                <span className="info-icon">💡</span>
+                <span className="info-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 18h6M10 22h4M15 7.5c0-1.66-1.34-3-3-3s-3 1.34-3 3c0 1.38.56 2.63 1.46 3.54.59.59.94 1.41.94 2.21V14h3v-.75c0-.8.35-1.62.94-2.21A4.48 4.48 0 0 0 15 7.5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
                 <span className="info-text">
                   Get alerts when price drops (buy opportunity) or increases
                   (avoid buying)
@@ -140,13 +149,17 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
         <div className="modal-content">
           <div className="smart-alert-section">
             <div className="section-header">
-              <span className="section-icon">🔔</span>
+              <span className="section-icon">
+                <BellIcon size={20} />
+              </span>
               <h3>Smart Price Alert</h3>
             </div>
             <div className="alert-types">
               <div className="alert-type">
                 <div className="type-header">
-                  <span className="type-icon drop">🔻</span>
+                  <span className="type-icon drop">
+                    <ArrowDownIcon size={20} color="#059669" />
+                  </span>
                   <h4>Price Drop Alert</h4>
                 </div>
                 <p>
@@ -159,7 +172,9 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
               </div>
               <div className="alert-type">
                 <div className="type-header">
-                  <span className="type-icon increase">🔺</span>
+                  <span className="type-icon increase">
+                    <ArrowUpIcon size={20} color="#dc2626" />
+                  </span>
                   <h4>Price Increase Alert</h4>
                 </div>
                 <p>
@@ -174,7 +189,9 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
 
           <div className="select-investment-section">
             <div className="section-header">
-              <span className="section-icon">📊</span>
+              <span className="section-icon">
+                <ChartIcon size={20} />
+              </span>
               <h3>Select Investment</h3>
             </div>
             <div className="investment-options">
@@ -244,7 +261,9 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
           {selectedInvestment && (
             <div className="alert-settings-section">
               <div className="section-header">
-                <span className="section-icon">⚙️</span>
+                <span className="section-icon">
+                  <SettingsIcon size={20} />
+                </span>
                 <h3>Alert Settings</h3>
               </div>
 
@@ -252,7 +271,9 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
                 <div className="summary-header">
                   <h4>Selected Investment</h4>
                   <div className="summary-badge">
-                    <span className="badge-icon">📈</span>
+                    <span className="badge-icon">
+                      <TrendingUpIcon size={16} />
+                    </span>
                     <span className="badge-text">
                       Creating alert as if sold
                     </span>
@@ -305,7 +326,9 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
               <div className="threshold-settings">
                 <div className="threshold-group">
                   <div className="threshold-header">
-                    <span className="threshold-icon drop">🔻</span>
+                    <span className="threshold-icon drop">
+                      <ArrowDownIcon size={20} color="#059669" />
+                    </span>
                     <h4>Price Drop Threshold (%)</h4>
                   </div>
                   <div className="threshold-input">
@@ -352,7 +375,9 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
 
                 <div className="threshold-group">
                   <div className="threshold-header">
-                    <span className="threshold-icon increase">🔺</span>
+                    <span className="threshold-icon increase">
+                      <ArrowUpIcon size={20} color="#dc2626" />
+                    </span>
                     <h4>Price Increase Threshold (%)</h4>
                   </div>
                   <div className="threshold-input">
@@ -404,14 +429,18 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
 
           <div className="notification-preferences-section">
             <div className="section-header">
-              <span className="section-icon">🔔</span>
+              <span className="section-icon">
+                <BellIcon size={20} />
+              </span>
               <h3>Notification Preferences</h3>
             </div>
             <div className="notification-options">
               <div className="notification-option">
                 <div className="option-content">
                   <div className="option-info">
-                    <div className="option-icon">📧</div>
+                    <div className="option-icon">
+                      <MailIcon size={24} />
+                    </div>
                     <div className="option-text">
                       <h4>Email Notifications</h4>
                       <p>Receive alerts via email</p>
@@ -431,7 +460,9 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
               <div className="notification-option">
                 <div className="option-content">
                   <div className="option-info">
-                    <div className="option-icon">🔔</div>
+                    <div className="option-icon">
+                      <BellIcon size={24} />
+                    </div>
                     <div className="option-text">
                       <h4>Browser Notifications</h4>
                       <p>Receive alerts in your browser</p>
@@ -453,7 +484,9 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
           {selectedInvestment && (
             <div className="alert-preview-section">
               <div className="section-header">
-                <span className="section-icon">🎯</span>
+                <span className="section-icon">
+                  <TargetIcon size={20} />
+                </span>
                 <h3>Alert Preview</h3>
               </div>
               <div className="preview-card">
@@ -475,7 +508,9 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
                         <>
                           <div className="preview-alert drop-alert">
                             <div className="alert-header">
-                              <span className="alert-icon">🔻</span>
+                              <span className="alert-icon">
+                                <ArrowDownIcon size={18} color="#059669" />
+                              </span>
                               <span className="alert-title">
                                 Price Drop Alert
                               </span>
@@ -489,7 +524,9 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
 
                           <div className="preview-alert increase-alert">
                             <div className="alert-header">
-                              <span className="alert-icon">🔺</span>
+                              <span className="alert-icon">
+                                <ArrowUpIcon size={18} color="#dc2626" />
+                              </span>
                               <span className="alert-title">
                                 Price Increase Alert
                               </span>
@@ -511,7 +548,9 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
           )}
 
           <div className="alert-disclaimer">
-            <div className="disclaimer-icon">⚠️</div>
+            <div className="disclaimer-icon">
+              <WarningIcon size={20} color="#d97706" />
+            </div>
             <div className="disclaimer-text">
               <strong>Remember:</strong> Price alerts are{" "}
               <strong>notifications only</strong>. Always do your own research
@@ -534,7 +573,9 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
             disabled={loading || !selectedInvestment}
             type="button"
           >
-            <span className="btn-icon">🔔</span>
+            <span className="btn-icon">
+              <BellIcon size={16} />
+            </span>
             <span>{loading ? "Creating..." : "Create Alert"}</span>
           </button>
         </div>

@@ -1,0 +1,101 @@
+// Icon styling utilities
+.inline-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+  
+  svg {
+    display: block;
+  }
+}
+
+// Icon buttons
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  
+  svg {
+    transition: transform 0.2s ease;
+  }
+  
+  &:hover svg {
+    transform: scale(1.1);
+  }
+}
+
+// Feature icons
+.feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  
+  svg {
+    display: block;
+  }
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// Button icons
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  svg {
+    display: block;
+  }
+}
+
+// General icon wrapper
+.icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  svg {
+    display: block;
+  }
+}
+
+// Animated icons
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.icon-pulse {
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+// Icon colors
+.icon-success {
+  color: #059669;
+}
+
+.icon-error {
+  color: #dc2626;
+}
+
+.icon-warning {
+  color: #d97706;
+}
+
+.icon-info {
+  color: #2563eb;
+}
+
+.icon-muted {
+  color: #6b7280;
+}
+

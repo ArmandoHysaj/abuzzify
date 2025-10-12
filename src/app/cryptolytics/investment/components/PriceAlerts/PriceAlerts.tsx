@@ -2,6 +2,7 @@ import React from "react";
 import { Investment, PriceAlert } from "../../types/investment.types";
 import AlertCard from "../AlertCard/AlertCard";
 import { AlertCardSkeleton } from "@/app/components/Skeleton";
+import { BellIcon, ArrowDownIcon, ArrowUpIcon, MailIcon, LightbulbIcon, RocketIcon, ChartIcon, InboxIcon, TrendingUpIcon } from "@/app/components/Icons/Icons";
 import "./price-alerts.scss";
 
 interface PriceAlertsProps {
@@ -29,7 +30,7 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
     <div className="price-alerts-container">
       <div className="alerts-header">
         <div className="header-content">
-          <h3>🔔 Smart Price Alerts</h3>
+          <h3><BellIcon size={20} className="inline-icon" /> Smart Price Alerts</h3>
           <p className="header-description">
             Create intelligent price alerts based on your investments. Get
             notified when it&apos;s safe to buy back or when prices are too
@@ -39,7 +40,9 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
 
         <div className="alert-features">
           <div className="feature-card">
-            <div className="feature-icon">🔻</div>
+            <div className="feature-icon">
+              <ArrowDownIcon size={24} color="#059669" />
+            </div>
             <div className="feature-content">
               <h4>Price Drop Alerts</h4>
               <p>
@@ -51,7 +54,9 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon">🔺</div>
+            <div className="feature-icon">
+              <ArrowUpIcon size={24} color="#dc2626" />
+            </div>
             <div className="feature-content">
               <h4>Price Increase Alerts</h4>
               <p>
@@ -63,7 +68,9 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon">📧</div>
+            <div className="feature-icon">
+              <MailIcon size={24} color="#2563eb" />
+            </div>
             <div className="feature-content">
               <h4>Dual Notifications</h4>
               <p>
@@ -78,7 +85,7 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
 
       <div className="create-alerts-section">
         <div className="section-header">
-          <h4>📈 Create New Price Alert</h4>
+          <h4><TrendingUpIcon size={20} className="inline-icon" /> Create New Price Alert</h4>
           <p className="section-description">
             Create intelligent price alerts for your saved investments. Choose
             from your portfolio to set up smart notifications.
@@ -89,7 +96,9 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
           <div className="create-alert-card">
             <div className="card-content">
               <div className="alert-info">
-                <div className="info-icon">🔔</div>
+                <div className="info-icon">
+                  <BellIcon size={24} />
+                </div>
                 <div className="info-content">
                   <h5>Ready to create alerts?</h5>
                   <p>
@@ -104,13 +113,15 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
                 onClick={onShowCreateAlert}
                 type="button"
               >
-                <span className="btn-icon">🔔</span>
+                <span className="btn-icon">
+                  <BellIcon size={16} />
+                </span>
                 <span>Create New Alert</span>
               </button>
             </div>
             <div className="card-footer">
               <span className="hint-text">
-                💡 Select from your investments to configure drop/increase
+                <LightbulbIcon size={16} className="inline-icon" /> Select from your investments to configure drop/increase
                 thresholds
               </span>
             </div>
@@ -118,7 +129,9 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
         ) : (
           <div className="no-investments-card">
             <div className="card-content">
-              <div className="empty-icon">📊</div>
+              <div className="empty-icon">
+                <ChartIcon size={48} />
+              </div>
               <h4>No investments available</h4>
               <p>
                 You need at least one saved investment to create price alerts.
@@ -128,7 +141,9 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
                 onClick={onSwitchToSingle}
                 type="button"
               >
-                <span className="btn-icon">📥</span>
+                <span className="btn-icon">
+                  <InboxIcon size={16} />
+                </span>
                 <span>Create First Investment</span>
               </button>
             </div>
@@ -164,7 +179,9 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
 
       {investments.length === 0 && priceAlerts.length === 0 && (
         <div className="no-data">
-          <div className="no-data-icon">📊</div>
+          <div className="no-data-icon">
+            <ChartIcon size={64} />
+          </div>
           <h4>No investments or price alerts yet</h4>
           <p>
             Create your first investment or price alert to get started with
@@ -172,24 +189,39 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
           </p>
 
           <div className="getting-started">
-            <h5>🚀 Getting Started:</h5>
+            <h5><RocketIcon size={20} className="inline-icon" /> Getting Started:</h5>
             <div className="getting-started-tips">
               <div className="tip-item">
-                <span className="tip-icon">1️⃣</span>
+                <span className="tip-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" fill="#2d5a3d" />
+                    <text x="12" y="16" fontFamily="Arial, sans-serif" fontSize="12" fontWeight="bold" fill="white" textAnchor="middle">1</text>
+                  </svg>
+                </span>
                 <span className="tip-text">
                   <strong>Track Real Investments:</strong> Save your actual
                   crypto purchases to monitor performance
                 </span>
               </div>
               <div className="tip-item">
-                <span className="tip-icon">2️⃣</span>
+                <span className="tip-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" fill="#2d5a3d" />
+                    <text x="12" y="16" fontFamily="Arial, sans-serif" fontSize="12" fontWeight="bold" fill="white" textAnchor="middle">2</text>
+                  </svg>
+                </span>
                 <span className="tip-text">
                   <strong>Create Price Alerts:</strong> Get notified when
                   it&apos;s safe to buy back after selling
                 </span>
               </div>
               <div className="tip-item">
-                <span className="tip-icon">3️⃣</span>
+                <span className="tip-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" fill="#2d5a3d" />
+                    <text x="12" y="16" fontFamily="Arial, sans-serif" fontSize="12" fontWeight="bold" fill="white" textAnchor="middle">3</text>
+                  </svg>
+                </span>
                 <span className="tip-text">
                   <strong>Smart Notifications:</strong> Receive email and
                   browser alerts for optimal timing

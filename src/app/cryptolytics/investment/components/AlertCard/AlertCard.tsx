@@ -1,5 +1,6 @@
 import React from 'react';
 import { PriceAlert } from '../../types/investment.types';
+import { CheckCircleIcon, PauseIcon, PlayIcon, TrashIcon, ClockIcon, MailIcon, BellIcon, ActivityIcon } from '@/app/components/Icons/Icons';
 import './alert-card.scss';
 
 interface AlertCardProps {
@@ -36,7 +37,15 @@ const AlertCard: React.FC<AlertCardProps> = ({
           <h5>{alert.coinName} ({alert.coinSymbol})</h5>
         </div>
         <span className={`alert-status ${alert.alertStatus}`}>
-          {alert.alertStatus === 'active' ? '🟢 Active' : '⏸️ Paused'}
+          {alert.alertStatus === 'active' ? (
+            <>
+              <CheckCircleIcon size={16} color="#059669" /> Active
+            </>
+          ) : (
+            <>
+              <PauseIcon size={16} /> Paused
+            </>
+          )}
         </span>
       </div>
       
@@ -67,12 +76,16 @@ const AlertCard: React.FC<AlertCardProps> = ({
         <div className="alert-status-indicator">
           {isSafeToBuy ? (
             <div className="buy-alert">
-              <span className="alert-icon">🟢</span>
+              <span className="alert-icon">
+                <CheckCircleIcon size={20} color="#059669" />
+              </span>
               <span className="alert-text">SAFE TO BUY BACK</span>
             </div>
           ) : (
             <div className="monitor-alert">
-              <span className="alert-icon">⏳</span>
+              <span className="alert-icon">
+                <ClockIcon size={20} />
+              </span>
               <span className="alert-text">Waiting for price drop</span>
             </div>
           )}
@@ -80,20 +93,26 @@ const AlertCard: React.FC<AlertCardProps> = ({
         
         <div className="alert-notifications">
           <div className="notification-item">
-            <span className="notification-icon">📧</span>
+            <span className="notification-icon">
+              <MailIcon size={16} />
+            </span>
             <span className="notification-text">
               Email: {alert.notifications.emailEnabled ? 'Enabled' : 'Disabled'}
             </span>
           </div>
           <div className="notification-item">
-            <span className="notification-icon">🔔</span>
+            <span className="notification-icon">
+              <BellIcon size={16} />
+            </span>
             <span className="notification-text">
               Browser: {alert.notifications.browserEnabled ? 'Enabled' : 'Disabled'}
             </span>
           </div>
           {alert.notifications.notificationCount > 0 && (
             <div className="notification-item">
-              <span className="notification-icon">📊</span>
+              <span className="notification-icon">
+                <ActivityIcon size={16} />
+              </span>
               <span className="notification-text">
                 Notifications sent: {alert.notifications.notificationCount}
               </span>
@@ -110,7 +129,7 @@ const AlertCard: React.FC<AlertCardProps> = ({
             type="button"
           >
             <span className="btn-icon">
-              {alert.alertStatus === 'paused' ? '▶️' : '⏸️'}
+              {alert.alertStatus === 'paused' ? <PlayIcon size={14} /> : <PauseIcon size={14} />}
             </span>
             <span>{alert.alertStatus === 'paused' ? 'Resume' : 'Pause'}</span>
           </button>
@@ -119,7 +138,9 @@ const AlertCard: React.FC<AlertCardProps> = ({
             onClick={() => onDelete(alert.id)}
             type="button"
           >
-            <span className="btn-icon">🗑️</span>
+            <span className="btn-icon">
+              <TrashIcon size={14} />
+            </span>
             <span>Delete</span>
           </button>
         </div>
