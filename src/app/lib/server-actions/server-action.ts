@@ -94,17 +94,28 @@ class ServerAction<
       const cookieStore = await cookies();
       const sessionCookie = cookieStore.get('session')?.value;
 
-      if (!sessionCookie || !auth) {
-        throw new ServerError(SERVER_ERROR_CODES.NOT_AUTHORIZED, '');
+      if (!sessionCookie) {
+        console.error('❌ No session cookie found');
+        throw new ServerError(SERVER_ERROR_CODES.NOT_AUTHORIZED, 'No session cookie found');
+      }
+
+      if (!auth) {
+        console.error('❌ Firebase Admin Auth not initialized');
+        throw new ServerError(SERVER_ERROR_CODES.NOT_AUTHORIZED, 'Auth not initialized');
       }
 
       const decodedClaims = await auth.verifySessionCookie(sessionCookie, true);
+      console.log('✅ Session cookie verified for user:', decodedClaims.uid);
+      
       const user = await getCurrentUserDomain(decodedClaims.uid);
       
       if (!user) {
-        throw new ServerError(SERVER_ERROR_CODES.NOT_AUTHORIZED, '');
+        console.error('❌ User document not found in Firestore for uid:', decodedClaims.uid);
+        console.error('Email from token:', decodedClaims.email);
+        throw new ServerError(SERVER_ERROR_CODES.NOT_AUTHORIZED, 'User document not found');
       }
 
+      console.log('✅ User loaded successfully:', user.email);
       return {
         id: user.id,
         email: user.email,
@@ -112,8 +123,11 @@ class ServerAction<
         role: user.role
       };
     } catch (error) {
-      console.error('Error in getUser():', error);
-      throw new ServerError(SERVER_ERROR_CODES.NOT_AUTHORIZED, '');
+      console.error('❌ Error in getUser():', error);
+      if (error instanceof ServerError) {
+        throw error;
+      }
+      throw new ServerError(SERVER_ERROR_CODES.NOT_AUTHORIZED, error instanceof Error ? error.message : 'Authentication failed');
     }
   }
 

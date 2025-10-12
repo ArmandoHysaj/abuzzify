@@ -75,6 +75,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (!auth) throw new Error('Firebase not initialized');
     const result = await signInWithEmailAndPassword(auth, email, password);
     
+    // Ensure user document exists in Firestore (if it doesn't exist, create it)
+    const { createUserAction } = await import('@/app/lib/data/user-actions');
+    try {
+      await createUserAction({
+        name: result.user.displayName || 'User',
+        email: result.user.email || '',
+        password: 'existing-user', // Dummy password for existing email users
+        role: 'user'
+      });
+    } catch (error) {
+      // User document might already exist, that's okay
+      console.log('User document creation skipped (likely already exists):', error);
+    }
+    
     // Create session cookie after successful login
     const idToken = await result.user.getIdToken();
     try {

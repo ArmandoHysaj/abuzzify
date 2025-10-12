@@ -28,66 +28,57 @@ export class UserRepo implements UserRepository {
     if (!this.collection) throw new Error('Firestore collection not available');
     const { password, ...restUserData } = userData;
     
-    // Check if this is a Google OAuth user (dummy password)
-    const isGoogleUser = password === 'google-oauth-user';
+    // Check if this is a special case (Google OAuth or existing user login)
+    const isDummyPassword = password === 'google-oauth-user' || password === 'existing-user';
     
-    if (!isGoogleUser) {
-      // For email/password signup, Firebase Auth user already exists
-      // We just need to create the Firestore document
-      const auth = getAuth();
-      try {
-        // Find the existing Firebase Auth user by email
-        const userRecord = await auth.getUserByEmail(userData.email);
-        
-        const docRef = this.collection.doc(userRecord.uid);
-        await docRef.set({
-          ...restUserData,
-          email: userData.email.toLowerCase(),
-          createdAt: Timestamp.now(),
-          updatedAt: Timestamp.now(),
-          lastLogin: Timestamp.now()
+    // Get Firebase Auth instance
+    const auth = getAuth();
+    try {
+      // Find the existing Firebase Auth user by email
+      const userRecord = await auth.getUserByEmail(userData.email);
+      
+      const docRef = this.collection.doc(userRecord.uid);
+      
+      // Check if document already exists
+      const existingDoc = await docRef.get();
+      if (existingDoc.exists) {
+        logger.info('User document already exists, updating lastLogin', {
+          uid: userRecord.uid,
+          email: userData.email
         });
-
-        return docRef.id;
-      } catch (error) {
-        logger.error(
-          'Failed to create Firestore document for email/password user',
-          { 
-            email: userData.email, 
-            name: userData.name,
-            error: error instanceof Error ? error.message : String(error)
-          }
-        );
-        throw error;
-      }
-    } else {
-      // For Google users, just create the Firestore document
-      // We need to find the existing Firebase Auth user by email
-      const auth = getAuth();
-      try {
-        const userRecord = await auth.getUserByEmail(userData.email);
-        
-        const docRef = this.collection.doc(userRecord.uid);
-        await docRef.set({
-          ...restUserData,
-          email: userData.email.toLowerCase(),
-          createdAt: Timestamp.now(),
-          updatedAt: Timestamp.now(),
-          lastLogin: Timestamp.now()
+        // Update lastLogin timestamp
+        await docRef.update({
+          lastLogin: Timestamp.now(),
+          updatedAt: Timestamp.now()
         });
-
         return docRef.id;
-      } catch (error) {
-        logger.error(
-          'Failed to create Firestore document for Google user',
-          { 
-            email: userData.email, 
-            name: userData.name,
-            error: error instanceof Error ? error.message : String(error)
-          }
-        );
-        throw error;
       }
+      
+      // Create new document
+      await docRef.set({
+        ...restUserData,
+        email: userData.email.toLowerCase(),
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+        lastLogin: Timestamp.now()
+      });
+
+      logger.info('User document created successfully', {
+        uid: docRef.id,
+        email: userData.email
+      });
+
+      return docRef.id;
+    } catch (error) {
+      logger.error(
+        'Failed to create Firestore document for user',
+        { 
+          email: userData.email, 
+          name: userData.name,
+          error: error instanceof Error ? error.message : String(error)
+        }
+      );
+      throw error;
     }
   }
 
