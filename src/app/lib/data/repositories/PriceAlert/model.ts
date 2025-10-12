@@ -9,7 +9,7 @@ export const createPriceAlertSchema = z.object({
   sellAmount: z.number().positive('Sell amount must be positive'),
   sellDate: z.string(), // ISO date string when sold
   profitEarned: z.number(), // Profit made from the sale
-  buyBackPrice: z.number().positive('Buy back price must be positive'),
+  buyBackPrice: z.number().positive('Buy back price must be positive').optional(), // Optional - will be calculated by domain if not provided
   currentPrice: z.number().positive('Current price is required'),
   priceDropThreshold: z.number().min(0.0001).max(50).default(10),
   priceIncreaseThreshold: z.number().min(0.0001).max(50).default(5),

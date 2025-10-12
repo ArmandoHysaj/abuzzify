@@ -103,10 +103,41 @@
     }
     
     .modal-description {
-      color: var(--text-muted);
-      font-size: 15px;
-      line-height: 1.6;
-      font-family: "Montserrat-Regular", sans-serif;
+      .description-main {
+        color: var(--text-muted);
+        font-size: 15px;
+        line-height: 1.6;
+        font-family: "Montserrat-Regular", sans-serif;
+        margin: 0 0 16px 0;
+      }
+      
+      .description-info {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 16px;
+        background: linear-gradient(135deg, rgba(45, 90, 61, 0.05) 0%, rgba(55, 65, 81, 0.05) 100%);
+        border-radius: 10px;
+        border: 1px solid rgba(45, 90, 61, 0.1);
+        
+        .info-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          
+          .info-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+          }
+          
+          .info-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            font-family: "Montserrat-Medium", sans-serif;
+          }
+        }
+      }
     }
   }
   
@@ -328,19 +359,55 @@
     
     .alert-settings-section {
       .selected-investment-summary {
-        background: rgba(255, 255, 255, 0.9);
+        background: linear-gradient(135deg, rgba(217, 119, 6, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);
         backdrop-filter: blur(10px);
         border-radius: 12px;
         padding: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 2px solid rgba(217, 119, 6, 0.2);
         margin-bottom: 24px;
         
-        h4 {
-          font-size: 16px;
-          font-weight: 700;
-          color: var(--text-primary);
-          margin-bottom: 16px;
-          font-family: "Montserrat-Bold", sans-serif;
+        .summary-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 12px;
+          
+          h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            font-family: "Montserrat-Bold", sans-serif;
+          }
+          
+          .summary-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: "Montserrat-SemiBold", sans-serif;
+            
+            .badge-icon {
+              font-size: 14px;
+            }
+          }
+        }
+        
+        .summary-description {
+          font-size: 13px;
+          color: #92400e;
+          line-height: 1.5;
+          margin: 0 0 16px 0;
+          padding: 12px;
+          background: rgba(217, 119, 6, 0.1);
+          border-radius: 8px;
+          border-left: 3px solid #d97706;
+          font-family: "Montserrat-Medium", sans-serif;
         }
         
         .investment-details-grid {
@@ -446,26 +513,49 @@
             .preset-label {
               font-size: 13px;
               color: var(--text-muted);
-              font-weight: 500;
+              font-weight: 600;
               white-space: nowrap;
-              font-family: "Montserrat-Medium", sans-serif;
+              font-family: "Montserrat-SemiBold", sans-serif;
             }
             
             select {
               flex: 1;
-              padding: 8px 12px;
-              background: var(--glass-bg);
-              border: 1px solid rgba(100, 116, 139, 0.2);
-              border-radius: 8px;
+              padding: 10px 16px;
+              background: white;
+              border: 2px solid rgba(100, 116, 139, 0.2);
+              border-radius: 10px;
               font-size: 14px;
               color: var(--text-primary);
               cursor: pointer;
               outline: none;
-              font-family: "Montserrat-Regular", sans-serif;
+              font-family: "Montserrat-Medium", sans-serif;
+              font-weight: 500;
+              transition: all 0.3s ease;
+              appearance: none;
+              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+              background-repeat: no-repeat;
+              background-position: right 12px center;
+              background-size: 12px;
+              padding-right: 36px;
+              
+              &:hover {
+                border-color: rgba(45, 90, 61, 0.4);
+                background-color: rgba(255, 255, 255, 1);
+              }
               
               &:focus {
                 border-color: #2d5a3d;
-                box-shadow: 0 0 0 2px rgba(45, 90, 61, 0.1);
+                box-shadow: 0 0 0 4px rgba(45, 90, 61, 0.1);
+                background-color: white;
+              }
+              
+              option {
+                padding: 10px;
+                font-family: "Montserrat-Regular", sans-serif;
+                
+                &:first-child {
+                  color: var(--text-muted);
+                }
               }
             }
           }

@@ -6,6 +6,7 @@ import Modal from "react-modal";
 import InvestmentCalculator from "../investment/InvestmentCalculatorNew";
 import EducationalContent from "./EducationalContent";
 import PriceAlerts from "@/app/components/PriceAlerts/PriceAlerts";
+import { CoinCardSkeleton, NewsArticleSkeleton } from "@/app/components/Skeleton";
 import "./portfolio.scss";
 import SearchBar from "../search/search";
 import formatNumber from "@/app/helpers/formatNumbers";
@@ -561,8 +562,11 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                     <h3>Similar Coins</h3>
                   </div>
                   <div className="similar-coins-list">
-                    <ul className={`custom-scrollbar ${loadingCoins ? "loading" : ""}`}>
-                      {similarCoins.map((c) => (
+                    {loadingCoins ? (
+                      <CoinCardSkeleton count={5} />
+                    ) : (
+                      <ul className="custom-scrollbar">
+                        {similarCoins.map((c) => (
                         <li key={c.id} className="similar-coin-item" onClick={() => selectSimilarCoin(c)}>
                           <div className="coin-info">
                             <span className="coin-name">{c.name}</span>
@@ -571,7 +575,8 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                           <span className="coin-price">${c.price_usd}</span>
                         </li>
                       ))}
-                    </ul>
+                      </ul>
+                    )}
                   </div>
                 </div>
 
@@ -592,9 +597,12 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
               <div className="news-container">
                 <h3>Latest News</h3>
                 <div className="portfolio-news-wrapper">
-                  <ul className={`${loadingNews ? "loading" : ""}`}>
-                    {news.length > 0 ? (
-                      news.map((article, index) => (
+                  {loadingNews ? (
+                    <NewsArticleSkeleton count={4} />
+                  ) : (
+                    <ul>
+                      {news.length > 0 ? (
+                        news.map((article, index) => (
                         <li key={index}>
                           <img
                             loading="lazy"
@@ -620,10 +628,11 @@ const Portfolio: React.FC<PortfolioProps> = ({ selectedCoin }) => {
                           </div>
                         </li>
                       ))
-                    ) : (
-                      <p className="cp-text">No news available</p>
-                    )}
-                  </ul>
+                      ) : (
+                        <p className="cp-text">No news available</p>
+                      )}
+                    </ul>
+                  )}
                 </div>
               </div>
             )}

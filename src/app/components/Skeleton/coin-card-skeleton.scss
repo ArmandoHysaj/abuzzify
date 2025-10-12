@@ -1,0 +1,47 @@
+.coin-cards-skeleton {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  
+  .coin-card-skeleton {
+    background: var(--bg-secondary, #f8fafc);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    
+    .skeleton-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(100, 116, 139, 0.1);
+      
+      .skeleton-coin-info {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+    }
+    
+    .skeleton-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      
+      .skeleton-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .coin-cards-skeleton {
+    grid-template-columns: 1fr;
+  }
+}
+

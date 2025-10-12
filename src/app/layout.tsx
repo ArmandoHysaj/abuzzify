@@ -55,36 +55,36 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <AuthProvider>
               <MainNavigation />
               <main id="main-content">{children}</main>
+              <footer role="contentinfo">
+                <div className="footer-content">
+                  <div className="quick-links">
+                    <ul>
+                      <li>
+                        <a href="/about" aria-label="Learn more about Abuzzify">About Us</a>
+                      </li>
+                      <li>
+                        <a href="/privacy" aria-label="Read our privacy policy">Privacy Policy</a>
+                      </li>
+                      <li>
+                        <a href="/terms" aria-label="Read our terms of service">Terms of Service</a>
+                      </li>
+                      <li>
+                        <a href="/cookies" aria-label="Read our cookie policy">Cookie Policy</a>
+                      </li>
+                      <li>
+                        <a href="/disclaimer" aria-label="Read our disclaimer">Disclaimer</a>
+                      </li>
+                      <li>
+                        <a href="/contact" aria-label="Contact us for support">Contact Us</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </footer>
               <GoToTopButton />
             </AuthProvider>
           </ThemeProvider>
-        <footer role="contentinfo">
-          <div className="footer-content">
-            <div className="quick-links">
-              <ul>
-                <li>
-                  <a href="/about" aria-label="Learn more about Abuzzify">About Us</a>
-                </li>
-                <li>
-                  <a href="/privacy" aria-label="Read our privacy policy">Privacy Policy</a>
-                </li>
-                <li>
-                  <a href="/terms" aria-label="Read our terms of service">Terms of Service</a>
-                </li>
-                <li>
-                  <a href="/cookies" aria-label="Read our cookie policy">Cookie Policy</a>
-                </li>
-                <li>
-                  <a href="/disclaimer" aria-label="Read our disclaimer">Disclaimer</a>
-                </li>
-                <li>
-                  <a href="/contact" aria-label="Contact us for support">Contact Us</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </footer>
-      </body>
+        </body>
     </html>
   );
 }

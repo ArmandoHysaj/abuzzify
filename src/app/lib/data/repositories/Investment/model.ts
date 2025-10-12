@@ -73,6 +73,13 @@ export type PriceAlert = z.infer<typeof priceAlertSchema>;
 
 // Repository input types
 export type CreateInvestmentInput = Omit<InvestmentRecord, 'id' | 'userId' | 'createdAt' | 'updatedAt'>;
-export type CreatePriceAlertInput = Omit<PriceAlert, 'id' | 'userId' | 'createdAt' | 'updatedAt'>;
+export type CreatePriceAlertInput = Omit<PriceAlert, 'id' | 'userId' | 'createdAt' | 'updatedAt' | 'alertType' | 'alertStatus' | 'notifications' | 'alertRules'> & {
+  priceDropThreshold?: number;
+  priceIncreaseThreshold?: number;
+  cooldownPeriod?: number;
+  emailEnabled?: boolean;
+  browserEnabled?: boolean;
+  buyBackPrice?: number; // Optional - will be calculated if not provided
+};
 export type UpdateInvestmentInput = Partial<Omit<InvestmentRecord, 'id' | 'userId' | 'createdAt'>>;
 export type UpdatePriceAlertInput = Partial<Omit<PriceAlert, 'id' | 'userId' | 'createdAt'>>;

@@ -11,6 +11,7 @@ import InvestmentTabs from "./components/InvestmentTabs/InvestmentTabs";
 import AuthRequired from "./components/AuthRequired/AuthRequired";
 import InvestmentForm from "./components/InvestmentForm/InvestmentForm";
 import InvestmentResults from "./components/InvestmentResults/InvestmentResults";
+import InvestmentActions from "./components/InvestmentActions/InvestmentActions";
 import InvestmentPortfolio from "./components/InvestmentPortfolio/InvestmentPortfolio";
 import PriceAlerts from "./components/PriceAlerts/PriceAlerts";
 import PriceAlertModal from "./components/PriceAlertModal/PriceAlertModal";
@@ -293,11 +294,25 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
   };
 
   const getCurrentPriceForCoin = useCallback((coinSymbol: string) => {
+    // If the requested coin is the currently selected coin, return its live price
     if (coin && coin.symbol === coinSymbol) {
       return toNum(coin.price_usd);
     }
+    
+    // Otherwise, try to get the price from saved investments for that coin
+    const investmentForCoin = investments.find(inv => inv.coinSymbol === coinSymbol);
+    if (investmentForCoin?.calculatedResults?.finalPrice) {
+      return investmentForCoin.calculatedResults.finalPrice;
+    }
+    
+    // If we have a price alert for this coin, use its stored current price as fallback
+    const alertForCoin = priceAlerts.find(alert => alert.coinSymbol === coinSymbol);
+    if (alertForCoin?.currentPrice) {
+      return alertForCoin.currentPrice;
+    }
+    
     return 0;
-  }, [coin]);
+  }, [coin, investments, priceAlerts]);
 
   const handleCreateAlertClick = () => {
     if (investments.length === 0) {
@@ -354,23 +369,28 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
             dateInput={dateInput}
             coinName={loadedInvestment ? loadedInvestment.coinName : name}
             numberOfCoins={numberOfCoins}
-            profitLoss={profitLoss}
-            loading={loading}
-            investmentsCount={investments.length}
             onInvestmentChange={handleInvestmentChange}
             onPriceChange={handlePriceChange}
             onDateChange={(e) => setDateInput(e.target.value)}
-            onSaveInvestment={handleSaveInvestment}
-            onCreateAlert={handleCreateAlertClick}
           />
 
           {investment > 0 && paidPrice > 0 && (
-            <InvestmentResults
-              currentValue={currentValue}
-              profitLoss={profitLoss}
-              percentageChange={percentageChange}
-              investment={investment}
-            />
+            <>
+              <InvestmentResults
+                currentValue={currentValue}
+                profitLoss={profitLoss}
+                percentageChange={percentageChange}
+                investment={investment}
+              />
+              
+              <InvestmentActions
+                profitLoss={profitLoss}
+                loading={loading}
+                investmentsCount={investments.length}
+                onSaveInvestment={handleSaveInvestment}
+                onCreateAlert={handleCreateAlertClick}
+              />
+            </>
           )}
         </div>
       )}
@@ -379,6 +399,8 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
         <div className="calculator-content">
           <InvestmentPortfolio
             investments={investments}
+            priceAlerts={priceAlerts}
+            loading={loading}
             calculateCurrentInvestmentValue={calculateCurrentInvestmentValue}
             getCurrentPrice={getCurrentPriceForCoin}
             onLoadInvestment={loadInvestment}
@@ -396,7 +418,8 @@ const InvestmentCalculator: React.FC<InvestmentCalculatorProps> = ({
           <PriceAlerts
             investments={investments}
             priceAlerts={priceAlerts}
-            currentPrice={currentPrice}
+            loading={loading || alertLoading}
+            getCurrentPriceForCoin={getCurrentPriceForCoin}
             onShowCreateAlert={() => setShowCreateAlert(true)}
             onUpdateAlert={(id, updates) => updatePriceAlert(id, updates)}
             onDeleteAlert={(id) => deletePriceAlert(id)}

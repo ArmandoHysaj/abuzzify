@@ -1,12 +1,14 @@
 import React from 'react';
 import { Investment, PriceAlert } from '../../types/investment.types';
 import AlertCard from '../AlertCard/AlertCard';
+import { AlertCardSkeleton } from '@/app/components/Skeleton';
 import './price-alerts.scss';
 
 interface PriceAlertsProps {
   investments: Investment[];
   priceAlerts: PriceAlert[];
-  currentPrice: number;
+  loading?: boolean;
+  getCurrentPriceForCoin: (coinSymbol: string) => number;
   onShowCreateAlert: () => void;
   onUpdateAlert: (id: string, updates: Partial<PriceAlert>) => void;
   onDeleteAlert: (id: string) => void;
@@ -16,7 +18,8 @@ interface PriceAlertsProps {
 const PriceAlerts: React.FC<PriceAlertsProps> = ({
   investments,
   priceAlerts,
-  currentPrice,
+  loading = false,
+  getCurrentPriceForCoin,
   onShowCreateAlert,
   onUpdateAlert,
   onDeleteAlert,
@@ -114,7 +117,16 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
         )}
       </div>
 
-      {priceAlerts.length > 0 && (
+      {loading ? (
+        <div className="alerts-list-section">
+          <h4>Active Price Alerts</h4>
+          <div className="alerts-list">
+            {Array.from({ length: 2 }).map((_, i) => (
+              <AlertCardSkeleton key={i} />
+            ))}
+          </div>
+        </div>
+      ) : priceAlerts.length > 0 ? (
         <div className="alerts-list-section">
           <h4>Active Price Alerts ({priceAlerts.length})</h4>
           <div className="alerts-list">
@@ -122,14 +134,14 @@ const PriceAlerts: React.FC<PriceAlertsProps> = ({
               <AlertCard
                 key={alert.id}
                 alert={alert}
-                currentPrice={currentPrice}
+                currentPrice={getCurrentPriceForCoin(alert.coinSymbol)}
                 onUpdate={onUpdateAlert}
                 onDelete={onDeleteAlert}
               />
             ))}
           </div>
         </div>
-      )}
+      ) : null}
 
       {investments.length === 0 && priceAlerts.length === 0 && (
         <div className="no-data">

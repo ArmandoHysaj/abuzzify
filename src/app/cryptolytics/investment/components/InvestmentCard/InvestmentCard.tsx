@@ -8,6 +8,12 @@ interface InvestmentCardProps {
   profitLoss: number;
   percentageChange: number;
   currentPrice: number;
+  hasAlert?: boolean;
+  alertInfo?: {
+    soldPrice: number;
+    alertCreatedDate: string;
+    buyBackTarget: number;
+  };
   onLoad: (investment: Investment) => void;
   onCreateAlert: (investment: Investment) => void;
 }
@@ -18,6 +24,8 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
   profitLoss,
   percentageChange,
   currentPrice,
+  hasAlert = false,
+  alertInfo,
   onLoad,
   onCreateAlert,
 }) => {
@@ -38,11 +46,24 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
     n > 0 ? "profit" : n < 0 ? "loss" : "neutral";
 
   return (
-    <div className="investment-card">
+    <div className={`investment-card ${hasAlert ? 'has-alert' : ''}`}>
+      {hasAlert && alertInfo && (
+        <div className="alert-badge">
+          <span className="badge-icon">🔔</span>
+          <div className="badge-content">
+            <span className="badge-title">Price Alert Active</span>
+            <span className="badge-text">
+              Sold at ${fmtNumber(alertInfo.soldPrice, 8)} • Target: ${fmtNumber(alertInfo.buyBackTarget, 8)}
+            </span>
+          </div>
+        </div>
+      )}
+      
       <div className="card-header">
         <div className="coin-info">
           <h5>{investment.coinName}</h5>
           <span className="coin-symbol">{investment.coinSymbol}</span>
+          {hasAlert && <span className="alert-indicator">🔔 Alert Set</span>}
         </div>
         <div className="card-date">
           {new Date(investment.createdAt).toLocaleDateString()}
@@ -88,12 +109,12 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
           <span>Load</span>
         </button>
         <button 
-          className="action-btn secondary"
+          className={`action-btn ${hasAlert ? 'has-alert-btn' : 'secondary'}`}
           onClick={() => onCreateAlert(investment)}
           type="button"
         >
           <span className="btn-icon">🔔</span>
-          <span>Alert</span>
+          <span>{hasAlert ? 'View Alert' : 'Create Alert'}</span>
         </button>
       </div>
     </div>

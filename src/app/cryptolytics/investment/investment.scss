@@ -164,8 +164,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(107, 114, 128, 0.1);
-    border: 1px solid rgba(107, 114, 128, 0.2);
+    background: transparent;
+    border: transparent;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -215,6 +215,73 @@
   }
 }
 
+.modal-button {
+  padding: 16px 32px;
+  font-family: "Montserrat-SemiBold", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  &.default-button {
+    background: linear-gradient(135deg, #2d5a3d 0%, #374151 100%);
+    color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(45, 90, 61, 0.2);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(45, 90, 61, 0.3);
+      
+      &::before {
+        opacity: 1;
+      }
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 16px rgba(45, 90, 61, 0.2);
+    }
+    
+    &:focus-visible {
+      outline: 3px solid rgba(45, 90, 61, 0.3);
+      outline-offset: 2px;
+    }
+  }
+  
+  // Make content appear above the ::before overlay
+  span {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.modal-btn-wrapper {
+  text-align: center;
+  margin: 32px 0;
+  padding: 0 20px;
+}
+
 // Responsive Design
 @media screen and (min-width: 1024px) {
   .investment-calculator-modal {
@@ -247,7 +314,26 @@
   }
 }
 
+@media screen and (max-width: 1023px) {
+  .modal-button.default-button {
+    padding: 14px 24px;
+    font-size: 15px;
+  }
+}
+
 @media screen and (max-width: 768px) {
+  .modal-button {
+    padding: 14px 28px;
+    font-size: 15px;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .modal-btn-wrapper {
+    margin: 24px 0;
+    padding: 0 16px;
+  }
+  
   .investment-calculator-modal {
     overflow: auto;
     max-height: 95vh;

@@ -16,11 +16,18 @@ export class PriceAlertDomain {
   constructor(private priceAlertRepository: PriceAlertRepository) {}
 
   async createPriceAlert(userId: string, input: CreatePriceAlertInput): Promise<{ alertId: string }> {
+    // Calculate buyBackPrice if not provided
+    const buyBackPrice = input.buyBackPrice ?? this.calculateOptimalBuyBackPrice(
+      input.currentPrice, 
+      input.priceDropThreshold ?? 10
+    );
+    
     const alertData = {
       ...input,
       userId,
       alertType: 'sell-price' as const,
       alertStatus: 'active' as const,
+      buyBackPrice, // Use provided or calculated buyBackPrice
     };
 
     const alertId = await this.priceAlertRepository.create(alertData);

@@ -108,7 +108,19 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
             </button>
           </div>
           <div className="modal-description">
-            Create percentage-based alerts for your saved investment to get notified when it's safe to buy back or when prices are too high.
+            <p className="description-main">
+              Create percentage-based alerts for your saved investment to get notified when it's safe to buy back or when prices are too high.
+            </p>
+            <div className="description-info">
+              <div className="info-item">
+                <span className="info-icon">📊</span>
+                <span className="info-text">Scenario: You've sold your coins and want to know when to buy back</span>
+              </div>
+              <div className="info-item">
+                <span className="info-icon">💡</span>
+                <span className="info-text">Get alerts when price drops (buy opportunity) or increases (avoid buying)</span>
+              </div>
+            </div>
           </div>
         </div>
         
@@ -197,7 +209,16 @@ const PriceAlertModal: React.FC<PriceAlertModalProps> = ({
               </div>
               
               <div className="selected-investment-summary">
-                <h4>Selected Investment</h4>
+                <div className="summary-header">
+                  <h4>Selected Investment</h4>
+                  <div className="summary-badge">
+                    <span className="badge-icon">📈</span>
+                    <span className="badge-text">Creating alert as if sold</span>
+                  </div>
+                </div>
+                <p className="summary-description">
+                  This alert simulates that you've sold this investment at the current market price. You'll be notified when it's safe to buy back at a lower price.
+                </p>
                 <div className="investment-details-grid">
                   <div className="detail-item">
                     <span className="detail-label">Investment</span>
