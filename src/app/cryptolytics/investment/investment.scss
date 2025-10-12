@@ -198,7 +198,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
 }
 
 .investment-modal {
@@ -327,11 +326,13 @@
   
   .investment-calculator-modal {
     overflow: auto;
-    max-height: 95vh;
-    padding: 20px;
-    margin: 20px;
+    padding: 20px 20px;
     border-radius: 12px;
-    width: calc(100% - 40px);
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+
     
     .description {
       max-width: 100%;

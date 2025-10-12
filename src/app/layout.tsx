@@ -35,6 +35,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <title>ABUZZIFY - Your Crypto Analytics Hub</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Abuzzify - Your Ultimate Crypto Analytics Hub. Track cryptocurrency prices, read latest news, and analyze market trends." />
         <meta name="keywords" content="cryptocurrency, crypto, bitcoin, ethereum, trading, analytics, news" />
