@@ -128,14 +128,14 @@ export default function Privacy() {
 
         <h5>5.4 Managing Cookies</h5>
         <p>
-          You can control cookies through our cookie preferences page or your browser settings. We use Google's certified Consent Management Platform (CMP) to provide you with easy-to-use consent controls. However, disabling essential cookies may affect the functionality of our services.
+          You can control cookies through our cookie preferences page or your browser settings. We use Google&apos;s certified Consent Management Platform (CMP) to provide you with easy-to-use consent controls. However, disabling essential cookies may affect the functionality of our services.
         </p>
         <p>
           <strong>Cookie Preferences:</strong> You can manage your cookie preferences at any time by visiting our{' '}
           <a href="/cookie-preferences" target="_blank" rel="noopener noreferrer">
             Cookie Preferences page
           </a>{' '}
-          or clicking the "Manage options" button in our consent banner.
+          or clicking the &quot;Manage options&quot; button in our consent banner.
         </p>
         <p>
           <strong>Browser Settings:</strong> Most browsers also allow you to:

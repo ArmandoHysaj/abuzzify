@@ -243,12 +243,12 @@ export default function CookiePolicy() {
 
         <h4>8. Cookie Consent and Management</h4>
         <p>
-          By using our website and accepting cookies, you consent to our use of cookies as described in this policy. We use Google's certified Consent Management Platform (CMP) to provide you with transparent and easy-to-use consent controls.
+          By using our website and accepting cookies, you consent to our use of cookies as described in this policy. We use Google&apos;s certified Consent Management Platform (CMP) to provide you with transparent and easy-to-use consent controls.
         </p>
         
         <h5>8.1 Consent Banner</h5>
         <p>
-          When you first visit our website, you will see a consent banner powered by Google's CMP that provides you with three clear options:
+          When you first visit our website, you will see a consent banner powered by Google&apos;s CMP that provides you with three clear options:
         </p>
         <ul>
           <li><strong>Consent:</strong> Accept all cookies for optimal website functionality and personalized experience</li>
@@ -261,9 +261,9 @@ export default function CookiePolicy() {
           You can change your cookie preferences at any time by:
         </p>
         <ul>
-          <li>Clicking on the "Manage options" button in the consent banner</li>
+          <li>Clicking on the &quot;Manage options&quot; button in the consent banner</li>
           <li>Accessing cookie settings through our website footer</li>
-          <li>Using the "Manage Cookie Preferences" link in our privacy policy</li>
+          <li>Using the &quot;Manage Cookie Preferences&quot; link in our privacy policy</li>
         </ul>
         
         <h5>8.3 Essential Cookies</h5>
@@ -278,7 +278,7 @@ export default function CookiePolicy() {
 
         <h4>9. Google Consent Management Platform (CMP)</h4>
         <p>
-          We have implemented Google's certified Consent Management Platform to ensure compliance with privacy regulations and provide you with better control over your data. This CMP:
+          We have implemented Google&apos;s certified Consent Management Platform to ensure compliance with privacy regulations and provide you with better control over your data. This CMP:
         </p>
         <ul>
           <li><strong>Ensures Compliance:</strong> Meets GDPR, CCPA, and other privacy regulation requirements</li>
@@ -288,7 +288,7 @@ export default function CookiePolicy() {
           <li><strong>Automatic Updates:</strong> Stays current with changing privacy laws and Google requirements</li>
         </ul>
         <p>
-          For more information about Google's CMP, visit: <a href="https://support.google.com/adsense/answer/10100331" target="_blank" rel="noopener noreferrer">Google AdSense Consent Management</a>
+          For more information about Google&apos;s CMP, visit: <a href="https://support.google.com/adsense/answer/10100331" target="_blank" rel="noopener noreferrer">Google AdSense Consent Management</a>
         </p>
 
         <h4>10. Changes to This Cookie Policy</h4>
